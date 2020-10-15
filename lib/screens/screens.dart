@@ -1,0 +1,14 @@
+export './chat/chat_index_screen.dart';
+export './chat/chat_screen.dart';
+export './user/profile_screen.dart';
+export './user/editar_perfil_screen.dart';
+export './user/ingreso_screen.dart';
+export './forms/forms.dart';
+export './filter_pet_screen.dart';
+export './pet_show_screen.dart';
+export './root_screen.dart';
+export './splash_screen.dart';
+export './places_screen.dart';
+export './alert/alerts_screen.dart';
+export './home_screen.dart';
+export './adopt_screen.dart';
