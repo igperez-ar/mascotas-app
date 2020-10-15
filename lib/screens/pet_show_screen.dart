@@ -6,21 +6,29 @@ import 'package:flutter/material.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 import 'package:mascotas_app/models/models.dart';
 
-class EstablecimientoShowScreen extends StatefulWidget {
-   final establecimiento;
-   final Establecimiento type;
+class PetShowScreen extends StatefulWidget {
+   final String image;
+   final String name;
+   final String gender;
+   final String age;
+   final List colors;
+   final String breed;
 
-  const EstablecimientoShowScreen({
+  const PetShowScreen({
     Key key, 
-    this.establecimiento,
-    this.type,
+    this.image,
+    this.name,
+    this.gender,
+    this.age,
+    this.colors,
+    this.breed,
   }): super(key: key);
 
   @override
-  _EstablecimientoShowScreenState createState() => _EstablecimientoShowScreenState();
+  _PetShowScreenState createState() => _PetShowScreenState();
 }
 
-class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
+class _PetShowScreenState extends State<PetShowScreen> {
 
   final ScrollController _scrollController = ScrollController();
   bool _isScrolled = false;
@@ -43,7 +51,7 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
     }
   }
 
-  List<Widget> _getWidget() {
+  /* List<Widget> _getWidget() {
     Widget _getChip(String title) => Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -82,7 +90,7 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
     }
 
     return [];
-  }
+  } */
 
   Widget _checkItem(String title) {
     final _width = MediaQuery.of(context).size.width;
@@ -142,7 +150,8 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
       body: Stack(
         children: [
           Image.network(
-            'https://source.unsplash.com/AllEP6K_TAg/1200x1300',
+            widget.image,
+            /* 'https://source.unsplash.com/AllEP6K_TAg/1200x1300', */
             fit: BoxFit.cover,
             height: 450,
           ),
@@ -169,14 +178,14 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('Olivia', 
+                          Text(widget.name, 
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Icon(Icons.favorite, size: 30,)
                         ],
                       ),
                     ),
-                    Text('Labrador',
+                    Text(widget.breed,
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 18,
@@ -203,18 +212,17 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Stack(
-                                  children: [
-                                    Container(
+                                Row(
+                                  children: widget.colors.map<Widget>((e) => Container(
                                       width: 25,
                                       height: 25,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: Colors.white, width: 2),
-                                        color: Colors.orange[200]
+                                        color: e
                                       ),
                                     )
-                                  ],
+                                  ).toList()
                                 )
                               ],
                             ),
@@ -228,7 +236,7 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Text('2 años',
+                                Text(/* '2 años' */widget.age,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
@@ -246,7 +254,7 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Text('Femenino',
+                                Text(/* 'Femenino' */widget.gender,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
@@ -384,7 +392,7 @@ class _EstablecimientoShowScreenState extends State<EstablecimientoShowScreen> {
             child: Container(
               height: 85,
               child: AppBar(
-                title: Text(widget.establecimiento.nombre),
+                title: Text(widget.name),
               )
             ),
           ),

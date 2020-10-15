@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:mascotas_app/screens/screens.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/models/models.dart';
@@ -127,6 +128,78 @@ class _AdoptScreenState extends State<AdoptScreen> {
         )
       );
     /* ),*/
+  }
+
+  Widget _getPet(String image, String name, String age, String ageMsg, String gender, String breed, List colors) {
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) => PetShowScreen(
+            image: image,
+            name: name,
+            age: age,
+            gender: gender,
+            breed: breed,
+            colors: colors
+          )
+        )
+      ),
+      child: Container(
+        width: 180,
+        margin: EdgeInsets.only(right: 10, bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 1,
+              spreadRadius: 1,
+              offset: Offset(1, 1)
+            )
+          ]
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 180,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(image),
+                  fit: BoxFit.cover
+                )
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(name,
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                        ),
+                      ),
+                      Icon(Icons.favorite_border)  
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Text('$ageMsg $age',
+                    style: TextStyle(
+                      color: Colors.grey[600]
+                    ),
+                  )
+                ],
+              )
+            )
+          ],
+        ),
+      )
+    );
   }
 
   @override 
@@ -268,23 +341,56 @@ class _AdoptScreenState extends State<AdoptScreen> {
                           ), 
                         ),
                       ),
-                      /* DetailSectionWidget(
-                        title: 'Nuevas mascotas',
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            Container(
-                              child: Stack(
-                                children: [
-                                  
-
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ), */
-                      SizedBox(height: 40),
+                      Container(
+                        padding: EdgeInsets.only(left: 12, right: 12),
+                        child: DetailSectionWidget(
+                          title: 'Nuevas mascotas',
+                          child: Container(
+                            height: 260,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                _getPet(
+                                  'https://source.unsplash.com/1_nDj7Rwm8Y/1100x1200',
+                                  'Kelly',
+                                  '4 años',
+                                  'Gato de',
+                                  'Hembra',
+                                  'Mixto',
+                                  [Colors.orange[800], Colors.brown, Colors.grey[100]]
+                                ),
+                                _getPet(
+                                  'https://source.unsplash.com/mx0DEnfYxic/1100x1200',
+                                  'Rocky',
+                                  '5 años',
+                                  'Perro de',
+                                  'Macho',
+                                  'Border Collie',
+                                  [Colors.black, Colors.grey[100]]
+                                ),
+                                _getPet(
+                                  'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
+                                  'Firulais',
+                                  '6 años',
+                                  'Perro de',
+                                  'Macho',
+                                  'Border Collie',
+                                  [Colors.orange[800], Colors.grey[100]]
+                                ),
+                                _getPet(
+                                  'https://source.unsplash.com/gM4Oq1iH4fE/800x600',
+                                  'Pelusa',
+                                  '8 meses',
+                                  'Gatito de',
+                                  'Hembra',
+                                  'Mixto',
+                                  [Colors.grey[100]]
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ),
                     ],
                   )
                 ),

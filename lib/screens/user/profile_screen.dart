@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/models/models.dart';
@@ -133,15 +134,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Container(
                     width: _width,
-                    height: 300,
+                    height: 250,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment(0, 0.5),
-                        colors: [Colors.red[300], Colors.red[100]])
+                        colors: [Colors.red[300], Colors.red[200]])
                     ),
                   ),
                   ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     children: [
                       Column(
                         children: <Widget>[
@@ -188,7 +190,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                      _getOptionsGroup([
+                      SizedBox(height: 20),
+                      DetailSectionWidget(
+                        title: 'Mascotas',
+                        actions: [
+                          {'icon': Icons.more_horiz, 'on_press': null}
+                        ],
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 130,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 1,
+                                    spreadRadius: 1,
+                                    offset: Offset(1, 1)
+                                  )
+                                ]
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: NetworkImage('https://source.unsplash.com/AllEP6K_TAg/1200x1300'),
+                                        fit: BoxFit.cover
+                                      )
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text('Olivia',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18
+                                    ),
+                                  )
+                                ],
+                              )
+                            )
+                          ],
+                        ),
+                      ),
+                      /* DetailSectionWidget(
+                        title: 'Galería', 
+                        child: 
+                      ), */
+                      /* _getOptionsGroup([
                         _getOption(
                           icon: Icons.pets,
                           title: "Mascotas",
@@ -203,8 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           )
                         ),
-                      ]),
-                      BlocBuilder<ConfiguracionBloc, ConfiguracionState>(
+                      ]), */
+                      /* BlocBuilder<ConfiguracionBloc, ConfiguracionState>(
                         builder: (context, state) {
                           if (state is ConfiguracionSuccess) {
                             darkMode = state.config['dark-mode'];
@@ -239,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ]);
                         }
-                      )
+                      ) */
                     ],
                   )
                 ],

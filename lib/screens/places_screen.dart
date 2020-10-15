@@ -53,14 +53,14 @@ class _PlacesScreenState extends State<PlacesScreen> {
     double _width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () => Navigator.push(context,
+      /* onTap: () => Navigator.push(context,
         MaterialPageRoute(
           builder: (context) => EstablecimientoShowScreen(
             type: null,
             establecimiento: null
           )
         )
-      ),
+      ), */
       child: Container(
         margin: EdgeInsets.only(top:20),
         decoration: BoxDecoration(

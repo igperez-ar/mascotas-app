@@ -106,14 +106,14 @@ class _DefaultCardState extends State<DefaultCard> {
     }
 
     return GestureDetector(
-      onTap: () => Navigator.push(context,
+      /* onTap: () => Navigator.push(context,
         MaterialPageRoute(
           builder: (context) => EstablecimientoShowScreen(
             type: widget.type,
             establecimiento: widget.establecimiento
           )
         )
-      ),
+      ), */
       child: Container(
         margin: EdgeInsets.only(top:20),
         decoration: BoxDecoration(
