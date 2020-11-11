@@ -161,7 +161,7 @@ class _IngresoScreenState extends State<IngresoScreen> {
         ),
         centerTitle: true, */
         elevation: 0,
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.transparent,
         leading: (_selectedTab == 0
           ? IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.red[300], size: 30,),
@@ -178,13 +178,17 @@ class _IngresoScreenState extends State<IngresoScreen> {
               return SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    height: _selectedTab == 1 ? null : 0,
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: SvgPicture.asset(
-                      'assets/images/undraw_sign_in.svg',
-                      height: _height * 0.15,
-                    )
+                  Column(
+                    children: [
+                      Container(
+                        height: _selectedTab == 1 ? null : 0,
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: SvgPicture.asset(
+                          'assets/images/undraw_sign_in.svg',
+                          height: _height * 0.15,
+                        )
+                      ),
+                    ],
                   ),
                   Container(
                     height: _selectedTab == 0 ? null : 0,

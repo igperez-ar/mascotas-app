@@ -9,6 +9,7 @@ import 'package:mascotas_app/screens/screens.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/models/models.dart';
+import 'package:mascotas_app/widgets/card_adopt_widget.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 class AdoptScreen extends StatefulWidget {
@@ -17,8 +18,8 @@ class AdoptScreen extends StatefulWidget {
 }
 
 class _AdoptScreenState extends State<AdoptScreen> {
-  EstablecimientosBloc _establecimientoBloc;
-  FavoritosBloc _favoritoBloc;
+  /* EstablecimientosBloc _establecimientoBloc;
+  FavoriteBloc _favoriteBloc; */
   Position userPosition;
 
   Future<String> _getDistance(double lat, double lng) async {
@@ -47,7 +48,7 @@ class _AdoptScreenState extends State<AdoptScreen> {
     return distance;
   }
 
-  Widget _getCardList(List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos) {
+  /* Widget _getCardList(List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos) {
 
     return ListView.builder(
       padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -76,15 +77,14 @@ class _AdoptScreenState extends State<AdoptScreen> {
         ); 
       },
     );
-  }
+  } */
 
   Widget getWidget(IconData icon, String title, int count) {
-    return /* Flexible(
-      child:  */Container(
+    return Expanded(
+      child: Container(
         height: 70,
-        width: 170,
         padding: EdgeInsets.only(left: 15, right: 40),
-        /* margin: EdgeInsets.only(right: 20), */
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -126,78 +126,6 @@ class _AdoptScreenState extends State<AdoptScreen> {
             )
           ],
         )
-      );
-    /* ),*/
-  }
-
-  Widget _getPet(String image, String name, String age, String ageMsg, String gender, String breed, List colors) {
-    return GestureDetector(
-      onTap: () => Navigator.push(context,
-        MaterialPageRoute(
-          builder: (context) => PetShowScreen(
-            image: image,
-            name: name,
-            age: age,
-            gender: gender,
-            breed: breed,
-            colors: colors
-          )
-        )
-      ),
-      child: Container(
-        width: 180,
-        margin: EdgeInsets.only(right: 10, bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 1,
-              spreadRadius: 1,
-              offset: Offset(1, 1)
-            )
-          ]
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 180,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(image),
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(name,
-                        style: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18
-                        ),
-                      ),
-                      Icon(Icons.favorite_border)  
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Text('$ageMsg $age',
-                    style: TextStyle(
-                      color: Colors.grey[600]
-                    ),
-                  )
-                ],
-              )
-            )
-          ],
-        ),
       )
     );
   }
@@ -206,8 +134,8 @@ class _AdoptScreenState extends State<AdoptScreen> {
   void initState() {
     super.initState();
 
-    _establecimientoBloc = BlocProvider.of<EstablecimientosBloc>(context);
-    _favoritoBloc = BlocProvider.of<FavoritosBloc>(context);
+    /* _establecimientoBloc = BlocProvider.of<EstablecimientosBloc>(context);
+    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context); */
   }
 
   @override
@@ -215,22 +143,20 @@ class _AdoptScreenState extends State<AdoptScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        /* title: Text('Adoptar', 
+        title: Text("Adopción",
           style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            fontWeight: FontWeight.w600
           ),
-        ), */
-        backgroundColor: Colors.red[300],
-        elevation: 0,
-        actions: <Widget>[
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.grey[50], size: 30.0,), 
-                onPressed: () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
-              );
-            },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.chat, size: 25),
+            onPressed: () {}
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list, size: 30,), 
+            onPressed: () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
           )
         ],
       ),
@@ -240,8 +166,8 @@ class _AdoptScreenState extends State<AdoptScreen> {
             _establecimientoBloc.add(FetchEstablecimientos());
           }
 
-          if (_favoritoBloc.state is FavoritosInitial) {
-            _favoritoBloc.add(FetchFavoritos());
+          if (_favoriteBloc.state is FavoritesInitial) {
+            _favoriteBloc.add(FetchFavorites());
           }
 
           if (state is EstablecimientosFailure) {
@@ -265,39 +191,14 @@ class _AdoptScreenState extends State<AdoptScreen> {
               );
             }
 
-            return  */Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  color: Colors.red[300],
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            return  */
+                /* Expanded(
+                  child:  */ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     children: [
-                      Text('Adopta un', 
-                        style: TextStyle(
-                          color: Colors.grey[50],
-                          fontSize: 28,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text('Amigo', 
-                        style: TextStyle(
-                          color: Colors.grey[50],
-                          fontSize: 26,
-                        ),
-                      ),
                       SizedBox(height: 30),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: SearchBar(words: []),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  )
-                ),
-                Expanded(
-                  child: ListView(
-                    children: [
+                      SearchBar(words: [], hintText: "Encuentra a tu mascota favorita",),
+                      SizedBox(height: 30),
                       /* Container(
                         /* padding: EdgeInsets.only(top: 20), */
                         decoration: BoxDecoration(
@@ -315,87 +216,106 @@ class _AdoptScreenState extends State<AdoptScreen> {
                         ),
                       ),
                       SizedBox(height: 5), */
-                      Container(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 12),
-                        child: DetailSectionWidget(
-                          title: 'Categorías',
-                          child: /* Container(
-                            height: 70,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [ */
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Wrap(
-                                  spacing: 15,
-                                  runSpacing: 15,
-                                  children: [
-                                    getWidget(FontAwesomeIcons.dog, 'Perros', 46),
-                                    getWidget(FontAwesomeIcons.cat, 'Gatos', 35),
-                                    getWidget(FontAwesomeIcons.crow, 'Aves', 20),
-                                    getWidget(FontAwesomeIcons.question, 'Otros', 30),
-                                  ],
-                                ),
-                              /* ],
-                            ),*/
-                          ), 
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 12, right: 12),
-                        child: DetailSectionWidget(
-                          title: 'Nuevas mascotas',
-                          child: Container(
-                            height: 260,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
+                      DetailSectionWidget(
+                        title: 'Categorías',
+                        child: Column(
+                          children: [
+                            Row(
                               children: [
-                                _getPet(
-                                  'https://source.unsplash.com/1_nDj7Rwm8Y/1100x1200',
-                                  'Kelly',
-                                  '4 años',
-                                  'Gato de',
-                                  'Hembra',
-                                  'Mixto',
-                                  [Colors.orange[800], Colors.brown, Colors.grey[100]]
-                                ),
-                                _getPet(
-                                  'https://source.unsplash.com/mx0DEnfYxic/1100x1200',
-                                  'Rocky',
-                                  '5 años',
-                                  'Perro de',
-                                  'Macho',
-                                  'Border Collie',
-                                  [Colors.black, Colors.grey[100]]
-                                ),
-                                _getPet(
-                                  'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
-                                  'Firulais',
-                                  '6 años',
-                                  'Perro de',
-                                  'Macho',
-                                  'Border Collie',
-                                  [Colors.orange[800], Colors.grey[100]]
-                                ),
-                                _getPet(
-                                  'https://source.unsplash.com/gM4Oq1iH4fE/800x600',
-                                  'Pelusa',
-                                  '8 meses',
-                                  'Gatito de',
-                                  'Hembra',
-                                  'Mixto',
-                                  [Colors.grey[100]]
-                                ),
+                                getWidget(FontAwesomeIcons.dog, 'Perros', 46),
+                                getWidget(FontAwesomeIcons.cat, 'Gatos', 35),
                               ],
                             ),
-                          ),
-                        )
+                            Row(
+                              children: [
+                                getWidget(FontAwesomeIcons.crow, 'Aves', 20),
+                                getWidget(FontAwesomeIcons.question, 'Otros', 30),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
+                      SizedBox(height: 20),
+                      DetailSectionWidget(
+                        title: 'Mis adopciones',
+                        child: Container(
+                          height: 260,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
+                                name: 'Firulais',
+                                age: '6 años',
+                                species: 'Perro',
+                                gender: 'Macho',
+                                breed: 'Border Collie',
+                                colors: [Colors.orange[800], Colors.grey[100]]
+                              ),
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/gM4Oq1iH4fE/800x600',
+                                name: 'Pelusa',
+                                age: '8 meses',
+                                species: 'Gato',
+                                gender: 'Hembra',
+                                breed: 'Mixto',
+                                colors: [Colors.grey[100]]
+                              ), 
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      DetailSectionWidget(
+                        title: 'Nuevas mascotas',
+                        child: Container(
+                          height: 260,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/1_nDj7Rwm8Y/1100x1200',
+                                name: 'Kelly',
+                                age: '4 años',
+                                species: 'Gato',
+                                gender: 'Hembra',
+                                breed: 'Mixto',
+                                colors: [Colors.orange[800], Colors.brown, Colors.grey[100]]
+                              ),
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/mx0DEnfYxic/1100x1200',
+                                name: 'Rocky',
+                                age: '5 años',
+                                species: 'Perro',
+                                gender: 'Macho',
+                                breed: 'Border Collie',
+                                colors: [Colors.black, Colors.grey[100]]
+                              ),
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
+                                name: 'Firulais',
+                                age: '6 años',
+                                species: 'Perro',
+                                gender: 'Macho',
+                                breed: 'Border Collie',
+                                colors: [Colors.orange[800], Colors.grey[100]]
+                              ),
+                              CardAdoptWidget(
+                                image: 'https://source.unsplash.com/gM4Oq1iH4fE/800x600',
+                                name: 'Pelusa',
+                                age: '8 meses',
+                                species: 'Gato',
+                                gender: 'Hembra',
+                                breed: 'Mixto',
+                                colors: [Colors.grey[100]]
+                              ), 
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   )
-                ),
-              ],
-            )
+                
     );
           /* }
           

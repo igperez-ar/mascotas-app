@@ -12,10 +12,10 @@ part 'filtros_state.dart';
 
 class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
   final EstablecimientosBloc establecimientosBloc;
-  final FavoritosBloc favoritosBloc;
+  final FavoriteBloc favoriteBloc;
   StreamSubscription establecimientosSubscription;
 
-  FiltrosBloc({@required this.establecimientosBloc, @required this.favoritosBloc}) 
+  FiltrosBloc({@required this.establecimientosBloc, @required this.favoriteBloc}) 
     : super(initialState(establecimientosBloc.state)) {
       establecimientosSubscription = establecimientosBloc.listen((_state) { 
         if (this.state is FiltrosInitial && _state is EstablecimientosSuccess) {
@@ -36,15 +36,11 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
         activeFilters: {
           'filtrados': {
             'establecimientos': 0,
-            'favoritos': 0
+            'favorite': 0
           },
           'palabras': List<String>(),
           'mostrar': Establecimiento.ambos,
           'localidades': List<Localidad>(),
-          'clasificaciones': List<Clasificacion>(),
-          'categorias': List<Categoria>.from(_filterData['categorias']),
-          'actividades': List<Actividad>(),
-          'especialidades': List<Especialidad>()
         }
       );
     }
@@ -122,7 +118,7 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
       final Map<String, Object> activeFilters = {
         'filtrados': {
           'establecimientos': 0,
-          'favoritos': 0
+          'favorite': 0
         },
         'palabras': List<String>(),
         'mostrar': Establecimiento.ambos,
@@ -148,7 +144,7 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
 
     if (state is FiltrosSuccess && establecimientosBloc.state is EstablecimientosSuccess){
       final filtrosState = (state as FiltrosSuccess);
-      final favoritoState = (favoritosBloc.state);
+      final favoritetate = (favoriteBloc.state);
       final establecimientosState = (establecimientosBloc.state as EstablecimientosSuccess);
       List<Alojamiento> newAlojamientos;
       List<Gastronomico> newGastronomicos;
@@ -221,8 +217,8 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
         establecimientosState.gastronomicos.length
       ) - (newAlojamientos.length + newGastronomicos.length);
 
-      if (favoritoState is FavoritosSuccess) {
-        final int newCount = favoritoState.favoritos
+      if (favoritetate is FavoriteSuccess) {
+        final int newCount = favoritetate.favorite
           .where((element) {
             if (element.tipo == Establecimiento.alojamiento 
              && newAlojamientos.any((e) => e.id == element.id)) 
@@ -236,10 +232,10 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
           })
           .toList()
           .length;
-        newFilters['filtrados']['favoritos'] = favoritoState.favoritos.length - newCount; 
+        newFilters['filtrados']['favorite'] = favoritetate.favorite.length - newCount; 
 
       } else {
-        newFilters['filtrados']['favoritos'] = 0;
+        newFilters['filtrados']['favorite'] = 0;
       }
 
       establecimientosBloc.add(
@@ -263,7 +259,7 @@ class FiltrosBloc extends Bloc<FiltrosEvent, FiltrosState> {
       final Map<String, Object> resetActiveFilters = {
         'filtrados': {
           'establecimientos': 0,
-          'favoritos': 0
+          'favorite': 0
         },
         'palabras': List<String>(),
         'mostrar': Establecimiento.ambos,

@@ -8,13 +8,11 @@ import 'package:mascotas_app/models/models.dart';
 class MapCardWidget extends StatefulWidget {
   final double lat;
   final double lng;
-  final Establecimiento type;
 
   MapCardWidget({
     Key key, 
     @required this.lat,
     @required this.lng,
-    @required this.type
   }): super(key: key);
 
   @override
@@ -44,9 +42,9 @@ class _MapCardWidgetState extends State<MapCardWidget> {
     final Marker marker = Marker(
       markerId: markerId,
       icon: BitmapDescriptor.defaultMarkerWithHue( 
-        widget.type == Establecimiento.alojamiento
-          ? BitmapDescriptor.hueOrange
-          : BitmapDescriptor.hueAzure
+        /* widget.type == Establecimiento.alojamiento
+          ?  */BitmapDescriptor.hueOrange
+          /* : BitmapDescriptor.hueAzure */
       ),
       position: LatLng(widget.lat, widget.lng)
     );

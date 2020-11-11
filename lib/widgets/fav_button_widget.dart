@@ -6,7 +6,7 @@ import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
-enum Size {
+enum FavSize {
   small,
   big
 }
@@ -15,13 +15,13 @@ enum Size {
 class FavButtonWidget extends StatefulWidget {
   final int id;
   final Establecimiento type;
-  final Size size;
+  final FavSize size;
   
   const FavButtonWidget({
     Key key, 
     @required this.id,
     @required this.type,
-    this.size = Size.small,
+    this.size = FavSize.small,
   }): super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class FavButtonWidget extends StatefulWidget {
 }
 
 class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderStateMixin {
-  FavoritosBloc _favoritoBloc;
+  FavoriteBloc _favoriteBloc;
   AutenticacionBloc _autenticacionBloc;
 
   var squareScale = 1.0;
@@ -51,7 +51,7 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
     });
     super.initState();
 
-    _favoritoBloc = BlocProvider.of<FavoritosBloc>(context);
+    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
     _autenticacionBloc = BlocProvider.of<AutenticacionBloc>(context);
   }
 
@@ -61,11 +61,11 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
     super.dispose();
   }
 
-  void _changeFavorite(Favorito favorito) {
+  void _changeFavorite(Favorite favorite) {
 
     if (_autenticacionBloc is AutenticacionAuthenticated) {
-      if (favorito != null) {
-        if (favorito.recuerdos.isNotEmpty) {
+      if (favorite != null) {
+        if (favorite.recuerdos.isNotEmpty) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -83,7 +83,7 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
                     padding: EdgeInsets.only(right: 20),
                     child: Text("Aceptar"),
                     onPressed: () {
-                      _favoritoBloc.add(RemoveFavorito(favorito));
+                      _favoriteBloc.add(RemoveFavorite(favorite));
                       Navigator.pop(context);
                     },
                   ),
@@ -92,13 +92,13 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
             },
           );
         } else {
-          _favoritoBloc.add(RemoveFavorito(favorito));
+          _favoriteBloc.add(RemoveFavorite(favorite));
         }
       } else {
         _animationController.forward().whenComplete(() => _animationController.reverse());
 
-        _favoritoBloc.add(AddFavorito(
-          Favorito(
+        _favoriteBloc.add(AddFavorite(
+          Favorite(
             id: widget.id, 
             tipo: widget.type,
             recuerdos: List<String>()
@@ -119,17 +119,17 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
   Widget build(BuildContext context) {
     
     return Container(
-      width: (widget.size == Size.small ? 70 : 90),
-      height: (widget.size == Size.small ? 70 : 90),
+      width: (widget.size == FavSize.small ? 70 : 90),
+      height: (widget.size == FavSize.small ? 70 : 90),
       child: Stack(
         alignment: Alignment.center,
         overflow: Overflow.visible,
         children: [
           Positioned(
-            top: (widget.size == Size.small ? -8 : -12),
+            top: (widget.size == FavSize.small ? -8 : -12),
             child: Container( 
-              height: (widget.size == Size.small ? 50 : 60),
-              width: (widget.size == Size.small ? 45 : 55),
+              height: (widget.size == FavSize.small ? 50 : 60),
+              width: (widget.size == FavSize.small ? 45 : 55),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow( 
@@ -143,19 +143,19 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
             ),
           ),
           Positioned(
-            top: (widget.size == Size.small ? -15 : -25),
+            top: (widget.size == FavSize.small ? -15 : -25),
             child: Icon(
               Icons.bookmark, 
               color: Theme.of(context).cardColor, 
-              size: (widget.size == Size.small ? 70 : 90),
+              size: (widget.size == FavSize.small ? 70 : 90),
             )
           ),
-          BlocBuilder<FavoritosBloc, FavoritosState>(
+          BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
-              Favorito favorito; 
+              Favorite favorite; 
               
-              if (state is FavoritosSuccess && _autenticacionBloc.state is AutenticacionAuthenticated) {
-                favorito = state.favoritos.firstWhere(
+              if (state is FavoriteSuccess && _autenticacionBloc.state is AutenticacionAuthenticated) {
+                favorite = state.favorite.firstWhere(
                   (element) => element.id == widget.id
                             && element.tipo == widget.type,
                   orElse: () => null
@@ -171,11 +171,11 @@ class _FavButtonWidgetState extends State<FavButtonWidget> with TickerProviderSt
                     padding: EdgeInsets.zero,
                     splashColor: Colors.transparent,
                     icon: Icon(
-                      favorito != null ? Icons.favorite : Icons.favorite_border, 
-                      color: (favorito != null ? Theme.of(context).iconTheme.color : Colors.grey[400]),
-                      size: (widget.size == Size.small ? 45/1.5 : 40)
+                      favorite != null ? Icons.favorite : Icons.favorite_border, 
+                      color: (favorite != null ? Theme.of(context).iconTheme.color : Colors.grey[400]),
+                      size: (widget.size == FavSize.small ? 45/1.5 : 40)
                     ),
-                    onPressed: () => _changeFavorite(favorito)
+                    onPressed: () => _changeFavorite(favorite)
                   )
                 )
               );

@@ -19,7 +19,6 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
   RangeValues _categorias;
   RangeValues _selectedCategorias;
   StreamSubscription _filtrosListener;
-  Categoria _especial; 
 
   Map _activeFilters;
   Map<String, List> _filterData = {};
@@ -171,7 +170,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                       });
                     },
                   ),
-                  Container(
+                  /* Container(
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -199,7 +198,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                         ],
                       )
                     )
-                  )
+                  ) */
                 ]
               )
             ),
@@ -252,31 +251,31 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
               icon: Icon(Icons.check, color: Colors.white, size: 30), 
               onPressed: () { 
                 final Map<String,dynamic> arguments = ModalRoute.of(context).settings.arguments;
-                final _esp = _activeFilters['categorias'].contains(_especial);
+                /* final _esp = _activeFilters['categorias'].contains(_especial); */
 
                 _activeFilters['categorias'] = _filterData['categorias']
                   .where((element) => element.valor >= (_selectedCategorias ?? _categorias).start.round()
                                    && element.valor <= (_selectedCategorias ?? _categorias).end.round())
                   .toList();
 
-                if (_esp)
-                  _activeFilters['categorias'].add(_especial);
+                /* if (_esp)
+                  _activeFilters['categorias'].add(_especial); */
                 
                 _filtrosBloc.add(UpdateFiltrosActivos(_activeFilters));
 
                 _filtrosListener = _filtrosBloc.listen((_state) {
                   if (_state is FiltrosSuccess) {
-                    final bool favoritos = arguments['favoritos'];
+                    final bool favorites = arguments['favorites'];
                     final int estfiltrados = _state.activeFilters['filtrados']['establecimientos'];
-                    final int favfiltrados = _state.activeFilters['filtrados']['favoritos'];
+                    final int favfiltrados = _state.activeFilters['filtrados']['favorites'];
                     
-                    if (favoritos ?? false) {
+                    if (favorites ?? false) {
                       if (favfiltrados > 0)
                         SnackBarWidget.show(
                           arguments['context'], 
                           (favfiltrados == 1 
-                            ? 'Se filtró 1 favorito.' 
-                            : 'Se filtraron $favfiltrados favoritos.'
+                            ? 'Se filtró 1 favorite.' 
+                            : 'Se filtraron $favfiltrados favorites.'
                           ), 
                           SnackType.success,
                         );
@@ -330,7 +329,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
 
               if (state is FiltrosSuccess) {
                 _activeFilters = state.activeFilters;
-                final List<double> _values = (_activeFilters['categorias'] as List<Categoria>)
+                /* final List<double> _values = (_activeFilters['categorias'] as List<Categoria>)
                   .where((element) => element.id != 6)
                   .map((e) => e.valor.toDouble())
                   .toList();
@@ -341,7 +340,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                   _values.last
                 );
                 _filterData = state.filterData;
-                _especial = _filterData['categorias'].firstWhere((element) => element.id == 6);
+                _especial = _filterData['categorias'].firstWhere((element) => element.id == 6); */
                 
                 return _renderContent();
               }

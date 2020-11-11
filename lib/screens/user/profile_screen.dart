@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     icon: Icon(Icons.favorite_border), 
                     onPressed: () => Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => FavoritosScreen()
+                        builder: (context) => FavoritesScreen()
                       )
                     ),
                   ), */

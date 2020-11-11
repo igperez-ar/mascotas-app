@@ -181,7 +181,7 @@ class _PetShowScreenState extends State<PetShowScreen> {
                           Text(widget.name, 
                             style: Theme.of(context).textTheme.headline1,
                           ),
-                          Icon(Icons.favorite, size: 30,)
+                          Icon(Icons.favorite_border, size: 30,)
                         ],
                       ),
                     ),

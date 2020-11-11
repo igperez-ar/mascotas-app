@@ -32,7 +32,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
   bool _deleting = false;
   List<String> _toDelete = [];
 
-  FavoritosBloc _favoritoBloc;
+  FavoriteBloc _favoriteBloc;
   List<String> _images;
   final picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
@@ -52,7 +52,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     });
     super.initState();
 
-    _favoritoBloc = BlocProvider.of<FavoritosBloc>(context);
+    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
   }
 
   @override
@@ -76,7 +76,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Future _getCameraImage(Favorito favorito) async {
+  Future _getCameraImage(Favorite favorite) async {
     _changeDeleting(value: false);
 
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -88,7 +88,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
         _images.add(pickedFile.path);
       });
 
-      _favoritoBloc.add(UpdateRecuerdos(favorito, _images));
+      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients)
@@ -101,7 +101,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Future _getGalleryImage(Favorito favorito) async {
+  Future _getGalleryImage(Favorite favorite) async {
     _changeDeleting(value: false);
 
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -111,7 +111,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
         _images.add(pickedFile.path);
       });
 
-      _favoritoBloc.add(UpdateRecuerdos(favorito, _images));
+      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients)
@@ -124,7 +124,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Widget _getMemories(Favorito favorito) {
+  Widget _getMemories(Favorite favorite) {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +139,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
                     onPressed: () {
                       _images.removeWhere((element) => _toDelete.contains(element));
                       _changeDeleting(value: false);
-                      _favoritoBloc.add(UpdateRecuerdos(favorito, _images));
+                      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
                     }, 
                     child: Text('Confirmar'), 
                     textColor: Colors.teal[400]
@@ -251,25 +251,25 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
 
         if (state is AutenticacionAuthenticated) {
 
-          return BlocBuilder<FavoritosBloc, FavoritosState>(
+          return BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
 
-              if (state is FavoritosSuccess) {
-              final Favorito _favorito = state.favoritos.firstWhere(
+              if (state is FavoriteSuccess) {
+              final Favorite _favorite = state.favorite.firstWhere(
                 (element) => (element.id == widget.id 
                           && element.tipo == widget.type),
                 orElse: () => null
               );
-                if (_favorito != null) {
-                _images = List.from(_favorito.recuerdos);
+                if (_favorite != null) {
+                _images = List.from(_favorite.recuerdos);
                   return DetailSectionWidget(
                   title: 'Recuerdos',
                   actions: [
                     {'icon': Icons.camera_alt,
-                    'onPressed': () => _getCameraImage(_favorito),
+                    'onPressed': () => _getCameraImage(_favorite),
                     },
                     {'icon': Icons.photo_library,
-                    'onPressed': () => _getGalleryImage(_favorito),
+                    'onPressed': () => _getGalleryImage(_favorite),
                     },
                     _images.isNotEmpty 
                       ? {'icon': _deleting ? Icons.delete_forever : Icons.delete,
@@ -277,8 +277,8 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
                         }
                       : {}
                   ],
-                  child: ( _favorito.recuerdos.isNotEmpty 
-                    ? _getMemories(_favorito)
+                  child: ( _favorite.recuerdos.isNotEmpty 
+                    ? _getMemories(_favorite)
                     : _getEmptyMemories(context)
                   )
                 );

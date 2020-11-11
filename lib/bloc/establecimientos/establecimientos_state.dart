@@ -12,10 +12,10 @@ class EstablecimientosInitial extends EstablecimientosState {}
 class EstablecimientosFetching extends EstablecimientosState {}
 
 class EstablecimientosSuccess extends EstablecimientosState {
-  final List<Alojamiento> alojamientos;
-  final List<Gastronomico> gastronomicos;
-  final List<Alojamiento> filteredAlojamientos;
-  final List<Gastronomico> filteredGastronomicos;
+  final List alojamientos;
+  final List gastronomicos;
+  final List filteredAlojamientos;
+  final List filteredGastronomicos;
 
   const EstablecimientosSuccess({
     this.alojamientos,

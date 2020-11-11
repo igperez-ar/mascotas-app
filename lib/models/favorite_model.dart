@@ -3,17 +3,17 @@ import 'package:equatable/equatable.dart';
 
 import 'package:mascotas_app/models/models.dart';
 
-Favorito favoritoFromJson(String str) => Favorito.fromJson(json.decode(str));
+Favorite favoriteFromJson(String str) => Favorite.fromJson(json.decode(str));
 
-String favoritoToJson(Favorito data) => json.encode(data.toJson());
+String favoriteToJson(Favorite data) => json.encode(data.toJson());
 
 
-class Favorito extends Equatable{
+class Favorite extends Equatable{
   final int id;
   final Establecimiento tipo;
   final List<String> recuerdos;
 
-  Favorito({
+  Favorite({
     this.id,
     this.tipo,
     this.recuerdos
@@ -26,7 +26,7 @@ class Favorito extends Equatable{
     recuerdos
   ];
 
-  factory Favorito.fromJson(Map<String, dynamic> json) => Favorito(
+  factory Favorite.fromJson(Map<String, dynamic> json) => Favorite(
     id: json['id'],
     tipo: Establecimiento.values[json['tipo']],
     recuerdos: jsonDecode(json['recuerdos']).map<String>((e) => e.toString()).toList() 

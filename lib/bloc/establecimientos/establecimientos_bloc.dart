@@ -11,7 +11,7 @@ part 'establecimientos_event.dart';
 part 'establecimientos_state.dart';
 
 class EstablecimientosBloc extends Bloc<EstablecimientosEvent, EstablecimientosState> {
-  final EstablecimientosRepository repository;
+  final repository;
 
   EstablecimientosBloc({@required this.repository}) : super(EstablecimientosInitial());
 
@@ -30,16 +30,16 @@ class EstablecimientosBloc extends Bloc<EstablecimientosEvent, EstablecimientosS
     yield EstablecimientosFetching();
 
     try {
-      final List<Alojamiento> alojamientos = await repository.fetchAlojamientos();
+      /* final List<Alojamiento> alojamientos = await repository.fetchAlojamientos();
       final List<Gastronomico> gastronomicos = await repository.fetchGastronomicos();
       final List<Alojamiento> filteredAlojamientos = alojamientos;
-      final List<Gastronomico> filteredGastronomicos = gastronomicos;
+      final List<Gastronomico> filteredGastronomicos = gastronomicos; */
         
       yield EstablecimientosSuccess(
-        alojamientos: alojamientos,
-        gastronomicos: gastronomicos,
-        filteredAlojamientos: filteredAlojamientos,
-        filteredGastronomicos: filteredGastronomicos,
+        alojamientos: [],
+        gastronomicos: [],
+        filteredAlojamientos: [],
+        filteredGastronomicos: [],
       );
     } catch (e) {
       print(e);
@@ -56,8 +56,8 @@ class EstablecimientosBloc extends Bloc<EstablecimientosEvent, EstablecimientosS
       yield EstablecimientosSuccess(
         alojamientos: successState.alojamientos,
         gastronomicos: successState.gastronomicos,
-        filteredAlojamientos: event.newFilteredAlojamientos,
-        filteredGastronomicos: event.newFilteredGastronomicos
+        filteredAlojamientos: [],
+        filteredGastronomicos: [],
       );
     }
   }

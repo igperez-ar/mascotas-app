@@ -12,17 +12,17 @@ class FetchEstablecimientos extends EstablecimientosEvent {
 }
 
 class UpdateFilteredEstablecimientos extends EstablecimientosEvent {
-  final List<Alojamiento> newFilteredAlojamientos;
-  final List<Gastronomico> newFilteredGastronomicos;
+  /* final List<Alojamiento> newFilteredAlojamientos;
+  final List<Gastronomico> newFilteredGastronomicos; */
 
   const UpdateFilteredEstablecimientos(
-    this.newFilteredAlojamientos,
-    this.newFilteredGastronomicos
+    /* this.newFilteredAlojamientos,
+    this.newFilteredGastronomicos */
   );
 
   @override
   List<Object> get props => [
-    this.newFilteredAlojamientos,
-    this.newFilteredGastronomicos
+    /* this.newFilteredAlojamientos,
+    this.newFilteredGastronomicos */
   ];
 }

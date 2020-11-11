@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
@@ -18,45 +19,33 @@ class _AlertsScreenState extends State<AlertsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Alertas', 
+        title: Text("Alertas",
           style: TextStyle(
             fontSize: 24,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600
           ),
         ),
-        elevation: 0,
-        actions: <Widget>[
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.white, size: 30.0,), 
-                onPressed: () => Navigator.pushNamed(
-                  context, '/filtros', 
-                  arguments: {
-                    'context': context,
-                    'favoritos': true
-                  }
-                ),
-              );
-            }
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, size: 30,),
+            onPressed: () => Navigator.push(context,
+              MaterialPageRoute(
+                builder: (context) => CreateAlertScreen()
+              )
+            ),
           ),
           IconButton(
-            icon: Icon(showMap ? Icons.format_list_bulleted : Icons.map, size: 30.0,), 
-            onPressed: () { 
-              setState(() {
-                showMap = !showMap;
-              });
-            } 
+            icon: Icon(showMap ? Icons.format_list_bulleted : Icons.map, size: 25,),
+            onPressed: () => setState(() { showMap = !showMap; })
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list, size: 30,), 
+            onPressed: () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
           ),
         ],
       ),
-      /* floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red[300],
-        child: Icon(Icons.add, size: 40, color: Colors.white),
-          onPressed: () {}
-      ), */
-      body: BlocBuilder<EstablecimientosBloc, EstablecimientosState>(
-        builder: (context, estState) {
+      body: Builder(
+        builder: (context) {
 
           /* if (estState is EstablecimientosFailure) {
             return EmptyWidget(
@@ -68,7 +57,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
           /* if (estState is EstablecimientosSuccess) { */
             /* if (EMPTY) {
               return EmptyWidget(
-                title: 'No se encontraron favoritos para los filtros seleccionados.',
+                title: 'No se encontraron favorites para los filtros seleccionados.',
                 uri: 'assets/images/undraw_taken.svg',
               );
             } */

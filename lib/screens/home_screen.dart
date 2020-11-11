@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  EstablecimientosBloc _establecimientoBloc;
-  FavoritosBloc _favoritoBloc;
+  /* EstablecimientosBloc _establecimientoBloc;
+  FavoriteBloc _favoriteBloc; */
   Position userPosition;
 
   Future<String> _getDistance(double lat, double lng) async {
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return distance;
   }
 
-  Widget _getCardList(List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos) {
+  /* Widget _getCardList(List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos) {
 
     return ListView.builder(
       padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -74,14 +75,64 @@ class _HomeScreenState extends State<HomeScreen> {
         ); 
       },
     );
+  } */
+  Widget _buildCarousel() {
+
+    return CarouselSlider(
+        items: [
+          Container(
+            height: 45,
+            color: Colors.red
+          ),
+          Container(
+            height: 45,
+            color: Colors.blue
+          ),
+          Container(
+            height: 45,
+            color: Colors.green
+          ),
+        ],/* widget.cards.map((e) => Padding(
+            padding: EdgeInsets.only(bottom: 15),
+            child: e,
+          ) 
+        ).toList(), */
+        options: CarouselOptions(
+          height: 210,
+          autoPlay: true,
+          enlargeCenterPage: true,
+          viewportFraction: 0.8,
+          initialPage: 0
+        ),
+    );
+  }
+
+  Widget _buildCategory(String title, IconData icon) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            height: 50,
+            width: 50,
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.red[300],
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.white)
+          ),
+          Text(title)
+        ],
+      )
+    );
   }
 
   @override 
   void initState() {
     super.initState();
 
-    _establecimientoBloc = BlocProvider.of<EstablecimientosBloc>(context);
-    _favoritoBloc = BlocProvider.of<FavoritosBloc>(context);
+    /* _establecimientoBloc = BlocProvider.of<EstablecimientosBloc>(context);
+    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context); */
   }
 
   @override
@@ -109,34 +160,52 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         children: [
-          /* Container(
-            height: 200,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: 35, left: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              image: DecorationImage(
-                image: NetworkImage('https://source.unsplash.com/IFxjDdqK_0U/900x400'),
-                fit: BoxFit.cover
-              )
-            ),
-            child: Column(
-              children: [
-                Text('Tu Mejor', 
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32,
+          SizedBox(height: 15),
+          DetailSectionWidget(
+            title: "Destacados", 
+            child: _buildCarousel()
+          ),
+          SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildCategory(
+                "Popular",
+                Icons.add,
+              ),
+              _buildCategory(
+                "Tiendas",
+                Icons.add,
+              ),
+              _buildCategory(
+                "Belleza",
+                Icons.add,
+              ),
+              _buildCategory(
+                "Adopción",
+                Icons.add,
+              ),
+            ],
+          ),
+          SizedBox(height: 40),
+          DetailSectionWidget(
+            title: "Cerca de tu ubicación", 
+            child: Container(
+              height: 320,
+              child: ListView(
+                padding: EdgeInsets.only(bottom: 10),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  AlertWidget(
+                    compact: true,
                   ),
-                ),
-                Text('Amigo', 
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32,
+                  AlertWidget(
+                    compact: true,
                   ),
-                ),
-              ],
-            ),
-          ) */
+                ],
+              ),
+            )
+          )
         ],
       )
       
@@ -146,8 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _establecimientoBloc.add(FetchEstablecimientos());
           }
 
-          if (_favoritoBloc.state is FavoritosInitial) {
-            _favoritoBloc.add(FetchFavoritos());
+          if (_favoriteBloc.state is FavoritesInitial) {
+            _favoriteBloc.add(FetchFavorites());
           }
 
           if (state is EstablecimientosFailure) {

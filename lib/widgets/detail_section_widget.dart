@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class DetailSectionWidget extends StatelessWidget{
+
+  final String title;
+  final String subtitle;
+  final Widget child;
+  final List<Map<String, Object>> actions;
+
   const DetailSectionWidget({
     Key key, 
     @required this.title,
@@ -9,10 +15,6 @@ class DetailSectionWidget extends StatelessWidget{
     this.actions
   }): super(key: key);
 
-  final String title;
-  final String subtitle;
-  final Widget child;
-  final List<Map<String, Object>> actions;
 
   Widget _getAction(Map<String, Object> action) {
     if (action.isNotEmpty)
@@ -30,49 +32,44 @@ class DetailSectionWidget extends StatelessWidget{
     
     return Container();
   }
-
   
   @override
   Widget build(BuildContext context) {
-     return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(title, style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-                )
-              ),
-              ( actions != null 
-                ? Container(
-                  constraints: BoxConstraints(maxHeight: 26),
-                  child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: actions.map((action) => _getAction(action)).toList()
-                    )
-                )
-                : Container()
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(title, style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 20,
+                fontWeight: FontWeight.bold
               )
-            ]
-          ),
-          SizedBox(height: 10),
-          ( subtitle != null 
-            ? Text(subtitle)
-            : Container()
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, left: 0, bottom: 10),
-            child: child,
-          )
-        ]
-      )
+            ),
+            ( actions != null 
+              ? Container(
+                constraints: BoxConstraints(maxHeight: 26),
+                child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: actions.map((action) => _getAction(action)).toList()
+                  )
+              )
+              : Container()
+            )
+          ]
+        ),
+        SizedBox(height: 10),
+        ( subtitle != null 
+          ? Text(subtitle)
+          : Container()
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 15, left: 0, bottom: 10),
+          child: child,
+        )
+      ]
     );
   }
 }

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class SearchBar extends StatefulWidget {
 
   final List<String> words;
+  final String hintText;
 
   const SearchBar({
     Key key,
-    @required this.words
+    @required this.words,
+    this.hintText
   }) : super(key: key);
 
   @override
@@ -76,16 +78,16 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 5),
+      padding: EdgeInsets.only(left: 15, right: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
-            blurRadius: 3,
-            spreadRadius: 2, 
-            offset: Offset(2, 2),
+            blurRadius: 1,
+            spreadRadius: 1, 
+            offset: Offset(1, 1),
           )
         ],
       ),
@@ -96,13 +98,15 @@ class _SearchBarState extends State<SearchBar> {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              Icon(Icons.search, size: 30),
+              SizedBox(width: 10),
               Expanded(
                 child: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   controller: _textEditingController,
                   onEditingComplete: _processText,
                   decoration: InputDecoration(
-                    hintText: 'Encuentra tu mascota favorita',
+                    hintText: widget.hintText ?? 'Buscar...',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -111,10 +115,10 @@ class _SearchBarState extends State<SearchBar> {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.add_circle, color: Colors.teal[300], size: 30),
+              /* IconButton(
+                icon: Icon(Icons.add_circle, size: 30),
                 onPressed: _processText
-              ),
+              ), */
             ]
           ),
           Visibility(

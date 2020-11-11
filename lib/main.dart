@@ -39,20 +39,20 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
+        /* BlocProvider(
           create: (context) => EstablecimientosBloc(
             repository: EstablecimientosRepository()
           ),
-        ),
+        ), */
         BlocProvider(
-          create: (context) => FavoritosBloc(),
+          create: (context) => FavoriteBloc(),
         ),
-        BlocProvider(
+        /* BlocProvider(
           create: (context) => FiltrosBloc(
             establecimientosBloc: BlocProvider.of<EstablecimientosBloc>(context),
-            favoritosBloc: BlocProvider.of<FavoritosBloc>(context)
+            favoriteBloc: BlocProvider.of<FavoriteBloc>(context)
           ),
-        ),
+        ), */
         BlocProvider(
           create: (context) => ConfiguracionBloc(),
         ),

@@ -19,8 +19,8 @@ El siguiente conjunto de funcionalidades son las mínimas requeridas para la apr
   - Ficha del gastronómico
   - Obtención de los datos mediante [API GraphQL](https://pub.dev/packages/graphql_flutter)
   
-- **Favoritos**
-  - Permitir al usuario poder *guardar* como favoritos tanto alojamientos como gastronómicos
+- **Favorites**
+  - Permitir al usuario poder *guardar* como favorites tanto alojamientos como gastronómicos
   - Listado
   - Mapa
   - Filtrado por nombre

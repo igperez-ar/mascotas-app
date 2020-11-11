@@ -15,11 +15,11 @@ class FiltrosScreen extends StatefulWidget {
 }
 
 class _FiltrosScreenState extends State<FiltrosScreen> {
-  FiltrosBloc _filtrosBloc;
+  /* FiltrosBloc _filtrosBloc; */
   RangeValues _categorias;
   RangeValues _selectedCategorias;
   StreamSubscription _filtrosListener;
-  Categoria _especial; 
+  Category _especial; 
 
   Map _activeFilters;
   Map<String, List> _filterData = {};
@@ -28,7 +28,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
   @override 
   void initState() {
     super.initState();
-    _filtrosBloc = BlocProvider.of<FiltrosBloc>(context);
+    /* _filtrosBloc = BlocProvider.of<FiltrosBloc>(context); */
   }
 
   @override 
@@ -42,7 +42,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
   List<Widget> _getChipsWidgets(items) {
     return items.map<Widget>((item) => ChipWidget(
       pressed: _activeFilters['localidades'].contains(item), 
-      title: item.nombre, 
+      title: item.nombre,
       onPress: (bool pressed) {
           setState(() {
             if (!pressed) {
@@ -77,7 +77,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
             ],
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 50),
+            margin: EdgeInsets.only(bottom: 45, top: 5),
             child: _widget
           )
         ],
@@ -86,22 +86,20 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
   }
 
   Widget _section(String title) {
-    return (
-      Container(
-        margin: EdgeInsets.only(bottom: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(title.toUpperCase(), style: TextStyle(
-                color: Theme.of(context).textTheme.headline2.color,
-                fontWeight: FontWeight.bold,
-                fontSize: 21
-              )
-            ),
-            Divider(thickness: 1.5, height: 15, color: Colors.grey[400],),
-          ],
-        )
-      )
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(title.toUpperCase(), style: TextStyle(
+              color: Theme.of(context).textTheme.headline2.color,
+              fontWeight: FontWeight.bold,
+              fontSize: 21
+            )
+          ),
+          Divider(thickness: 1.5, height: 15, color: Colors.grey[400],),
+        ],
+      ),
     );
   }
 
@@ -155,7 +153,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                     ],
                   ),
                 ],
-              )
+              ),
             ),
             _filter(
               Icons.access_time,
@@ -220,7 +218,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                     ],
                   ),
                 ],
-              )
+              ),
             ),
             _filter(
               Icons.assessment,
@@ -231,19 +229,19 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                   Row(
                     children: [
                       Radio(activeColor: Colors.red[200],value: true, groupValue: true, onChanged: (value) {}),
-                      Text('Perros'),
+                      Text('Amigable'),
                     ],
                   ),
                   Row(
                     children: [
                       Radio(activeColor: Colors.red[200],value: false, groupValue: true, onChanged: (value) {}),
-                      Text('Gatos'),
+                      Text('Enérgico'),
                     ],
                   ),
                   Row(
                     children: [
                       Radio(activeColor: Colors.red[200],value: false, groupValue: true, onChanged: (value) {}),
-                      Text('Otros'),
+                      Text('Tranquilo'),
                     ],
                   ),
                 ],
@@ -321,11 +319,11 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                           ),
                           Text(_especial.nombre)
                         ],
-                      )
-                    )
-                  )
-                ]
-              )
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             _filter(
               'Clasificación',
@@ -359,8 +357,8 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
   @override
   Widget build(BuildContext context) {
     
-    return BlocBuilder<FiltrosBloc, FiltrosState>(
-      builder: (context, state) {
+    /* return BlocBuilder<FiltrosBloc, FiltrosState>(
+      builder: (context, state) { */
 
         return Scaffold(
           appBar: AppBar(
@@ -373,8 +371,9 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
             centerTitle: true,
             leading: IconButton(
               padding: EdgeInsets.only(left:10),
-              icon: Icon(Icons.check, color: Colors.white, size: 30), 
-              onPressed: () { 
+              icon: Icon(Icons.check, color: Colors.white, size: 30),
+              onPressed: () {}, 
+              /* onPressed: () { 
                 final Map<String,dynamic> arguments = ModalRoute.of(context).settings.arguments;
                 final _esp = _activeFilters['categorias'].contains(_especial);
 
@@ -390,17 +389,17 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
 
                 _filtrosListener = _filtrosBloc.listen((_state) {
                   if (_state is FiltrosSuccess) {
-                    final bool favoritos = arguments['favoritos'];
+                    final bool favorites = arguments['favorites'];
                     final int estfiltrados = _state.activeFilters['filtrados']['establecimientos'];
-                    final int favfiltrados = _state.activeFilters['filtrados']['favoritos'];
+                    final int favfiltrados = _state.activeFilters['filtrados']['favorites'];
                     
-                    if (favoritos ?? false) {
+                    if (favorites ?? false) {
                       if (favfiltrados > 0)
                         SnackBarWidget.show(
                           arguments['context'], 
                           (favfiltrados == 1 
-                            ? 'Se filtró 1 favorito.' 
-                            : 'Se filtraron $favfiltrados favoritos.'
+                            ? 'Se filtró 1 favorite.' 
+                            : 'Se filtraron $favfiltrados favorites.'
                           ), 
                           SnackType.success,
                         );
@@ -423,7 +422,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                     Navigator.pop(context);
                   } 
                 });
-              }
+              } */
             ),
             actions: <Widget>[
               FlatButton(
@@ -434,7 +433,7 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                   textAlign: TextAlign.center,
                 ),
                 onPressed: () {
-                  _filtrosBloc.add(ResetFiltros());
+                  /* _filtrosBloc.add(ResetFiltros()); */
                   final Map<String,dynamic> arguments = ModalRoute.of(context).settings.arguments;
                   Scaffold.of(arguments['context']).hideCurrentSnackBar();
                   Navigator.pop(context);
@@ -442,7 +441,8 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
               ),
             ],
           ),
-          body: Builder( 
+          body: _renderContent()
+          /* Builder( 
             builder: (context) {
               
               if (state is FiltrosFailure) {
@@ -474,9 +474,9 @@ class _FiltrosScreenState extends State<FiltrosScreen> {
                 child: CircularProgressIndicator()
               ); 
             }
-          )
+          ) */
         );
-      }
-    );
+      /* }
+    ); */
   }
 }

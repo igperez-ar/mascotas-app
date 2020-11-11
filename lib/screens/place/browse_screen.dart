@@ -16,12 +16,12 @@ class _PlacesScreenState extends State<PlacesScreen> {
   int filtered;
   bool showMap = false;
 
-  List<SmallCard> _getFavoritos(
-    List<Favorito> favoritos, List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos
+  /* List<SmallCard> _getFavorites(
+    List<Favorite> favorites, List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos
   ) {
     final List<SmallCard> _children = [];
 
-    for (var item in favoritos) {
+    for (var item in favorites) {
       var establecimiento;
 
       if (item.tipo == Establecimiento.alojamiento) {
@@ -47,20 +47,27 @@ class _PlacesScreenState extends State<PlacesScreen> {
     }
 
     return _children;
-  }
+  } */
 
-  Widget _getCard(String image, String title, String address) {
+  Widget _getCard(String image, String title, String address, {int stars, String type}) {
     double _width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      /* onTap: () => Navigator.push(context,
+      onTap: () => Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) => EstablecimientoShowScreen(
-            type: null,
-            establecimiento: null
+          builder: (context) => PlaceShowScreen(
+            place: Place(
+              id: 1,
+              name: "VetSur",
+              image: "https://source.unsplash.com/zhYy10qCzdw/1200x900", 
+              address: "Hernando de Magallanes 1682",
+              type: PlaceType.vet,
+              lat: -54.807243,
+              lng: -68.352315,
+            )
           )
         )
-      ), */
+      ),
       child: Container(
         margin: EdgeInsets.only(top:20),
         decoration: BoxDecoration(
@@ -112,7 +119,31 @@ class _PlacesScreenState extends State<PlacesScreen> {
                       type: widget.type,
                     )
                   ), */
-                  /* _getWidget() */
+                  ( type != null 
+                    ? Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(top:10, left:10),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 5,
+                                spreadRadius: 2, 
+                                offset: Offset(2, 2),
+                              )
+                            ]
+                          ),
+                          child: Text(type,
+                            style: Theme.of(context).accentTextTheme.headline1
+                          ),
+                        )
+                      )
+                    : null
+                  )
                 ]
               )
             ),
@@ -140,10 +171,10 @@ class _PlacesScreenState extends State<PlacesScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        /* ( widget.type == Establecimiento.alojamiento ?
-                            CategoryWidget(count: widget.establecimiento.categoria.valor)
+                        ( stars != null 
+                          ? CategoryWidget(count: stars)
                           : Container()
-                        ), */
+                        ),
                         Row(
                           children: <Widget>[
                             Icon(Icons.location_on, color: Theme.of(context).iconTheme.color),
@@ -186,7 +217,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
                   context, '/filtros', 
                   arguments: {
                     'context': context,
-                    'favoritos': true
+                    'favorites': true
                   }
                 ),
               );
@@ -202,8 +233,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
           )
         ],
       ),
-      body: BlocBuilder<EstablecimientosBloc, EstablecimientosState>(
-        builder: (context, estState) {
+      body: Builder(
+        builder: (context) {
 
             /* if (Failure) {
               return EmptyWidget(
@@ -219,7 +250,39 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 return ListView(
                   padding: EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 5),
                   children: [
-                    /* _getCard('image', 'title', address) */
+                    _getCard(
+                      'https://source.unsplash.com/zhYy10qCzdw/1200x900', 
+                      'VetSur', 
+                      'Hernando de Magallanes 1682',
+                      stars: 4,
+                      type: 'Veterinaria' 
+                    ),
+                    _getCard(
+                      'https://source.unsplash.com/HjzL2rJyGW4/1200x600', 
+                      'PetShop', 
+                      'Perón Sur 37',
+                      stars: 3,
+                      type: 'Tienda de mascotas' 
+                    ),
+                    _getCard(
+                      'https://source.unsplash.com/D_4R9CcYZOk/1200x600', 
+                      'GreenPet', 
+                      'Gdor. Paz 1002',
+                      stars: 3,
+                      type: 'Tienda de mascotas' 
+                    ),
+                    /* _getCard(
+                      'https://www.piensosplus.es/blog/wp-content/uploads/2018/06/PIENSOS-PLUS-Riesgos-los-comederos-comunitarios-para-perros.jpg', 
+                      'Comedero Nro. 3', 
+                      'Fuegia Básquet 542',
+                      type: 'Comedero' 
+                    ),
+                    _getCard(
+                      'https://sanluispotosi.quadratin.com.mx/www/wp-content/uploads/2019/03/perro-callejero-2-e1460719953370-1160x700.jpg', 
+                      'Comedero Nro. 4', 
+                      'San Martín 124',
+                      type: 'Comedero' 
+                    ), */
                   ],
                 );
               } else {
