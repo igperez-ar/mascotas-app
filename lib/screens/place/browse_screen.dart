@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/queries/query_kind.dart';
 import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 import 'package:mascotas_app/models/models.dart';
@@ -246,6 +248,19 @@ class _PlacesScreenState extends State<PlacesScreen> {
             /* if (Success) { */
                     
               if (!showMap) {
+
+                return Query(
+                  options: QueryOptions(
+                    documentNode: gql(QueryKind.getAll),
+                  ),
+                  builder: (QueryResult result, {VoidCallback refetch, FetchMore fetchMore}) {
+                    if (result.hasException) {
+                      return Text(result.exception.toString());
+                    }
+
+                    print(result);
+                  }
+                );
 
                 return ListView(
                   padding: EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 5),

@@ -3,10 +3,10 @@ import 'package:graphql/client.dart';
 
 class BaseProvider {
 
-  static final String url = 'graphql-turismo.herokuapp.com/v1/graphql';
+  static final String url = '127.0.0.1:8000/graphql';
 
   static final HttpLink httpLink = HttpLink(
-     uri: 'https://$url',
+     uri: 'http://$url',
    );
 
   static final WebSocketLink webSocketLink = WebSocketLink(
