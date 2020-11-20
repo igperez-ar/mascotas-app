@@ -31,15 +31,28 @@ class UsuarioProvider {
     return Usuario.fromJson(data.first);
   }
 
-  Future<Usuario> addUsuario(String nombre, String username, String password, String email) async {
+  Future<dynamic> authenticate(String email, String password) async {
+    final result = await _graphQLClient.mutate(
+      MutationOptions(
+        documentNode: gql(QueryUsuario.authenticate),
+        variables: {
+          'email': email,
+          'password': password,
+        },
+      )
+    );
+    
+    return result.data['tokenAuth'];
+  }
+
+  Future<Usuario> addUsuario(String email, String password, String name) async {
     final result = await _graphQLClient.mutate(
       MutationOptions(
         documentNode: gql(QueryUsuario.addUsuario),
         variables: {
-          'nombre': nombre,
-          'username': username,
-          'password': password,
           'email': email,
+          'password': password,
+          'name': name
         }
       )
     );
@@ -52,17 +65,15 @@ class UsuarioProvider {
     return Usuario.fromJson(data.first);
   }
 
-  Future<Usuario> updateUsuario(String username, Usuario newUser) async {
+  Future<Usuario> updateUsuario(String email, Usuario newUser) async {
     final result = await _graphQLClient.mutate(
       MutationOptions(
         documentNode: gql(QueryUsuario.updateUsuario),
         variables: {
-          'oldUsername': username,
-          'nombre': newUser.nombre,
-          'foto': newUser.foto,
-          'descripcion': newUser.descripcion,
+          'oldEmail': email,
+          'name': newUser.name,
+          'image': newUser.image,
           'email': newUser.email,
-          'newUsername': newUser.username,
           'password': newUser.password,
         }
       )

@@ -21,7 +21,7 @@ class SignInForm extends StatefulWidget {
 
 class _SignInFormState extends State<SignInForm> {
 
-  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -34,10 +34,11 @@ class _SignInFormState extends State<SignInForm> {
       key: _formKey,
       child: BlocBuilder<AutenticacionBloc,AutenticacionState>(
         builder: (context, state) {
+          
           return Column(
             children: [
               InputValidatedWidget(
-                controller: _usernameController,
+                controller: _emailController,
                 hintText: 'Usuario',
                 icon: Icons.person,
               ),
@@ -53,7 +54,7 @@ class _SignInFormState extends State<SignInForm> {
                 onPressed: () {
                   if (state is! AutenticacionLoading && _formKey.currentState.validate()) {
                     _autenticationBloc.add(AutenticacionLoggedIn(
-                      username: _usernameController.text,
+                      email: _emailController.text,
                       password: _passwordController.text
                     ));
                     if (widget.onSubmit != null)

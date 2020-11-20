@@ -111,8 +111,11 @@ class _IngresoScreenState extends State<IngresoScreen> {
           autenticacionBloc: _autenticacionBloc,
           onSubmit: () {
             _autenticacionListener = _autenticacionBloc.listen((state) {
+              
               if (state is AutenticacionUnauthenticated) {
                 SnackBarWidget.show(context, state.error, SnackType.danger);
+              } else if (state is AutenticacionAuthenticated) {
+                Navigator.pushNamed(context, '/');
               }
             });
           },

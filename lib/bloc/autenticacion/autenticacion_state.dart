@@ -13,8 +13,9 @@ class AutenticacionLoading extends AutenticacionState {}
 
 class AutenticacionAuthenticated extends AutenticacionState {
   final Usuario usuario;
+  final String token;
 
-  const AutenticacionAuthenticated(this.usuario); 
+  const AutenticacionAuthenticated(this.usuario, this.token);
 
   @override
   List<Object> get props => [this.usuario];

@@ -26,7 +26,7 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     try {
       print('HydratedAutentication loaded!');
       final Usuario usuario = Usuario.fromJson(jsonDecode(json['Autenticacion']));
-      return AutenticacionAuthenticated(usuario);
+      return AutenticacionAuthenticated(usuario, null);
       
     } catch (_) {
       print(_);
@@ -38,7 +38,7 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
   Map<String,dynamic> toJson(AutenticacionState state) {
     if (state is AutenticacionAuthenticated) {
       print('HydratedAutentication saved!');
-      return {'Autenticacion': jsonEncode(state.usuario.toJson())};
+      return {'Autenticacion': jsonEncode(state.usuario)};
 
     } else {
       return null;
@@ -67,12 +67,11 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     yield AutenticacionLoading();
 
     try {
-      final Usuario usuario = await repository.getOne(event.username);
-        
-      if (usuario != null && usuario.password == event.password) {
-        print('Successful autentication! Welcome back ${event.username}');
-        yield AutenticacionAuthenticated(usuario);
+      final dynamic data = await repository.authenticate(event.email, event.password);
 
+      if (data != null) {
+        print('Successful autentication! Welcome back ${event.email}');
+        yield AutenticacionAuthenticated(data["usuario"], data["token"]);
       } else {
         yield AutenticacionUnauthenticated('Las datos ingresados son incorrectos.');
       }
@@ -97,13 +96,13 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     yield AutenticacionLoading();
 
     try {
-      final Usuario usuario = await repository.addUsuario(event.nombre, event.username, event.password, event.email);
+      final Usuario usuario = await repository.addUsuario(event.name, event.email, event.password);
 
-      if (usuario == null) { 
+      if (usuario == null) {
         throw Exception();
-      
+
       } else {
-        yield AutenticacionAuthenticated(usuario);
+        yield AutenticacionAuthenticated(usuario, null);
       }
 
     } catch (e) {
@@ -119,13 +118,13 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     yield AutenticacionLoading();
 
     try {
-      final Usuario usuario = await repository.updateUsuario(event.username, event.newUser);
+      final Usuario usuario = await repository.updateUsuario(event.email, event.newUser);
 
       if (usuario == null) { 
         throw Exception();
       
       } else {
-        yield AutenticacionAuthenticated(usuario);
+        yield AutenticacionAuthenticated(usuario, null);
       }
 
     } catch (e) {

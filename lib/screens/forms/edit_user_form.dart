@@ -24,11 +24,11 @@ class EditUserForm extends StatefulWidget {
 
 class _EditUserFormState extends State<EditUserForm> {
 
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  // TextEditingController _usernameController = TextEditingController();
+  // TextEditingController _descriptionController = TextEditingController();
+  // TextEditingController _passwordController = TextEditingController();
   String image;
   Usuario user;
   /* TextEditingController _password2Controller = TextEditingController();
@@ -44,7 +44,7 @@ class _EditUserFormState extends State<EditUserForm> {
     
     if (_autenticationBloc.state is AutenticacionAuthenticated) {
       user = (_autenticationBloc.state as AutenticacionAuthenticated).usuario;
-      image = user.foto;
+      image = user.image;
     } 
     /* _passwordController.addListener(() {
       if (!_showConfirm && _passwordController.text.isNotEmpty) {
@@ -109,16 +109,13 @@ class _EditUserFormState extends State<EditUserForm> {
     if (state is AutenticacionAuthenticated && _formKey.currentState.validate()) {
       Usuario oldUser = state.usuario;
       Usuario newUser = oldUser.copyWith(
-        nombre: _nameController.text,
-        descripcion: _descriptionController.text,
-        foto: image,
         email: _emailController.text,
-        username: _usernameController.text,
-        password: _passwordController.text
+        name: _nameController.text,
+        image: image,
       );
       
       _autenticationBloc.add(AutenticacionUpdate(
-        username: oldUser.username,
+        email: oldUser.email,
         newUser: newUser,
       ));
     }
@@ -170,41 +167,41 @@ class _EditUserFormState extends State<EditUserForm> {
               ),
               SizedBox(height: 10),
               InputValidatedWidget(
-                controller: _usernameController,
-                initialValue: user?.username,
+                controller: _emailController,
+                initialValue: user?.email,
                 hintText: 'Usuario',
                 icon: Icons.person,
               ),
               InputValidatedWidget(
                 controller: _nameController,
                 hintText: 'Nombre completo',
-                initialValue: user?.nombre,
+                initialValue: user?.name,
                 textCapitalization: TextCapitalization.words,
                 icon: Icons.person,
               ),
-              InputValidatedWidget(
-                controller: _descriptionController,
-                hintText: 'Descripción',
-                initialValue: user?.descripcion,
-                textCapitalization: TextCapitalization.sentences,
-                max: 100,
-                optional: true,
-                icon: Icons.description,
-              ),
-              InputValidatedWidget(
-                controller: _emailController,
-                hintText: 'Email',
-                initialValue: user?.email,
-                email: true,
-                icon: Icons.email,
-              ),
-              InputValidatedWidget(
-                controller: _passwordController,
-                hintText: 'Contraseña',
-                initialValue: user?.password,
-                password: true,
-                icon: Icons.lock,
-              ),
+              // InputValidatedWidget(
+              //   controller: _descriptionController,
+              //   hintText: 'Descripción',
+              //   initialValue: user?.descripcion,
+              //   textCapitalization: TextCapitalization.sentences,
+              //   max: 100,
+              //   optional: true,
+              //   icon: Icons.description,
+              // ),
+              // InputValidatedWidget(
+              //   controller: _emailController,
+              //   hintText: 'Email',
+              //   initialValue: user?.email,
+              //   email: true,
+              //   icon: Icons.email,
+              // ),
+              // InputValidatedWidget(
+              //   controller: _passwordController,
+              //   hintText: 'Contraseña',
+              //   initialValue: user?.password,
+              //   password: true,
+              //   icon: Icons.lock,
+              // ),
               /* Visibility(
                 visible: _showConfirm,
                 maintainAnimation: true,

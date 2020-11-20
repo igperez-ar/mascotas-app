@@ -5,46 +5,44 @@ abstract class AutenticacionEvent extends Equatable {
 }
 
 class AutenticacionLoggedIn extends AutenticacionEvent {
-  final String username;
+  final String email;
   final String password; 
 
   const AutenticacionLoggedIn({
-    this.username,
+    this.email,
     this.password
   });
 
   @override
-  List<Object> get props => [this.username, this.password];
+  List<Object> get props => [this.email, this.password];
 }
 
 class AutenticacionRegister extends AutenticacionEvent {
-  final String nombre;
-  final String username;
-  final String password;
+  final String name;
   final String email;
+  final String password;
 
   const AutenticacionRegister({
-    this.nombre,
-    this.username,
+    this.name,
     this.password,
     this.email
   });
 
   @override
-  List<Object> get props => [this.nombre, this.username, this.password, this.email];
+  List<Object> get props => [this.name, this.password, this.email];
 }
 
 class AutenticacionUpdate extends AutenticacionEvent {
-  final String username;
+  final String email;
   final Usuario newUser;
 
   const AutenticacionUpdate({
-    this.username,
+    this.email,
     this.newUser
   });
 
   @override
-  List<Object> get props => [this.username, this.newUser];
+  List<Object> get props => [this.email, this.newUser];
 }
 
 class AutenticacionLoggedOut extends AutenticacionEvent {

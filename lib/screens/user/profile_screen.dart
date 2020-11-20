@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Scaffold(
               appBar: AppBar(
                 elevation: 0,
-                title: Text(usuario.username, 
+                title: Text(usuario.email, 
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -150,11 +150,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: EdgeInsets.only(top: 30, bottom: 15),
                             child: ProfileImage(
-                              image: usuario.foto, 
+                              image: usuario.image, 
                               size: ProfileImageSize.big
                             ),
                           ),
-                          Text(usuario.nombre, 
+                          Text(usuario.name, 
                             style: TextStyle(
                               fontSize: 27,
                               color: Colors.white,
@@ -169,25 +169,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 70),
-                            child: (usuario.descripcion != null 
-                              ? Text(usuario.descripcion, 
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    shadows: [
-                                      Shadow(
-                                        color: Colors.black38,
-                                        blurRadius: 2,
-                                        offset: Offset(1.3, 1.3)
-                                      )
-                                    ]
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )
-                              : Container()
-                            )
-                          ),
+                          // Container(
+                          //   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 70),
+                          //   child: (usuario.descripcion != null 
+                          //     ? Text(usuario.descripcion, 
+                          //         style: TextStyle(
+                          //           color: Colors.white,
+                          //           shadows: [
+                          //             Shadow(
+                          //               color: Colors.black38,
+                          //               blurRadius: 2,
+                          //               offset: Offset(1.3, 1.3)
+                          //             )
+                          //           ]
+                          //         ),
+                          //         textAlign: TextAlign.center,
+                          //       )
+                          //     : Container()
+                          //   )
+                          // ),
                         ],
                       ),
                       SizedBox(height: 20),
