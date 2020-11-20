@@ -21,9 +21,8 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
 
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _password2Controller = TextEditingController();
   bool _showConfirm = false;
@@ -53,6 +52,12 @@ class _SignUpFormState extends State<SignUpForm> {
         builder: (context, state) {
           return Column(
             children: [
+               InputValidatedWidget(
+                controller: _nameController,
+                hintText: 'Nombre Completo',
+                icon: Icons.person
+              ),
+              SizedBox(height:20),
               InputValidatedWidget(
                 controller: _emailController,
                 hintText: 'Email',
@@ -99,10 +104,9 @@ class _SignUpFormState extends State<SignUpForm> {
                 onPressed: () {
                   if (state is! AutenticacionLoading && _formKey.currentState.validate()) {
                     _autenticationBloc.add(AutenticacionRegister(
-                      nombre: _nameController.text,
-                      username: _usernameController.text,
+                      name: _nameController.text,
+                      email: _emailController.text,
                       password: _passwordController.text,
-                      email: _emailController.text
                     ));
                     if (widget.onSubmit != null) 
                       widget.onSubmit();

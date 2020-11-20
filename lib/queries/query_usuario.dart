@@ -59,4 +59,37 @@ class QueryUsuario {
       }
     }
   """;
+
+  /* Queries de la api en django */
+  static String userRegister = """
+    mutation userRegister(\$email: String!, \$password: String!, \$firstName: String!, \$lastName: String!) {
+      userRegister(email: \$email,  password: \$email, firstName: \$firstName, lastName: \$lastName) {
+        user {
+          id
+          firstName
+          lastName
+          email
+          profilePicture
+        }
+      }
+    }
+  """;
+
+  static String authenticate = """ 
+    mutation authenticate(\$email: String!, \$password: String!) {
+      tokenAuth(email: \$email, password: \$password) {
+        payload
+        token
+        refreshExpiresIn    
+        user {
+          id 
+          email 
+          name
+          image
+        }
+      }
+    }
+  """;
+
+
 }

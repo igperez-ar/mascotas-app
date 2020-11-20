@@ -111,11 +111,11 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                     )
                   ), */
                   ProfileImage(
-                    image: calificacion.usuario.foto, 
+                    image: calificacion.usuario.image, 
                     size: ProfileImageSize.small
                   ),
                   SizedBox(width: 20),
-                  Text(calificacion.usuario.username, style: Theme.of(context).textTheme.headline4
+                  Text(calificacion.usuario.email, style: Theme.of(context).textTheme.headline4
                   )
                 ]
               ),

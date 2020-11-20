@@ -7,70 +7,52 @@ String usuarioToJson(Usuario data) => json.encode(data.toJson());
 
 class Usuario extends Equatable{
   final int id;
-  final String nombre;
-  final String descripcion;
   final String email;
-  final String foto;
-  final String username;
-  final String password;
+  final String name;
+  final String image;
+  String password;
 
   Usuario({
     this.id,
-    this.nombre,
-    this.descripcion,
     this.email,
-    this.foto,
-    this.username,
+    this.name,
+    this.image,
     this.password,
   });
 
   Usuario copyWith({
-    String nombre, 
-    String descripcion, 
     String email, 
-    String foto, 
-    String username, 
-    String password
+    String name,
+    String image, 
   }) {
     return Usuario(
       id: this.id, 
-      nombre: nombre ?? this.nombre, 
-      descripcion: descripcion ?? this.descripcion, 
       email: email ?? this.email, 
-      foto: foto ?? this.foto, 
-      username: username ?? this.username, 
-      password: password ?? this.password,
+      name: name ?? this.name, 
+      image: image ?? this.image,
+      password: password ?? ""
     );
   }
 
   @override
   List<Object> get props => [
     id,
-    nombre,
-    descripcion,
     email,
-    foto,
-    username,
-    password,
+    name,
+    image
   ];
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-    id: json['id'],
-    nombre: json['nombre'],
-    descripcion: json['descripcion'],
+    id: int.parse(json['id']),
     email: json['email'],
-    foto: json['foto'],
-    username: json['username'],
-    password: json['password'],
+    name: json['name'],
+    image: json['image'],
   );
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'nombre': nombre,
-    'descripcion': descripcion,
     'email': email,
-    'foto': foto,
-    'username': username,
-    'password': password,
+    'name': name,
+    'image': image,
   };
 }
