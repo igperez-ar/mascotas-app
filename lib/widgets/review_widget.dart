@@ -119,7 +119,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                   )
                 ]
               ),
-              (widget.own 
+              /* (widget.own 
                 ? Mutation(
                     options: MutationOptions(
                       documentNode: gql(QueryCalificacion.deleteCalificacion)
@@ -146,7 +146,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                     },
                   )
                 : Container()
-              ),
+              ), */
               /* Row(
                 children: <Widget>[
                   IconButton(

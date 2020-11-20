@@ -61,7 +61,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
       });
   }
 
-  Widget _getDestacables() {
+  /* Widget _getDestacables() {
     return Query(
       options: QueryOptions(
         documentNode: gql(QueryCalificacion.getDestacables)
@@ -120,7 +120,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
         );
       }
     );
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +229,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                       child: _getDestacables()
                     ), */
                     SizedBox(height: 20),
-                    Mutation(
+                    /* Mutation(
                       options: MutationOptions(
                         documentNode: gql(widget.update != null
                           ? QueryCalificacion.updateCalificacion
@@ -274,7 +274,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                           },
                         );
                       },
-                    )
+                    ) */
                   ],
                 )
               );
