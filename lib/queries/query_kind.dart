@@ -2,7 +2,7 @@ class QueryKind {
 
   static String getAll = """
     query getAll {
-      kind {
+      kinds {
         id
         name
       }
@@ -11,7 +11,7 @@ class QueryKind {
 
   static String getOne = """
     query getOne(\$kindId: Int!) {
-      kind(where: {kindId: {_eq: \$kindId}}) {
+      kind(id: \$kindId}}) {
         id
         name
     }

@@ -10,13 +10,11 @@ import 'package:mascotas_app/screens/screens.dart';
 
 class ScoreReviewWidget extends StatefulWidget {
 
-  final int id;
-  final Establecimiento type;
+  final int placeId;
 
   const ScoreReviewWidget({
     Key key,
-    @required this.id,
-    @required this.type
+    @required this.placeId,
   }) : super(key: key);
 
   @override
@@ -105,8 +103,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
               onPress: (item) => Navigator.push(context,
                 MaterialPageRoute(
                   builder: (context) => CalificacionShowScreen(
-                    id: widget.id,
-                    type: widget.type,
+                    placeId: widget.placeId,
                     selected: item,
                   )
                 )
@@ -117,8 +114,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
             onPressed: () => Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => CalificacionShowScreen(
-                  id: widget.id,
-                  type: widget.type
+                  placeId: widget.placeId,
                 )
               )
             ).then((_) => _updateState()),
@@ -151,8 +147,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
             onPressed: () => Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => CalificacionShowScreen(
-                  id: widget.id,
-                  type: widget.type,
+                  placeId: widget.placeId,
                   update: calificacion,
                 )
               )
@@ -194,12 +189,9 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(
-        documentNode: gql(widget.type == Establecimiento.alojamiento
-          ? QueryAlojamiento.getCalificaciones
-          : QueryGastronomico.getCalificaciones
-        ),
+        documentNode: gql(QueryPlace.getReviews),
         variables: {
-          "establecimientoId": widget.id
+          "placeId": widget.placeId
         }
       ), 
       builder: (QueryResult result, {VoidCallback refetch, FetchMore fetchMore}) {
@@ -216,7 +208,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
           );
         }
 
-        final List calificaciones = result.data['calificaciones'];
+        final List calificaciones = result.data['reviews'];
 
         if (calificaciones.isEmpty) {
           return Column(

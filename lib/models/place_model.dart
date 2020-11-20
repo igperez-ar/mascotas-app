@@ -6,15 +6,15 @@ Place placeFromJson(String str) => Place.fromJson(json.decode(str));
 
 String placeToJson(Place data) => json.encode(data.toJson());
 
-enum PlaceType {
+/* enum PlaceType {
   vet,
   petshop,
-}
+} */
 
 class Place extends Equatable{
   final int id;
   final String name;
-  final PlaceType type;
+  final String type;
   final String address;
   final String image;
   final Category category;
@@ -34,7 +34,7 @@ class Place extends Equatable{
 
   Place copyWith({
     String name, 
-    PlaceType type, 
+    String type, 
     String address, 
     String image, 
     Category category,
@@ -66,12 +66,12 @@ class Place extends Equatable{
   ];
 
   factory Place.fromJson(Map<String, dynamic> json) => Place(
-    id: json['id'],
+    id: int.parse(json['id']),
     name: json['name'],
     type: json['type'],
     address: json['address'],
     image: json['image'],
-    category: json['category'],
+    category: Category.fromJson(json['category']),
     lat: json['lat'],
     lng: json['lng'],
   );

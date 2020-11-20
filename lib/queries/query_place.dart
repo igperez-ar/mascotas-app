@@ -1,8 +1,8 @@
 class QueryPlace {
   
   static String getAll = """
-    {
-      place {
+    query getAll{
+      places {
         id
         name
         type
@@ -21,7 +21,7 @@ class QueryPlace {
 
   static String getReviews = """
     query getReviews(\$placeId: Int!) {
-      review(where: {place_id: {_eq: \$placeId}}) {
+      review(id: \$placeId}}) {
         id
         description
         score

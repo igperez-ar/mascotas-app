@@ -104,10 +104,13 @@ class CardAdoptWidget extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5),
-                  Text('$species de $age',
-                    style: TextStyle(
-                      color: Colors.grey[600]
-                    ),
+                  ( species != null && age != null
+                    ? Text('$species de $age',
+                        style: TextStyle(
+                          color: Colors.grey[600]
+                        ),
+                      )
+                    : Container()
                   )
                 ],
               )

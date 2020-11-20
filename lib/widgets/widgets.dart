@@ -21,3 +21,4 @@ export './drawer_widget.dart';
 export './alert_widget.dart';
 export './card_widget.dart';
 export './appbar_widget.dart';
+export './score_review_widget.dart';

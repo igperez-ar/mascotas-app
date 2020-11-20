@@ -39,8 +39,8 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
     }
   }
 
-  List<Widget> _getWidget() {
-    Widget _getChip(String title) => Container(
+  Widget _getChip() {
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Theme.of(context).accentColor,
@@ -55,7 +55,7 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
         ]
       ),
       child: Text(
-        title,
+        widget.place.type,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w600,
@@ -63,21 +63,6 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
         )
       ),
     );
-
-    /* if (widget.place.type == PlaceType.alojamiento) {
-      if (widget.place.clasificacion != null &&
-          widget.place.clasificacion != "")
-        return [_getChip(widget.place.clasificacion.nombre)];
-
-    } else {
-      if (widget.place.actividades.isNotEmpty) {
-        return widget.place.actividades.map<Widget>(
-          (actividad) => _getChip(actividad.nombre)
-        ).toList();
-      }
-    } */
-
-    return [];
   }
 
   Widget _checkItem(String title) {
@@ -115,47 +100,6 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
     );  
   }
 
-  /* Widget _getEspecialidades() {
-    double _width = MediaQuery.of(context).size.width;
-
-    return Container(
-      padding: EdgeInsets.only(bottom: 50),
-      child: Column(
-        children: [
-          Text(
-            "Especialidades".toUpperCase(),
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-              color: Colors.grey[600],
-              /* fontStyle: FontStyle.italic */
-            ),
-          ),
-          SizedBox(height: 15),
-          DashedContainer(
-            dashColor: Colors.grey[400], 
-            strokeWidth: 2,
-            dashedLength: 10,
-            blankLength: 10,
-            borderRadius: 20,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              width: _width,
-              child: Wrap(
-                runSpacing: 12,
-                spacing: 10,
-                children: 
-                  widget.place.especialidades.map<Widget>(
-                    (esp) => _checkItem(esp.nombre)
-                  ).toList()
-              ),
-            ),
-          )
-        ],
-      )
-    );
-  } */
-
   @override
   Widget build(BuildContext context) {   
     
@@ -174,74 +118,6 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
             children: <Widget>[ 
               Container( 
                 height: 400.0,
-                child: Stack(
-                  fit: StackFit.loose,
-                  children: <Widget>[
-                    /* Image.network(
-                      widget.place.foto != null ? 
-                        widget.place.foto 
-                        :"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU",
-                      fit: BoxFit.cover,
-                      height: 450,
-                      width: _width,
-                    ), */
-                    /* Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 2,
-                                  spreadRadius: 2,
-                                  offset: Offset(2, 2)
-                                )
-                              ]
-                            ),
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              icon: Icon(
-                                Icons.arrow_back, 
-                                color: Theme.of(context).textTheme.headline3.color, 
-                                size: 35
-                              ),
-                              onPressed: () => Navigator.pop(context)
-                            )
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 2,
-                                  spreadRadius: 2,
-                                  offset: Offset(2, 2)
-                                )
-                              ]
-                            ),
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              icon: Icon(
-                                Icons.share, 
-                                color: Theme.of(context).textTheme.headline3.color, 
-                                size: 30
-                              ),
-                              onPressed: () => Navigator.pop(context)
-                            )
-                          )
-                        ],
-                      ),
-                    ), */
-                  ],
-                ),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -269,11 +145,7 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
                         Container(
                           padding: EdgeInsets.only(top: 20, bottom: 20),
                           constraints: BoxConstraints(maxWidth: 280),
-                          child: Wrap(
-                            spacing: 5,
-                            runSpacing: 5,
-                            children: _getWidget()
-                          ),
+                          child: _getChip()
                         ),
                         /* SizedBox(
                           height: 60,
@@ -292,22 +164,15 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
                         style: Theme.of(context).textTheme.headline1,
                       ),
                     ),
-                    /* ( widget.type == place.alojamiento
-                      ? Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: CategoryWidget(count: widget.place.categoria.valor, 
-                            size: 30
-                          )
-                      )
-                      : Container()
-                    ), */
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: CategoryWidget(
+                        count: widget.place.category.value, 
+                        size: 30
+                      ),
+                    ),
                     Divider(thickness: 1.5, height: 10),
                     SizedBox(height: 40),
-                    /* ( widget.type == place.gastronomico &&
-                      widget.place.especialidades.isNotEmpty
-                      ? _getEspecialidades()
-                      : Container()
-                    ), */
                     Row(
                       children: <Widget>[
                         Icon(
@@ -338,8 +203,7 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
                     ),
                     SizedBox(height: 40),
                     /* ScoreReviewWidget(
-                      id: widget.place.id,
-                      type: widget.type,
+                      placeId: widget.place.id,
                     ), */
                     /* MemoriesWidget(
                       id: widget.place.id,

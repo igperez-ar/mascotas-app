@@ -6,13 +6,11 @@ import 'package:mascotas_app/screens/screens.dart';
 
 class SmallCard extends StatefulWidget{
 
-  final Establecimiento type;
-  final establecimiento;
+  final Place place;
 
   const SmallCard({
     Key key, 
-    @required this.type,
-    @required this.establecimiento,
+    @required this.place,
   }): super(key: key);
 
   @override
@@ -22,43 +20,28 @@ class SmallCard extends StatefulWidget{
 class _SmallCardState extends State<SmallCard> { 
 
   Widget _getWidget() {
-    if (widget.type == Establecimiento.alojamiento)
-      return Container(
-        margin: EdgeInsets.only(bottom:5),
-        child: Text(
-          widget.establecimiento.clasificacion.nombre, 
-          style: Theme.of(context).accentTextTheme.headline1,
-          maxLines: 1,
-        )
-      );
-                        
-    if (widget.establecimiento.actividades.isNotEmpty) {
-      var more = widget.establecimiento.actividades.length - 1;
-      return Container(
-        margin: EdgeInsets.only(bottom:5),
-        child: Text(
-          widget.establecimiento.actividades[0].nombre + (more > 0 ? '  |  +$more' : ''), 
-          style: Theme.of(context).accentTextTheme.headline1,
-          maxLines: 1,
-        )
-      );
-    }
 
-    return Container();
+    return Container(
+      margin: EdgeInsets.only(bottom:5),
+      child: Text(
+        widget.place.type, 
+        style: Theme.of(context).accentTextTheme.headline1,
+        maxLines: 1,
+      )
+    );
   }
   
   @override
   Widget build(BuildContext context) {
     
     return GestureDetector(
-      /* onTap: () => Navigator.push(context,
+      onTap: () => Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) => EstablecimientoShowScreen(
-            type: widget.type,
-            establecimiento: widget.establecimiento
+          builder: (context) => PlaceShowScreen(
+            place: widget.place
           )
         )
-      ), */
+      ),
       child: Container(
         height: 150,
         margin: EdgeInsets.only(top: 15),
@@ -86,7 +69,7 @@ class _SmallCardState extends State<SmallCard> {
                     child: Container(
                       color: Colors.white,
                       child: Image.network(
-                        widget.establecimiento.foto != null ? widget.establecimiento.foto : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
+                        widget.place.image != null ? widget.place.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
                         filterQuality: FilterQuality.low,
                         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
                           if (loadingProgress == null)
@@ -99,14 +82,14 @@ class _SmallCardState extends State<SmallCard> {
                             ),
                           );
                         },
-                        fit: widget.establecimiento.foto != null ? BoxFit.cover : BoxFit.contain
+                        fit: widget.place.image != null ? BoxFit.cover : BoxFit.contain
                       ),
                     ),
                   ),
                   /* Container(
                     alignment: Alignment(-1, -1),
                     child: FavButtonWidget(
-                      id: widget.establecimiento.id,
+                      id: widget.place.id,
                       type: widget.type,
                     )
                   ), */
@@ -123,14 +106,14 @@ class _SmallCardState extends State<SmallCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       _getWidget(),
-                      Text(widget.establecimiento.nombre, 
+                      Text(widget.place.name, 
                         maxLines: 3, 
                         overflow: TextOverflow.ellipsis, 
                         style: Theme.of(context).textTheme.headline2
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 5),
-                        child: Text(widget.establecimiento.domicilio ?? 'Sin dirección', 
+                        child: Text(widget.place.address ?? 'Sin dirección', 
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.headline3
@@ -138,13 +121,13 @@ class _SmallCardState extends State<SmallCard> {
                       ),
                     ],
                   ),
-                  ( widget.type == Establecimiento.alojamiento ?
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: CategoryWidget(count: widget.establecimiento.categoria.valor)
-                      )
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: CategoryWidget(count: widget.place.category.value)
+                  )
+                  /* ( widget.type == place.alojamiento ?
                     : Container() 
-                  ) 
+                  )  */
                 ],
               ),
             )

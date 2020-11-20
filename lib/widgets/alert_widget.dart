@@ -367,7 +367,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   ),
                 ],
               ),
-              Row(
+              /* Row(
                 children: [
                   Transform(
                     alignment: Alignment.center,
@@ -390,7 +390,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   ),
                   SizedBox(width: 10),
                 ],
-              )
+              ) */
             ],
           ),
           SizedBox(height: 10),

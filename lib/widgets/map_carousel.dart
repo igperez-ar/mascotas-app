@@ -32,11 +32,8 @@ class MapCarouselState extends State<MapCarousel> {
 
       Marker marker = Marker(
         markerId: markerId,
-        icon: BitmapDescriptor.defaultMarkerWithHue(item.type == Establecimiento.alojamiento
-          ? BitmapDescriptor.hueOrange
-          : BitmapDescriptor.hueAzure
-        ),
-        position: LatLng(item.establecimiento.lat, item.establecimiento.lng),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+        position: LatLng(item.place.lat, item.place.lng),
         onTap: () {
           final page = widget.cards.indexOf(item);
           carouselController.jumpToPage(page);
@@ -77,7 +74,7 @@ class MapCarouselState extends State<MapCarousel> {
           viewportFraction: 0.8,
           onPageChanged: (index, reason) {
             if (reason == CarouselPageChangedReason.manual) {
-              final item = widget.cards[index].establecimiento;
+              final item = widget.cards[index].place;
               mapController.animateCamera(
                 CameraUpdate.newLatLngZoom(LatLng(item.lat, item.lng), 17.0)
               );
@@ -122,7 +119,10 @@ class MapCarouselState extends State<MapCarousel> {
             zoom: 15.0
           ),
         ),
-        _buildCarousel(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: _buildCarousel()
+        ),
       ]
     );
   }

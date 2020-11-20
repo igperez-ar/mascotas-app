@@ -4,25 +4,23 @@ import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/screens/screens.dart';
 
 
-class DefaultCard extends StatefulWidget{
+class CardWidget extends StatefulWidget{
   
-  final establecimiento;
-  final Establecimiento type;
+  final Place place;
   final Future<String> distance;
 
-  const DefaultCard({
+  const CardWidget({
     Key key, 
-    @required this.establecimiento,
-    @required this.type,
+    @required this.place,
     this.distance
   }): super(key: key);
 
   @override
-  _DefaultCardState createState() => _DefaultCardState();
+  _CardWidgetState createState() => _CardWidgetState();
 }
 
 
-class _DefaultCardState extends State<DefaultCard> {
+class _CardWidgetState extends State<CardWidget> {
   bool liked;
   String distance;
 
@@ -42,8 +40,9 @@ class _DefaultCardState extends State<DefaultCard> {
       });
   }
 
-  Widget _getWidget() {
-    Widget _getChip(child) => Container(
+  Widget _getChip() {
+    
+    return Container(
       alignment: Alignment.topLeft,
       margin: EdgeInsets.only(top:10, left:10),
       child: Container(
@@ -60,60 +59,29 @@ class _DefaultCardState extends State<DefaultCard> {
             )
           ]
         ),
-        child: child,
+        child: Text(widget.place.type,
+          style: Theme.of(context).accentTextTheme.headline1
+        ),
       )
     );
-
-    if (widget.type == Establecimiento.alojamiento)
-      return _getChip(
-        Text(
-          widget.establecimiento.clasificacion.nombre,
-          style: Theme.of(context).accentTextTheme.headline1
-        )
-      );
-    
-    if (widget.establecimiento.actividades.isNotEmpty) {
-      var more = widget.establecimiento.actividades.length;
-      
-      if (more > 1) {
-        more = more - 2;
-        return _getChip( 
-          Text(
-          (widget.establecimiento.actividades[0].nombre + ', ' + 
-            widget.establecimiento.actividades[1].nombre + (more > 0 ? '  |  +$more' : '')),
-            style: Theme.of(context).accentTextTheme.headline1
-          )
-        );
-      }
-      
-      return _getChip( 
-        Text(
-          widget.establecimiento.actividades[0].nombre,
-          style: Theme.of(context).accentTextTheme.headline1
-        )
-      );
-    }
-
-    return Container();
   }
   
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
 
-    if (widget.establecimiento == null) {
+    if (widget.place == null) {
       return Text('algo anda mal');
     }
 
     return GestureDetector(
-      /* onTap: () => Navigator.push(context,
+      onTap: () => Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) => EstablecimientoShowScreen(
-            type: widget.type,
-            establecimiento: widget.establecimiento
+          builder: (context) => PlaceShowScreen(
+            place: widget.place
           )
         )
-      ), */
+      ),
       child: Container(
         margin: EdgeInsets.only(top:20),
         decoration: BoxDecoration(
@@ -141,7 +109,7 @@ class _DefaultCardState extends State<DefaultCard> {
                     child: Container(
                       color: Colors.white,
                       child: Image.network(
-                        widget.establecimiento.foto != null ? widget.establecimiento.foto : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
+                        widget.place.image != null ? widget.place.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
                         filterQuality: FilterQuality.low,
                         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
                           if (loadingProgress == null)
@@ -154,18 +122,18 @@ class _DefaultCardState extends State<DefaultCard> {
                             ),
                           );
                         },
-                        fit: widget.establecimiento.foto != null ? BoxFit.cover : BoxFit.contain
+                        fit: widget.place.image != null ? BoxFit.cover : BoxFit.contain
                       ),
                     ),
                   ),
                   /* Align(
                     alignment: Alignment(0.95, -1),
                     child: FavButtonWidget(
-                      id: widget.establecimiento.id,
+                      id: widget.place.id,
                       type: widget.type,
                     )
                   ), */
-                  _getWidget()
+                  _getChip()
                 ]
               )
             ),
@@ -177,14 +145,14 @@ class _DefaultCardState extends State<DefaultCard> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(widget.establecimiento.nombre, 
+                    Text(widget.place.name, 
                       style: Theme.of(context).textTheme.headline2,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 5, bottom: 10),
-                      child: Text(widget.establecimiento.localidad.nombre ?? 'Sin direccion', 
+                      child: Text(widget.place.address ?? 'Sin direccion', 
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline3
@@ -193,10 +161,7 @@ class _DefaultCardState extends State<DefaultCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        ( widget.type == Establecimiento.alojamiento ?
-                            CategoryWidget(count: widget.establecimiento.categoria.valor)
-                          : Container()
-                        ),
+                        CategoryWidget(count: widget.place.category.value),
                         Row(
                           children: <Widget>[
                             Icon(Icons.location_on, color: Theme.of(context).iconTheme.color),

@@ -3,11 +3,11 @@ import 'package:graphql/client.dart';
 
 class BaseProvider {
 
-  static final String url = '127.0.0.1:8000/graphql';
+  static final String url = '192.168.1.34:8000/graphql';
 
   static final HttpLink httpLink = HttpLink(
-     uri: 'http://$url',
-   );
+    uri: 'http://$url',
+  );
 
   static final WebSocketLink webSocketLink = WebSocketLink(
     url: 'ws://$url',
@@ -16,12 +16,12 @@ class BaseProvider {
     ),
   );
 
-   static final Link link = httpLink.concat(webSocketLink);
+  static final Link link = httpLink.concat(webSocketLink);
 
-   static GraphQLClient initailizeClient() {
-      return GraphQLClient(
-        cache: InMemoryCache(),
-        link: link,
-      );
-   }
+  static GraphQLClient initailizeClient() {
+    return GraphQLClient(
+      cache: InMemoryCache(),
+      link: link,
+    );
+  }
 }

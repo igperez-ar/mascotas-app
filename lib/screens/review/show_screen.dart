@@ -11,15 +11,13 @@ import 'package:mascotas_app/widgets/widgets.dart';
 class CalificacionShowScreen extends StatefulWidget {
 
   final Map<String, Object> selected;
-  final int id;
-  final Establecimiento type;
+  final int placeId;
   final Calificacion update;
 
   const CalificacionShowScreen({
     Key key,
     this.selected,
-    @required this.id,
-    @required this.type,
+    @required this.placeId,
     this.update
   }) : super(key: key);
 

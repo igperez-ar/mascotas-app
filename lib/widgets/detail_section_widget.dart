@@ -66,7 +66,7 @@ class DetailSectionWidget extends StatelessWidget{
           : Container()
         ),
         Padding(
-          padding: EdgeInsets.only(top: 15, left: 0, bottom: 10),
+          padding: EdgeInsets.only(top: 5, left: 0, bottom: 10),
           child: child,
         )
       ]
