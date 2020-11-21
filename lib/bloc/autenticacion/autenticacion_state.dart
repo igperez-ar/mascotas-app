@@ -11,6 +11,8 @@ class AutenticacionInitial extends AutenticacionState {}
 
 class AutenticacionLoading extends AutenticacionState {}
 
+class AutenticacionRegistered extends AutenticacionState {}
+
 class AutenticacionAuthenticated extends AutenticacionState {
   final Usuario usuario;
   final String token;

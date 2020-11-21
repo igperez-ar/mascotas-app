@@ -88,9 +88,7 @@ class _RootScreenState extends State<RootScreen> {
     return BlocBuilder<AutenticacionBloc, AutenticacionState>(
         builder: (context, state) {
           print(state);
-      if (state is AutenticacionUnauthenticated || state is AutenticacionInitial ) {
-        return IngresoScreen();
-      } else {
+      if (state is AutenticacionAuthenticated) {
         return Scaffold(
             body: _children[_currentIndex],
             floatingActionButton: FloatingActionButton(
@@ -182,6 +180,8 @@ class _RootScreenState extends State<RootScreen> {
           ), 
         ), */
             );
+      } else {
+        return IngresoScreen();
       }
     });
     // if (_showSplash) {

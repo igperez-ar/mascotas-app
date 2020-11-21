@@ -96,13 +96,12 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     yield AutenticacionLoading();
 
     try {
-      final Usuario usuario = await repository.addUsuario(event.name, event.email, event.password);
+      final int userId = await repository.addUsuario(event.email, event.password, event.name);
 
-      if (usuario == null) {
+      if (userId == null) {
         throw Exception();
-
       } else {
-        yield AutenticacionAuthenticated(usuario, null);
+        yield AutenticacionRegistered();
       }
 
     } catch (e) {

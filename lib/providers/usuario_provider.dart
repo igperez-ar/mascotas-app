@@ -45,10 +45,10 @@ class UsuarioProvider {
     return result.data['tokenAuth'];
   }
 
-  Future<Usuario> addUsuario(String email, String password, String name) async {
+  Future<dynamic> register(String email, String password, String name) async {
     final result = await _graphQLClient.mutate(
       MutationOptions(
-        documentNode: gql(QueryUsuario.addUsuario),
+        documentNode: gql(QueryUsuario.register),
         variables: {
           'email': email,
           'password': password,
@@ -60,9 +60,8 @@ class UsuarioProvider {
     if (result.hasException) {
       throw GetUsuariosRequestFailure();
     }
-    
-    final data = result.data['insert_usuarios']['returning'] as List;
-    return Usuario.fromJson(data.first);
+    ;
+    return result.data['userRegister'];
   }
 
   Future<Usuario> updateUsuario(String email, Usuario newUser) async {

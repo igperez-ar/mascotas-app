@@ -40,8 +40,8 @@ class _IngresoScreenState extends State<IngresoScreen> {
     super.dispose();
   }
 
-  Widget _renderSignup() {
-
+  Widget _renderSignup(BuildContext context) {
+    
     return BlocBuilder<AutenticacionBloc,AutenticacionState>(
       builder: (context, state) {
 
@@ -59,33 +59,20 @@ class _IngresoScreenState extends State<IngresoScreen> {
               ),
             ),
             SignUpForm(
-              autenticacionBloc: _autenticacionBloc
+              autenticacionBloc: _autenticacionBloc,
+              onSubmit: () {
+                _autenticacionListener = _autenticacionBloc.listen((state) {
+                  
+                  if (state is AutenticacionUnauthenticated) {
+                    SnackBarWidget.show(context, state.error, SnackType.danger);
+                  } else if (state is AutenticacionRegistered) {
+                    setState(() {
+                      _selectedTab = 1;
+                    });
+                  }
+                });
+              }
             ),
-            /* SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => setState(() {
-                _selectedTab = 1;
-              }),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Ya tienes una cuenta?', 
-                      style: TextStyle(
-                        color: Colors.grey[600]
-                      ),
-                    ),
-                    SizedBox(width: 5,),
-                    Text('Inicia sesión', 
-                      style: TextStyle(
-                        color: Colors.blue[800]
-                      ),
-                    ),
-                  ],
-                )
-              )
-            ) */
           ],
         );
       },
@@ -207,7 +194,7 @@ class _IngresoScreenState extends State<IngresoScreen> {
                     child: Builder(
                       builder: (context) {
                         if (_selectedTab == 0) 
-                          return _renderSignup();
+                          return _renderSignup(context);
                           return _renderSignin(context);
                       },
                     )

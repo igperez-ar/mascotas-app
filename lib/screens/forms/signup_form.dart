@@ -100,16 +100,18 @@ class _SignUpFormState extends State<SignUpForm> {
                 /* )
               ), */
               SizedBox(height: 30),
-              RaisedButton(
-                onPressed: () {
-                  if (state is! AutenticacionLoading && _formKey.currentState.validate()) {
-                    _autenticationBloc.add(AutenticacionRegister(
-                      name: _nameController.text,
+                RaisedButton(
+                  onPressed: () {
+                    if (state is! AutenticacionLoading && _formKey.currentState.validate()) {
+                      _autenticationBloc.add(AutenticacionRegister(
+                        name: _nameController.text,
                       email: _emailController.text,
                       password: _passwordController.text,
                     ));
-                    if (widget.onSubmit != null) 
-                      widget.onSubmit();
+                    if (state is AutenticacionRegistered) {
+                      if (widget.onSubmit != null) 
+                        widget.onSubmit();
+                    }
                   }
                 },
                 textColor: Colors.white,

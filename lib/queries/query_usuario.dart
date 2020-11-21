@@ -91,5 +91,15 @@ class QueryUsuario {
     }
   """;
 
+  static String register = """
+  mutation registroUsuario(\$email:String!, \$password: String!, \$name: String!) {
+    userRegister(email: \$email,  password: \$password, name: \$name) {
+      user {
+        id
+      }
+    }
+  }
+  """;
+
 
 }

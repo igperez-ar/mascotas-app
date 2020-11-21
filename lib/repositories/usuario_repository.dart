@@ -21,8 +21,10 @@ class UsuarioRepository {
     return await _provider.getOne(username);
   }
 
-  Future<Usuario> addUsuario(String email, String password, name) async {
-    return await _provider.addUsuario(email, password, name);
+  Future<int> addUsuario(String email, String password, String name) async {
+    var response = await _provider.register(email, password, name);
+    int userId = int.parse(response['user']['id']);
+    return userId;
   }
 
   Future<Usuario> updateUsuario(String email, Usuario newUser) async {
