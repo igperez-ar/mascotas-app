@@ -55,9 +55,9 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
       yield* _mapLoggedOutToState(event);
     } else if (event is AutenticacionRegister) {
       yield* _mapRegisterToState(event);
-    } else if (event is AutenticacionUpdate) {
+    } /* else if (event is AutenticacionUpdate) {
       yield* _mapUpdateToState(event);
-    } 
+    } */ 
   }
 
   Stream<AutenticacionState> _mapLoggedInToState(
@@ -71,7 +71,7 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
 
       if (data != null) {
         print('Successful autentication! Welcome back ${event.email}');
-        yield AutenticacionAuthenticated(data["usuario"], data["token"]);
+        yield AutenticacionAuthenticated(data["user"], data["token"]);
       } else {
         yield AutenticacionUnauthenticated('Las datos ingresados son incorrectos.');
       }
@@ -110,7 +110,7 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
     }
   }
 
-  Stream<AutenticacionState> _mapUpdateToState(
+  /* Stream<AutenticacionState> _mapUpdateToState(
     AutenticacionUpdate event
   ) async* {
 
@@ -130,5 +130,5 @@ class AutenticacionBloc extends Bloc<AutenticacionEvent, AutenticacionState> wit
       print(e);
       yield AutenticacionUnauthenticated('Ocurrió un error inesperado');
     }
-  }
+  } */
 }

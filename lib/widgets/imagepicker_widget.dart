@@ -3,37 +3,36 @@ import 'dart:io';
 import 'package:dashed_container/dashed_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 import 'package:mascotas_app/models/models.dart';
 
 
-class MemoriesWidget extends StatefulWidget {
-  final int id;
-  final Establecimiento type;
+class ImagePickerWidget extends StatefulWidget {
+  /* final int id;
+  final Establecimiento type; */
+  final List<File> imagesSelected;
 
-  const MemoriesWidget({
+  const ImagePickerWidget({
     Key key, 
-    @required this.id,
-    @required this.type
+    this.imagesSelected
+    /* @required this.id,
+    @required this.type */
   }): super(key: key);
 
   @override
-  _MemoriesWidgetState createState() => _MemoriesWidgetState();
+  _ImagePickerWidgetState createState() => _ImagePickerWidgetState();
 }
 
-class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStateMixin {
+class _ImagePickerWidgetState extends State<ImagePickerWidget> with TickerProviderStateMixin {
   var squareRotation = 0.0;
   AnimationController _controllerA;
   bool _deleting = false;
-  List<String> _toDelete = [];
+  List<File> _toDelete = [];
 
-  FavoriteBloc _favoriteBloc;
-  List<String> _images;
+  List<File> _images;
   final picker = ImagePicker();
   final ScrollController _scrollController = ScrollController();
 
@@ -51,8 +50,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
       });
     });
     super.initState();
-
-    _favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    _images = widget.imagesSelected;
   }
 
   @override
@@ -76,7 +74,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Future _getCameraImage(Favorite favorite) async {
+  Future _getCameraImage() async {
     _changeDeleting(value: false);
 
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -85,10 +83,8 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
       GallerySaver.saveImage(pickedFile.path);
 
       setState(() {
-        _images.add(pickedFile.path);
+        _images.add(File(pickedFile.path));
       });
-
-      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients)
@@ -101,17 +97,15 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Future _getGalleryImage(Favorite favorite) async {
+  Future _getGalleryImage() async {
     _changeDeleting(value: false);
 
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     if (pickedFile != null){
       setState(() {
-        _images.add(pickedFile.path);
+        _images.add(File(pickedFile.path));
       });
-
-      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients)
@@ -124,7 +118,7 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     }
   }
 
-  Widget _getMemories(Favorite favorite) {
+  Widget _getImages() {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +133,6 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
                     onPressed: () {
                       _images.removeWhere((element) => _toDelete.contains(element));
                       _changeDeleting(value: false);
-                      _favoriteBloc.add(UpdateRecuerdos(favorite, _images));
                     }, 
                     child: Text('Confirmar'), 
                     textColor: Colors.teal[400]
@@ -156,8 +149,8 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
             shrinkWrap: true,
             controller: _scrollController,
             children:
-              _images.map<Widget>((path) { 
-                final bool _selected = _toDelete.contains(path);
+              _images.map<Widget>((image) { 
+                final bool _selected = _toDelete.contains(image);
 
                 return Padding(
                   padding: EdgeInsets.only(right: 10),
@@ -165,9 +158,9 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
                     onTap: () {
                       if (_deleting) {
                         if (_selected) {
-                          _toDelete.remove(path);
+                          _toDelete.remove(image);
                         } else {
-                          _toDelete.add(path);
+                          _toDelete.add(image);
                         }
                       } 
                     },
@@ -178,12 +171,8 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
                         height: 120,
                         decoration: BoxDecoration( 
                           borderRadius: BorderRadius.circular(10),
-                          /* color: _selected ? Colors.red[300] : Colors.transparent, */
                           image: DecorationImage(
-                            /* colorFilter: _selected 
-                              ? ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop)
-                              : null, */
-                            image: FileImage(File(path)),
+                            image: FileImage(image),
                             fit: BoxFit.cover
                           ),
                         ),
@@ -207,17 +196,16 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
     );
   }
 
-  Widget _getEmptyMemories(context) {
+  Widget _getEmptyWidget(context) {
     final _width = MediaQuery.of(context).size.width;
     
     return Container(
       height: _width * 0.42,
       width: _width,
-      margin: EdgeInsets.symmetric(horizontal: 10),
       child: DashedContainer(
         dashColor: Colors.grey[500], 
         strokeWidth: 2,
-        dashedLength: 10,
+        dashedLength: 11,
         blankLength: 10,
         borderRadius: 20,
         child: Container(
@@ -227,12 +215,12 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
             children: <Widget>[
               Icon(Icons.photo_library, size: 50, color: Colors.grey[600],),
               Padding(padding: EdgeInsets.only(top: 10)),
-              Text('aún no tienes recuerdos del lugar'.toUpperCase(),
+              Text('no hay imágenes seleccionadas'.toUpperCase(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -246,55 +234,25 @@ class _MemoriesWidgetState extends State<MemoriesWidget> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
 
-    return BlocBuilder<AutenticacionBloc,AutenticacionState>(
-      builder: (context, state) {
-
-        if (state is AutenticacionAuthenticated) {
-
-          return BlocBuilder<FavoriteBloc, FavoriteState>(
-            builder: (context, state) {
-
-              if (state is FavoriteSuccess) {
-              final Favorite _favorite = state.favorite.firstWhere(
-                (element) => (element.id == widget.id 
-                          && element.tipo == widget.type),
-                orElse: () => null
-              );
-                if (_favorite != null) {
-                _images = List.from(_favorite.recuerdos);
-                  return DetailSectionWidget(
-                  title: 'Recuerdos',
-                  actions: [
-                    {'icon': Icons.camera_alt,
-                    'onPressed': () => _getCameraImage(_favorite),
-                    },
-                    {'icon': Icons.photo_library,
-                    'onPressed': () => _getGalleryImage(_favorite),
-                    },
-                    _images.isNotEmpty 
-                      ? {'icon': _deleting ? Icons.delete_forever : Icons.delete,
-                        'onPressed': () => _changeDeleting(),
-                        }
-                      : {}
-                  ],
-                  child: ( _favorite.recuerdos.isNotEmpty 
-                    ? _getMemories(_favorite)
-                    : _getEmptyMemories(context)
-                  )
-                );
-                } else {
-                  return Container();
-                }
-              }
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+    return DetailSectionWidget(
+      title: 'Imágenes',
+      actions: [
+        {'icon': Icons.camera_alt,
+        'onPressed': () => _getCameraImage(),
+        },
+        {'icon': Icons.photo_library,
+        'onPressed': () => _getGalleryImage(),
+        },
+        _images.isNotEmpty 
+          ? {'icon': _deleting ? Icons.delete_forever : Icons.delete,
+            'onPressed': () => _changeDeleting(),
             }
-          );
-        }
-
-        return Container();
-      },
+          : {}
+      ],
+      child: ( _images.isNotEmpty 
+        ? _getImages()
+        : _getEmptyWidget(context)
+      )
     );
   }
 }

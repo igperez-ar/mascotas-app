@@ -1,15 +1,11 @@
-import 'dart:convert';
-import 'package:equatable/equatable.dart';
-import 'models.dart';
+import "dart:convert";
+import "package:equatable/equatable.dart";
+import "models.dart";
 
 Place placeFromJson(String str) => Place.fromJson(json.decode(str));
 
 String placeToJson(Place data) => json.encode(data.toJson());
 
-/* enum PlaceType {
-  vet,
-  petshop,
-} */
 
 class Place extends Equatable{
   final int id;
@@ -66,24 +62,28 @@ class Place extends Equatable{
   ];
 
   factory Place.fromJson(Map<String, dynamic> json) => Place(
-    id: int.parse(json['id']),
-    name: json['name'],
-    type: json['type'],
-    address: json['address'],
-    image: json['image'],
-    category: Category.fromJson(json['category']),
-    lat: json['lat'],
-    lng: json['lng'],
+    id: json["id"],
+    name: json["name"],
+    type: json["type"],
+    address: json["address"],
+    image: json["image"],
+    category: Category.fromJson(json["category"]),
+    lat: json["lat"],
+    lng: json["lng"],
   );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'type': type,
-    'address': address,
-    'image': image,
-    'category': category,
-    'lat': lat,
-    'lng': lng,
+    "id": id,
+    "name": name,
+    "type": type,
+    "address": address,
+    "image": image,
+    "category": category,
+    "lat": lat,
+    "lng": lng,
   };
+
+  String toString() {
+    return this.name;
+  }
 }

@@ -148,8 +148,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
                           return Mutation(
                             options: MutationOptions(
-                                documentNode: gql(QueryMensajes.addMensaje),
-                              ),
+                              documentNode: gql(QueryMensajes.addMensaje),
+                            ),
                             builder: (RunMutation deleteMensaje, QueryResult result) {
                               return Expanded(
                                 child: ListView.builder(

@@ -64,7 +64,7 @@ class UsuarioProvider {
     return result.data['userRegister'];
   }
 
-  Future<Usuario> updateUsuario(String email, Usuario newUser) async {
+  /* Future<Usuario> updateUsuario(String email, Usuario newUser) async {
     final result = await _graphQLClient.mutate(
       MutationOptions(
         documentNode: gql(QueryUsuario.updateUsuario),
@@ -84,5 +84,5 @@ class UsuarioProvider {
     
     final data = result.data['update_usuarios']['returning'] as List;
     return Usuario.fromJson(data.first);
-  }
+  } */
 }

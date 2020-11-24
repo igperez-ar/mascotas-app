@@ -102,7 +102,7 @@ class _IngresoScreenState extends State<IngresoScreen> {
               if (state is AutenticacionUnauthenticated) {
                 SnackBarWidget.show(context, state.error, SnackType.danger);
               } else if (state is AutenticacionAuthenticated) {
-                Navigator.pushNamed(context, '/');
+                /* Navigator.pushNamed(context, '/'); */
               }
             });
           },
@@ -174,7 +174,7 @@ class _IngresoScreenState extends State<IngresoScreen> {
                         height: _selectedTab == 1 ? null : 0,
                         padding: EdgeInsets.symmetric(horizontal: 30),
                         child: SvgPicture.asset(
-                          'assets/images/undraw_sign_in.svg',
+                          'assets/images/undraw_login.svg',
                           height: _height * 0.15,
                         )
                       ),

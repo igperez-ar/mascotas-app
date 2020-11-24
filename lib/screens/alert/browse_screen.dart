@@ -13,6 +13,13 @@ class AlertsScreen extends StatefulWidget {
 
 class _AlertsScreenState extends State<AlertsScreen> {
   bool showMap = false;
+  AlertsBloc _alertsBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _alertsBloc = BlocProvider.of<AlertsBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,32 +51,40 @@ class _AlertsScreenState extends State<AlertsScreen> {
           ),
         ],
       ),
-      body: Builder(
-        builder: (context) {
+      body: BlocBuilder<AlertsBloc,AlertsState>(
+        builder: (context, state) {
 
-          /* if (estState is EstablecimientosFailure) {
+          if (state is AlertsInitial) {
+            _alertsBloc.add(FetchAlerts());
+          }
+
+          if (state is AlertsFailure) {
             return EmptyWidget(
               title: 'Ocurrió un problema inesperado. Intenta nuevamente más tarde.',
               uri: 'assets/images/undraw_server_down.svg',
             );
-          } */
+          }
 
-          /* if (estState is EstablecimientosSuccess) { */
-            /* if (EMPTY) {
+          if (state is AlertsSuccess) {
+            if (state.filteredAlerts.isEmpty) {
               return EmptyWidget(
                 title: 'No se encontraron favorites para los filtros seleccionados.',
                 uri: 'assets/images/undraw_taken.svg',
               );
-            } */
+            }
 
             if (!showMap) {
-              return ListView(
-                padding: EdgeInsets.only(bottom: 20),
-                children: [
-                  AlertWidget(),
-                  AlertWidget(),
-                  AlertWidget(),
-                ],
+              return RefreshIndicator(
+                onRefresh: () async => _alertsBloc.add(FetchAlerts()),
+                child: ListView(
+                  cacheExtent: 500,
+                  padding: EdgeInsets.only(bottom: 20),
+                  children: state.alerts.map<AlertWidget>(
+                    (e) => AlertWidget(
+                      alert: e
+                    )
+                  ).toList(),
+                )
               );
 
             } else {
@@ -77,12 +92,11 @@ class _AlertsScreenState extends State<AlertsScreen> {
                 cards: []
               );
             }
-        /* } else { 
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-              ); 
-          } */
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          ); 
         },
       ),
       backgroundColor: Colors.grey[200],

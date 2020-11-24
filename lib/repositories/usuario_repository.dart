@@ -27,7 +27,7 @@ class UsuarioRepository {
     return userId;
   }
 
-  Future<Usuario> updateUsuario(String email, Usuario newUser) async {
+  /* Future<Usuario> updateUsuario(String email, Usuario newUser) async {
     return await _provider.updateUsuario(email, newUser);
-  }
+  } */
 }

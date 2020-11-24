@@ -2,13 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mascotas_app/models/models.dart';
+import 'package:mascotas_app/providers/base_provider.dart';
+import 'package:mascotas_app/widgets/widgets.dart';
 
 class AlertWidget extends StatefulWidget {
 
   final bool compact;
+  final Alert alert;
 
   const AlertWidget({
     Key key,
+    this.alert,
     this.compact = false
   }) : super(key: key); 
 
@@ -56,7 +61,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Alejandro Alvarez",
+                      Text(widget.alert.user.name,
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                           fontSize: 16,
@@ -79,14 +84,14 @@ class _AlertWidgetState extends State<AlertWidget> {
                   border: Border.all(color: Colors.yellow[600]),
                   color: Colors.yellow[600].withOpacity(0.25),
                 ),
-                child: Text('Perdido', 
+                child: Text(widget.alert.type.name, 
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.yellow[800]
                   ) 
                 ),
               ),
-              Text("1 hora",
+              Text(widget.alert.createdAt.toString(),
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 16
@@ -103,79 +108,34 @@ class _AlertWidgetState extends State<AlertWidget> {
             ),
           ),
           SizedBox(height: 15),
-          Expanded(
-            child: /* Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  child:  */Row(
-                    children: [
-                      Expanded(
-                        child: Image.network(
-                          'https://source.unsplash.com/UtrE5DcgEyg/700x600'  /* 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU' */,
-                          filterQuality: FilterQuality.low,
-                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                            if (loadingProgress == null)
-                              return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                  : null,
-                              ),
-                            );
-                          },
-                          fit: /* widget.establecimiento.foto != null ?  */BoxFit.cover/*  : BoxFit.contain */
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Column(
-                        children: [
-                          Expanded(
-                            child: Image.network(
-                              'https://source.unsplash.com/UtrE5DcgEyg/700x500'  /* 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU' */,
-                              filterQuality: FilterQuality.low,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                                if (loadingProgress == null)
-                                  return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                      : null,
-                                  ),
-                                );
-                              },
-                              fit: /* widget.establecimiento.foto != null ?  */BoxFit.cover/*  : BoxFit.contain */
+          (widget.alert.images.isNotEmpty
+            ? Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ImageNetworkWidget(source: widget.alert.images[0].url)
+                    ),
+                    SizedBox(width: 5),
+                    (widget.alert.images.length >= 3
+                      ? Column(
+                          children: [
+                            Expanded(
+                              child: ImageNetworkWidget(source: widget.alert.images[1].url)
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Expanded(
-                            child: Image.network(
-                              'https://source.unsplash.com/UtrE5DcgEyg/700x500'  /* 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU' */,
-                              filterQuality: FilterQuality.low,
-                              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                                if (loadingProgress == null)
-                                  return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                      : null,
-                                  ),
-                                );
-                              },
-                              fit: /* widget.establecimiento.foto != null ?  */BoxFit.cover/*  : BoxFit.contain */
+                            SizedBox(height: 5),
+                            Expanded(
+                              child: ImageNetworkWidget(source: widget.alert.images[2].url)
                             ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                          ],
+                        )
+                      : 
+                      Container()
+                    )
+                  ],
                 ),
-              /* ],
-            ),
-          ), */
+              )
+            : Container()
+          ),
           SizedBox(height: 10),
           Row(
             children: <Widget>[
@@ -195,8 +155,36 @@ class _AlertWidgetState extends State<AlertWidget> {
     );
   }
 
+  String _getTimeDifference() {
+    final Duration time = DateTime.now().difference(widget.alert.createdAt);
+    
+    if (time.inDays >= 1) {
+      return "${time.inDays} día${time.inDays > 1 ? 's' : ''}";
+
+    } else {
+      if (time.inHours >= 1) {
+        return "${time.inHours} hora${time.inHours > 1 ? 's' : ''}";
+
+      } else {
+        if (time.inMinutes >= 1) {
+          return "${time.inMinutes} minuto${time.inMinutes > 1 ? 's' : ''}";
+
+        } else {   
+          if (time.inSeconds >= 1) {
+            return "${time.inSeconds} segundo${time.inSeconds > 1 ? 's' : ''}";
+
+          } else {
+            return "0 segundos";
+          }
+        }
+      }
+    }
+      
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
 
     if (widget.compact) {
       return _buildCompact();
@@ -204,10 +192,12 @@ class _AlertWidgetState extends State<AlertWidget> {
 
     return Container(
       color: Colors.white,
+      constraints: BoxConstraints(maxHeight: _width),
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,7 +218,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Alejandro Alvarez",
+                      Text(widget.alert.user.name,
                         style: TextStyle(
                           fontSize: 18,
                         ),
@@ -249,7 +239,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   ),
                 ],
               ),
-              Text("1 hora",
+              Text(_getTimeDifference(),
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 16
@@ -264,16 +254,8 @@ class _AlertWidgetState extends State<AlertWidget> {
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Colors.yellow[600]),
               color: Colors.yellow[600].withOpacity(0.25),
-              /* boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 1,
-                  spreadRadius: 1,
-                  offset: Offset(1, 1)
-                )
-              ] */
             ),
-            child: Text('Perdido', 
+            child: Text(widget.alert.type.name, 
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.yellow[800]
@@ -281,25 +263,59 @@ class _AlertWidgetState extends State<AlertWidget> {
             ),
           ),
           SizedBox(height: 10),
-          Text('that famous sing mind fact equally total thirty far beside mouth deal wild occasionally everybody drop simply worker rocket doing control please impossible road',
+          Text(widget.alert.description,
             style: TextStyle(
               height: 1.5
             ),
           ),
           SizedBox(height: 15),
-          Stack(
+          (widget.alert.images.isNotEmpty
+            ? Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ImageNetworkWidget(
+                        source: "${BaseProvider.mediaURL}${widget.alert.images[0].url}"
+                      )
+                    ),
+                    SizedBox(width: 5),
+                    (widget.alert.images.length >= 3
+                      ? Column(
+                          children: [
+                            Expanded(
+                              child: ImageNetworkWidget(
+                                source: "${BaseProvider.mediaURL}${widget.alert.images[1].url}"
+                              )
+                            ),
+                            SizedBox(height: 5),
+                            Expanded(
+                              child: ImageNetworkWidget(
+                                source: "${BaseProvider.mediaURL}${widget.alert.images[2].url}"
+                              )
+                            ),
+                          ],
+                        )
+                      : 
+                      Container()
+                    )
+                  ],
+                ),
+              )
+            : Container()
+          ),
+          /* Stack(
             children: [
               Container(
                 height: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://source.unsplash.com/UtrE5DcgEyg/700x500'),
+                    image: NetworkImage("${BaseProvider.mediaURL}${widget.alert.images[0]}"),
                     fit: BoxFit.cover
                   )
                 ),
               ),
             ],
-          ),
+          ), */
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

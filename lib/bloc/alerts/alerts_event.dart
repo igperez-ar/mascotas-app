@@ -1,21 +1,21 @@
-part of 'establecimientos_bloc.dart';
+part of 'alerts_bloc.dart';
 
-abstract class EstablecimientosEvent extends Equatable {
-  const EstablecimientosEvent();
+abstract class AlertsEvent extends Equatable {
+  const AlertsEvent();
 }
 
-class FetchEstablecimientos extends EstablecimientosEvent {
-  const FetchEstablecimientos();
+class FetchAlerts extends AlertsEvent {
+  const FetchAlerts();
 
   @override
   List<Object> get props => [];
 }
 
-class UpdateFilteredEstablecimientos extends EstablecimientosEvent {
+class UpdateFilteredAlerts extends AlertsEvent {
   /* final List<Alojamiento> newFilteredAlojamientos;
   final List<Gastronomico> newFilteredGastronomicos; */
 
-  const UpdateFilteredEstablecimientos(
+  const UpdateFilteredAlerts(
     /* this.newFilteredAlojamientos,
     this.newFilteredGastronomicos */
   );

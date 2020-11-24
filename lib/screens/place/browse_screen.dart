@@ -76,7 +76,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
           if (result.data == null) {
             return EmptyWidget(
               title: 'No tenemos información para mostrar aquí.',
-              uri: 'assets/images/undraw_taken.svg',
+              uri: 'assets/images/undraw_empty.svg',
             );
           }
                     
@@ -87,7 +87,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
           if (places.isEmpty) {
             return EmptyWidget(
               title: 'No tenemos información para mostrar aquí.',
-              uri: 'assets/images/undraw_taken.svg',
+              uri: 'assets/images/undraw_empty.svg',
             );
           }
 

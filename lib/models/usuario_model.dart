@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'package:equatable/equatable.dart';
+import "dart:convert";
+import "package:equatable/equatable.dart";
 
 Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
 
@@ -10,14 +10,12 @@ class Usuario extends Equatable{
   final String email;
   final String name;
   final String image;
-  String password;
 
   Usuario({
     this.id,
     this.email,
     this.name,
     this.image,
-    this.password,
   });
 
   Usuario copyWith({
@@ -30,7 +28,6 @@ class Usuario extends Equatable{
       email: email ?? this.email, 
       name: name ?? this.name, 
       image: image ?? this.image,
-      password: password ?? ""
     );
   }
 
@@ -43,16 +40,20 @@ class Usuario extends Equatable{
   ];
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-    id: int.parse(json['id']),
-    email: json['email'],
-    name: json['name'],
-    image: json['image'],
+    id: json["id"],
+    email: json["email"],
+    name: json["name"],
+    image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'email': email,
-    'name': name,
-    'image': image,
+    "id": id,
+    "email": email,
+    "name": name,
+    "image": image,
   };
+
+  String toString() {
+    return this.email;
+  }
 }

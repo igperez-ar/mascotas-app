@@ -7,3 +7,7 @@ export 'establecimiento.dart';
 export 'destacable_model.dart';
 export 'calificacion_model.dart';
 export 'place_model.dart';
+export 'alert_type_model.dart';
+export 'alert_state_model.dart';
+export 'alert_model.dart';
+export 'media_model.dart';

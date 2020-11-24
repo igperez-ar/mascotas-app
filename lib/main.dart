@@ -26,7 +26,7 @@ void main() async {
   Bloc.observer = SimpleBlocObserver();
   // Soluciona error de carga de NetworkImages
   // limitando las peticiones simultáneas
-  HttpOverrides.global = MyHttpOverrides();
+  /* HttpOverrides.global = MyHttpOverrides(); */
 
   HydratedBloc.storage = await HydratedStorage.build();
 
@@ -39,11 +39,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        /* BlocProvider(
-          create: (context) => EstablecimientosBloc(
-            repository: EstablecimientosRepository()
+        BlocProvider(
+          create: (context) => AlertsBloc(
+            repository: AlertsRepository()
           ),
-        ), */
+        ),
         BlocProvider(
           create: (context) => FavoriteBloc(),
         ),

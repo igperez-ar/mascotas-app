@@ -18,11 +18,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Colors.red[300],
             )
           ),
-          Container(
+          /* Container(
             alignment: Alignment(1, 1.2),
             padding: EdgeInsets.only(left: 20),
             child: Image.asset('assets/images/drawer_dog.png')
-          ),
+          ), */
           Container(
             color: Colors.black.withOpacity(0.2)
           ),
