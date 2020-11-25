@@ -9,49 +9,42 @@ Pet petFromJson(String str) => Pet.fromJson(json.decode(str));
 
 String petToJson(Pet data) => json.encode(data.toJson());
 
-List<Pet> mapPetsToJson(List<String> items) => items.map((String item) => Pet.fromJson(json.decode(item)));
-
-enum PetSize {
-  small
-}
-
-enum PetGender {
-  male,
-  female
-}
 
 class Pet extends Equatable{
   final int id;
   final String name;
   final String description;
+  final List<Media> images;
   final Breed breed;
-  final DateTime birthDate;
-  final PetGender sex;
   final bool inAdoption;
+  final DateTime birthDate;
+  final String sex;
   final List<Usuario> users;
-  final List<Attribute> attributes;
+  /* final List<Attribute> attributes; */
 
   Pet({
     this.id,
     this.name,
     this.description,
+    this.images,
     this.breed,
+    this.inAdoption,
     this.birthDate,
     this.sex,
-    this.inAdoption,
-    this.attributes,
     this.users,
+    /* final List<Attribute> attributes; */
   });
 
   Pet copyWith({
     String name,
     String description,
-    String breed,
-    DateTime birthDate,
-    PetGender sex,
+    List<Media> images,
+    Breed breed,
     bool inAdoption,
-    List<dynamic> users,
-    List<dynamic> attributes
+    DateTime birthDate,
+    String sex,
+    List<Usuario> users,
+    /* List<Attribute> attributes, */
   }) {
     return Pet(
       id: this.id, 
@@ -62,7 +55,7 @@ class Pet extends Equatable{
       sex: sex ?? this.sex,
       inAdoption: inAdoption ?? this.inAdoption,
       users: users ?? this.users,
-      attributes: attributes ?? this.attributes
+      /* attributes: attributes ?? this.attributes */
     );
   }
 
@@ -76,7 +69,7 @@ class Pet extends Equatable{
     sex,
     inAdoption,
     users,
-    attributes
+    /* attributes */
   ];
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
@@ -84,19 +77,24 @@ class Pet extends Equatable{
     name: json['name'],
     description: json['description'],
     breed: Breed.fromJson(json['breed']),
-    birthDate: new DateTime(json["birthDate"]),
+    birthDate: DateTime(json["birthDate"]),
     sex: json['sex'],
     inAdoption: json['inAdoption'],
     users: json["users"],
-    attributes: json["attributes"]
+    /* attributes: json["attributes"] */
     
   );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'description': description,
-    'breed': breed,
-    
+    "id": id,
+    "name": name,
+    "description": description,
+    "images": images,
+    "breed": breed,
+    "inAdoption": inAdoption,
+    "birthDate": birthDate,
+    "sex": sex,
+    "users": users,
+    /* "attributes": attributes, */
   };
 }

@@ -243,16 +243,17 @@ class _AdoptScreenState extends State<AdoptScreen> {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              CardAdoptWidget(
-                                image: 'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
+                              /* CardAdoptWidget(
+                                pet: widget
+                                /* image: 'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
                                 name: 'Firulais',
                                 age: '6 años',
                                 species: 'Perro',
                                 gender: 'Macho',
                                 breed: 'Border Collie',
-                                colors: [Colors.orange[800], Colors.grey[100]]
-                              ),
-                              CardAdoptWidget(
+                                colors: [Colors.orange[800], Colors.grey[100]] */
+                              ), */
+                              /* CardAdoptWidget(
                                 image: 'https://source.unsplash.com/gM4Oq1iH4fE/800x600',
                                 name: 'Pelusa',
                                 age: '8 meses',
@@ -260,7 +261,7 @@ class _AdoptScreenState extends State<AdoptScreen> {
                                 gender: 'Hembra',
                                 breed: 'Mixto',
                                 colors: [Colors.grey[100]]
-                              ), 
+                              ), */ 
                             ],
                           ),
                         ),
@@ -273,7 +274,7 @@ class _AdoptScreenState extends State<AdoptScreen> {
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
-                              CardAdoptWidget(
+                              /* CardAdoptWidget(
                                 image: 'https://source.unsplash.com/1_nDj7Rwm8Y/1100x1200',
                                 name: 'Kelly',
                                 age: '4 años',
@@ -290,8 +291,8 @@ class _AdoptScreenState extends State<AdoptScreen> {
                                 gender: 'Macho',
                                 breed: 'Border Collie',
                                 colors: [Colors.black, Colors.grey[100]]
-                              ),
-                              CardAdoptWidget(
+                              ), */
+                              /* CardAdoptWidget(
                                 image: 'https://source.unsplash.com/wFbkj9ilGnQ/800x600',
                                 name: 'Firulais',
                                 age: '6 años',
@@ -308,7 +309,7 @@ class _AdoptScreenState extends State<AdoptScreen> {
                                 gender: 'Hembra',
                                 breed: 'Mixto',
                                 colors: [Colors.grey[100]]
-                              ), 
+                              ), */ 
                             ],
                           ),
                         ),

@@ -22,7 +22,7 @@ class AlertsBloc extends Bloc<AlertsEvent, AlertsState> {
     if (event is FetchAlerts) {
       yield* _mapAlertsLoadedToState();
     } else if (event is UpdateFilteredAlerts) {
-      yield* _mapEstablecimientoFilteredToState(event);
+      yield* _mapAlertsFilteredToState(event);
     }
   }
 
@@ -31,24 +31,25 @@ class AlertsBloc extends Bloc<AlertsEvent, AlertsState> {
 
     try {
       final List<Alert> alerts = await repository.fetchAlerts();
-      final List<Alert> filteredAlerts = alerts;
 
       yield AlertsSuccess(
         alerts: alerts,
-        filteredAlerts: filteredAlerts,
+        filteredAlerts: alerts,
       );
+
     } catch (e) {
       print(e);
       yield AlertsFailure();
     }
   }
 
-  Stream<AlertsState> _mapEstablecimientoFilteredToState(
+  Stream<AlertsState> _mapAlertsFilteredToState(
     UpdateFilteredAlerts event
   ) async* {
 
     if (state is AlertsSuccess) {
       final successState = (state as AlertsSuccess);
+
       yield AlertsSuccess(
         alerts: successState.alerts,
         filteredAlerts: [],

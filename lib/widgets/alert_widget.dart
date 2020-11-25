@@ -10,11 +10,13 @@ class AlertWidget extends StatefulWidget {
 
   final bool compact;
   final Alert alert;
+  final Future<String> distance;
 
   const AlertWidget({
     Key key,
-    this.alert,
-    this.compact = false
+    @required this.alert,
+    this.compact = false,
+    this.distance,
   }) : super(key: key); 
 
   @override
@@ -228,10 +230,16 @@ class _AlertWidgetState extends State<AlertWidget> {
                         children: [
                           Icon(Icons.location_on, color: Colors.grey, size: 20,),
                           SizedBox(width: 2),
-                          Text("San Martín 154",
-                            style: TextStyle(
-                              color: Colors.grey[600]
-                            ),
+                          FutureBuilder(
+                            future: widget.distance,
+                            builder: (context, snapshot) {
+
+                              return Text(snapshot.hasData ? snapshot.data : "Cargando...",
+                                style: TextStyle(
+                                  color: Colors.grey[600]
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -275,7 +283,7 @@ class _AlertWidgetState extends State<AlertWidget> {
                   children: [
                     Expanded(
                       child: ImageNetworkWidget(
-                        source: "${BaseProvider.mediaURL}${widget.alert.images[0].url}"
+                        source: widget.alert.images[0].url
                       )
                     ),
                     SizedBox(width: 5),
@@ -284,13 +292,13 @@ class _AlertWidgetState extends State<AlertWidget> {
                           children: [
                             Expanded(
                               child: ImageNetworkWidget(
-                                source: "${BaseProvider.mediaURL}${widget.alert.images[1].url}"
+                                source: widget.alert.images[1].url
                               )
                             ),
                             SizedBox(height: 5),
                             Expanded(
                               child: ImageNetworkWidget(
-                                source: "${BaseProvider.mediaURL}${widget.alert.images[2].url}"
+                                source: widget.alert.images[2].url
                               )
                             ),
                           ],

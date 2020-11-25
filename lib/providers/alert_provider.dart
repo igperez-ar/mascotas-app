@@ -17,6 +17,7 @@ class AlertProvider {
     if (result.hasException) {
       throw GetAlertsRequestFailure();
     }
+    
     final data = result.data['urbanAlerts'] as List;
     return data.map((e) => Alert.fromJson(e)).toList();
   }

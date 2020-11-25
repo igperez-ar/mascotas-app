@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:mascotas_app/screens/screens.dart';
+import 'package:mascotas_app/models/models.dart';
+import 'package:mascotas_app/widgets/imagenetwork_widget.dart';
 
 class CardAdoptWidget extends StatelessWidget {
   
-  final String name; 
+  /* final String name; 
   final String age; 
   final String image; 
   final String species; 
   final String gender; 
   final String breed; 
-  final List colors;
+  final List colors; */
+  final Pet pet;
 
   const CardAdoptWidget({
     Key key,
-    this.name,
+    /* this.name,
     this.image,
     this.species,
     this.gender,
     this.age,
     this.breed,
-    this.colors,
+    this.colors, */
+    this.pet,
   }) : super(key: key); 
 
   @override
@@ -28,12 +32,13 @@ class CardAdoptWidget extends StatelessWidget {
       onTap: () => Navigator.push(context,
         MaterialPageRoute(
           builder: (context) => PetShowScreen(
-            image: image,
+            pet: pet,
+            /* image: image,
             name: name,
             age: age,
             gender: gender,
             breed: breed,
-            colors: colors
+            colors: colors */
           )
         )
       ),
@@ -57,7 +62,10 @@ class CardAdoptWidget extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
+                  ImageNetworkWidget(
+                    source: pet.images[0].url,
+                  )
+                  /* Image.network(
                     image != null ? image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
                     filterQuality: FilterQuality.low,
                     loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
@@ -72,7 +80,7 @@ class CardAdoptWidget extends StatelessWidget {
                       );
                     },
                     fit: BoxFit.cover
-                  ),
+                  ), */
                 ],
               ),
             ),
@@ -93,7 +101,7 @@ class CardAdoptWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(name,
+                      Text(pet.name,
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontWeight: FontWeight.bold,
@@ -104,8 +112,8 @@ class CardAdoptWidget extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 5),
-                  ( species != null && age != null
-                    ? Text('$species de $age',
+                  ( pet.breed.kind != null && pet.birthDate != null
+                    ? Text('${pet.breed.kind.name} de ${pet.birthDate.difference(DateTime.now())}',
                         style: TextStyle(
                           color: Colors.grey[600]
                         ),

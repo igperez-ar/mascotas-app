@@ -113,7 +113,6 @@ class QueryUsuario {
         name
         birthDate
         sex
-        inAdoption
         breed {
           name
           kind {

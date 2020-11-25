@@ -7,7 +7,6 @@ Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
 
 String usuarioToJson(Usuario data) => json.encode(data.toJson());
 
-List<Usuario> mapUsuariosFromJson(List<Map<String, dynamic>> list) => list.map((item) => Usuario.fromJson(item));
 
 class Usuario extends Equatable{
   final int id;
@@ -52,7 +51,7 @@ class Usuario extends Equatable{
     id: json["id"],
     email: json["email"],
     name: json["name"],
-    image: BaseProvider.mediaURL+json["image"],
+    image: json["image"],
     pets: json["pets"],
   );
 

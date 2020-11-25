@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:geolocator/geolocator.dart';
 
@@ -16,87 +17,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  /* EstablecimientosBloc _establecimientoBloc;
-  FavoriteBloc _favoriteBloc; */
-  Position userPosition;
 
-  Future<String> _getDistance(double lat, double lng) async {
-    String distance;
-
-    if (userPosition == null) { 
-      Position newPosition = await Geolocator().getCurrentPosition();
-
-      if (this.mounted)
-        this.setState(() {
-          userPosition = newPosition;
-        });
-    }
-
-    if (userPosition != null) 
-      distance = await Geolocator().distanceBetween(
-        userPosition.latitude, userPosition.longitude, 
-        lat, lng
-      ).then((value) {
-          if (value.round() >= 1000) 
-            return ((value / 1000).toStringAsFixed(1).replaceFirst('.0', '') + ' km de tu ubicación');
-
-          return (value.round().toString().replaceFirst('.0', '') + ' m de tu ubicación'); 
-        });
-
-    return distance;
+  Widget _buildAdCard(String image) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      height: 45,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 2,
+            spreadRadius: 1,
+            offset: Offset(2,2)
+          )
+        ],
+        image: DecorationImage(
+          image: AssetImage(image),
+          fit: BoxFit.cover
+        )
+      ),
+    );
   }
 
-  /* Widget _getCardList(List<Alojamiento> alojamientos, List<Gastronomico> gastronomicos) {
-
-    return ListView.builder(
-      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-      itemCount: max(alojamientos.length, gastronomicos.length), 
-      itemBuilder: (context, index) { 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ( index < alojamientos.length 
-              ? DefaultCard(
-                  type: Establecimiento.alojamiento,
-                  establecimiento: alojamientos[index],
-                  distance: _getDistance(alojamientos[index].lat, alojamientos[index].lng),
-                )
-              : Container()
-            ),
-            ( index < gastronomicos.length 
-              ? DefaultCard(
-                  type: Establecimiento.gastronomico,
-                  establecimiento: gastronomicos[index],
-                  distance: _getDistance(gastronomicos[index].lat, gastronomicos[index].lng),
-                )
-              : Container()
-            )
-          ]
-        ); 
-      },
-    );
-  } */
   Widget _buildCarousel() {
 
     return CarouselSlider(
         items: [
-          Container(
-            height: 45,
-            color: Colors.red
-          ),
-          Container(
-            height: 45,
-            color: Colors.blue
-          ),
-          Container(
-            height: 45,
-            color: Colors.green
-          ),
-        ],/* widget.cards.map((e) => Padding(
-            padding: EdgeInsets.only(bottom: 15),
-            child: e,
-          ) 
-        ).toList(), */
+          _buildAdCard("assets/images/anuncio1.jpg"),
+          _buildAdCard("assets/images/anuncio2.jpg"),
+          _buildAdCard("assets/images/anuncio3.jpg")
+        ],
         options: CarouselOptions(
           height: 210,
           autoPlay: true,
@@ -140,22 +90,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inicio', 
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          children: [
+            Container(
+              width: 50.0,
+              child: SvgPicture.asset("assets/images/isologo-petcommunity.svg",
+                height: 50.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SvgPicture.asset("assets/images/logo-petcommunity.svg",
+              height: 85.0,
+              fit: BoxFit.cover,
+            ),
+          ],
         ),
-        actions: <Widget>[
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.white, size: 30.0,), 
-                onPressed: () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
-              );
-            },
-          )
-        ],
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -165,8 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Destacados", 
             child: _buildCarousel()
           ),
-          SizedBox(height: 25),
-          Row(
+          /* SizedBox(height: 25), */
+          /* Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildCategory(
@@ -186,8 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.add,
               ),
             ],
-          ),
-          SizedBox(height: 40),
+          ), */
+          SizedBox(height: 25),
           DetailSectionWidget(
             title: "Cerca de tu ubicación", 
             child: Container(
@@ -196,61 +145,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(bottom: 10),
                 scrollDirection: Axis.horizontal,
                 children: [
-                  AlertWidget(
+                  Container()
+                  /* AlertWidget(
                     compact: true,
                   ),
                   AlertWidget(
                     compact: true,
-                  ),
+                  ), */
                 ],
               ),
             )
           )
         ],
       )
-      
-      /* BlocBuilder<EstablecimientosBloc, EstablecimientosState>(
-        builder: (context, state) {
-          if (state is EstablecimientosInitial) {
-            _establecimientoBloc.add(FetchEstablecimientos());
-          }
-
-          if (_favoriteBloc.state is FavoritesInitial) {
-            _favoriteBloc.add(FetchFavorites());
-          }
-
-          if (state is EstablecimientosFailure) {
-            return EmptyWidget(
-              title: 'Ocurrió un problema inesperado. Intente nuevamente más tarde.',
-              uri: 'assets/images/undraw_server_down.svg',
-            );
-          }
-
-          if (state is EstablecimientosSuccess) {
-
-            if (state.filteredAlojamientos.isEmpty && 
-                state.filteredGastronomicos.isEmpty) {
-              return EmptyWidget(
-                title: 'No se encontraron establecimientos para los filtros seleccionados.',
-                uri: 'assets/images/undraw_taken.svg',
-                button: {
-                  'title': 'Ir a filtros',
-                  'action': () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
-                },
-              );
-            }
-
-            return _getCardList(
-              state.filteredAlojamientos, 
-              state.filteredGastronomicos
-            );
-          }
-        
-          return Center(
-            child: CircularProgressIndicator()
-          ); 
-        }
-      ) */
     );
   }
 }

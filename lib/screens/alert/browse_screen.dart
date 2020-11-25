@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/providers/location_provider.dart';
 import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
@@ -14,6 +15,7 @@ class AlertsScreen extends StatefulWidget {
 class _AlertsScreenState extends State<AlertsScreen> {
   bool showMap = false;
   AlertsBloc _alertsBloc;
+  LocationProvider _locationProvider = LocationProvider();
 
   @override
   void initState() {
@@ -68,7 +70,7 @@ class _AlertsScreenState extends State<AlertsScreen> {
           if (state is AlertsSuccess) {
             if (state.filteredAlerts.isEmpty) {
               return EmptyWidget(
-                title: 'No se encontraron favorites para los filtros seleccionados.',
+                title: 'No se encontraron alertas para los filtros seleccionados.',
                 uri: 'assets/images/undraw_taken.svg',
               );
             }
@@ -80,8 +82,9 @@ class _AlertsScreenState extends State<AlertsScreen> {
                   cacheExtent: 500,
                   padding: EdgeInsets.only(bottom: 20),
                   children: state.alerts.map<AlertWidget>(
-                    (e) => AlertWidget(
-                      alert: e
+                    (alert) => AlertWidget(
+                      alert: alert,
+                      distance: _locationProvider.getDistance(alert.lat, alert.lng),
                     )
                   ).toList(),
                 )

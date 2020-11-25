@@ -1,3 +1,7 @@
+# Environment
+.lib/providers/base_provider.dart
+
+
 # Miscellaneous
 *.class
 *.log

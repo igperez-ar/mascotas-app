@@ -25,7 +25,7 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
   /* AutenticacionBloc _autenticacionBloc; */
   TextEditingController _descriptionController = TextEditingController();
   List<File> _images = []; 
-  DropdownWidget _selectTypeWidget;
+  AlertType _alertType;
 
   @override
   void initState() {
@@ -67,13 +67,13 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                       icon: Icon(Icons.check, size: 30.0,),
                       onPressed: () {
 
-                        if (_selectTypeWidget.selected != null) {
+                        if (true) {
                           addAlert({
                             "description": _descriptionController.text,
                             "lat": -54.824098,
                             "lng": -68.337061,
                             "userId": 2,
-                            "typeId": _selectTypeWidget.selected.id,
+                            "typeId": _alertType.id,
                             "photos": _images.map((image) => MultipartFile.fromBytes(
                               "photo",
                               image.readAsBytesSync(),
@@ -112,10 +112,6 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                 if (alertTypes.isEmpty) {
                   return Text("Vacío");
                 } 
-
-                _selectTypeWidget = DropdownWidget(
-                  items: alertTypes
-                );
                 
                 return ListView(
                   padding: EdgeInsets.all(20),
@@ -169,7 +165,14 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                     SizedBox(height: 10),
                     DetailSectionWidget(
                       title: "Estado de la mascota",
-                      child: _selectTypeWidget
+                      child: DropdownWidget(
+                        items: alertTypes,
+                        onChange: (newValue) {
+                          setState(() {
+                            _alertType = newValue;
+                          });
+                        }
+                      )
                     ),
                     SizedBox(height: 10),
                     DetailSectionWidget(

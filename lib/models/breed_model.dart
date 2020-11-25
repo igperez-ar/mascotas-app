@@ -38,7 +38,7 @@ class Breed extends Equatable{
   factory Breed.fromJson(Map<String, dynamic> json) => Breed(
     id: json['id'],
     name: json['name'],
-    kind: json['kind'],
+    kind: Kind.fromJson(json['kind']),
   );
 
   Map<String, dynamic> toJson() => {

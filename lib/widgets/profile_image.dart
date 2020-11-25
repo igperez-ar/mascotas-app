@@ -61,17 +61,17 @@ class ProfileImage extends StatelessWidget {
     final _iSize = _iconSize();
 
     /* Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey[400]
-              ),
-              child: Icon(
-                Icons.people,
-                color: Colors.white,
-              ),
-            ), */
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.grey[400]
+        ),
+        child: Icon(
+          Icons.people,
+          color: Colors.white,
+        ),
+      ), */
 
     return Container(
       decoration: BoxDecoration(

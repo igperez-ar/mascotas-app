@@ -7,21 +7,23 @@ import 'package:mascotas_app/widgets/widgets.dart';
 import 'package:mascotas_app/models/models.dart';
 
 class PetShowScreen extends StatefulWidget {
-   final String image;
+   /* final String image;
    final String name;
    final String gender;
    final String age;
    final List colors;
-   final String breed;
+   final String breed; */
+   final Pet pet;
 
   const PetShowScreen({
     Key key, 
-    this.image,
+    /* this.image,
     this.name,
     this.gender,
     this.age,
     this.colors,
-    this.breed,
+    this.breed, */
+    this.pet,
   }): super(key: key);
 
   @override
@@ -149,12 +151,15 @@ class _PetShowScreenState extends State<PetShowScreen> {
       ),
       body: Stack(
         children: [
-          Image.network(
+          ImageNetworkWidget(
+            source: widget.pet.images[0].url,
+          ),
+          /* Image.network(
             widget.image,
             /* 'https://source.unsplash.com/AllEP6K_TAg/1200x1300', */
             fit: BoxFit.cover,
             height: 450,
-          ),
+          ), */
           ListView(
             controller: _scrollController,
             children: <Widget>[ 
@@ -178,14 +183,14 @@ class _PetShowScreenState extends State<PetShowScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(widget.name, 
+                          Text(widget.pet.name, 
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Icon(Icons.favorite_border, size: 30,)
                         ],
                       ),
                     ),
-                    Text(widget.breed,
+                    Text(widget.pet.breed.name,
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 18,
@@ -212,7 +217,7 @@ class _PetShowScreenState extends State<PetShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Row(
+                                /* Row(
                                   children: widget.colors.map<Widget>((e) => Container(
                                       width: 25,
                                       height: 25,
@@ -223,7 +228,7 @@ class _PetShowScreenState extends State<PetShowScreen> {
                                       ),
                                     )
                                   ).toList()
-                                )
+                                ) */
                               ],
                             ),
                             VerticalDivider( thickness: 1,),
@@ -236,12 +241,12 @@ class _PetShowScreenState extends State<PetShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Text(/* '2 años' */widget.age,
+                                /* Text(/* '2 años' */widget.pet.age,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
                                   ),
-                                ),
+                                ), */
                               ],
                             ),
                             VerticalDivider( thickness: 1,),
@@ -254,7 +259,7 @@ class _PetShowScreenState extends State<PetShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Text(/* 'Femenino' */widget.gender,
+                                Text(/* 'Femenino' */widget.pet.sex,
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
@@ -392,7 +397,7 @@ class _PetShowScreenState extends State<PetShowScreen> {
             child: Container(
               height: 85,
               child: AppBar(
-                title: Text(widget.name),
+                title: Text(widget.pet.name),
               )
             ),
           ),
