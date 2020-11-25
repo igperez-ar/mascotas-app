@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:mascotas_app/models/kind_model.dart';
 
 Breed breedFromJson(String str) => Breed.fromJson(json.decode(str));
 
@@ -8,7 +9,7 @@ String breedToJson(Breed data) => json.encode(data.toJson());
 class Breed extends Equatable{
   final int id;
   final String name;
-  final String kind;
+  final Kind kind;
 
   Breed({
     this.id,
@@ -18,7 +19,7 @@ class Breed extends Equatable{
 
   Breed copyWith({
     String name, 
-    String kind, 
+    Kind kind, 
   }) {
     return Breed(
       id: this.id, 

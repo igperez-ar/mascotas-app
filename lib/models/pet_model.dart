@@ -1,9 +1,15 @@
 import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:mascotas_app/models/models.dart';
+
+import 'attribute_model.dart';
+import 'breed_model.dart';
 
 Pet petFromJson(String str) => Pet.fromJson(json.decode(str));
 
 String petToJson(Pet data) => json.encode(data.toJson());
+
+List<Pet> mapPetsToJson(List<String> items) => items.map((String item) => Pet.fromJson(json.decode(item)));
 
 enum PetSize {
   small
@@ -18,49 +24,45 @@ class Pet extends Equatable{
   final int id;
   final String name;
   final String description;
-  final String breed;
-  final List<String> colors;
-  final List<String> images;
-  final PetSize size;
-  final DateTime birthdate;
-  final PetGender gender;
-  final bool sterilized;
+  final Breed breed;
+  final DateTime birthDate;
+  final PetGender sex;
+  final bool inAdoption;
+  final List<Usuario> users;
+  final List<Attribute> attributes;
 
   Pet({
     this.id,
     this.name,
     this.description,
     this.breed,
-    this.colors,
-    this.images,
-    this.size,
-    this.birthdate,
-    this.gender,
-    this.sterilized,
+    this.birthDate,
+    this.sex,
+    this.inAdoption,
+    this.attributes,
+    this.users,
   });
 
   Pet copyWith({
     String name,
     String description,
     String breed,
-    List<String> colors,
-    List<String> images,
-    PetSize size,
-    DateTime birthdate,
-    PetGender gender,
-    bool sterilized
+    DateTime birthDate,
+    PetGender sex,
+    bool inAdoption,
+    List<dynamic> users,
+    List<dynamic> attributes
   }) {
     return Pet(
       id: this.id, 
       name: name ?? this.name, 
       description: description ?? this.description, 
       breed: breed ?? this.breed,
-      colors: colors ?? this.colors,
-      images: images ?? this.images, 
-      size: size ?? this.size, 
-      birthdate: birthdate ?? this.birthdate,
-      gender: gender ?? this.gender, 
-      sterilized: sterilized ?? this.sterilized, 
+      birthDate: birthDate ?? this.birthDate,
+      sex: sex ?? this.sex,
+      inAdoption: inAdoption ?? this.inAdoption,
+      users: users ?? this.users,
+      attributes: attributes ?? this.attributes
     );
   }
 
@@ -70,25 +72,24 @@ class Pet extends Equatable{
     name,
     description,
     breed,
-    colors,
-    images,
-    size,
-    birthdate,
-    gender,
-    sterilized,
+    birthDate,
+    sex,
+    inAdoption,
+    users,
+    attributes
   ];
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
     id: json['id'],
     name: json['name'],
     description: json['description'],
-    breed: json['breed'],
-    colors: json['colors'],
-    images: json['images'],
-    size: json['size'],
-    birthdate: json['birthdate'],
-    gender: json['gender'],
-    sterilized: json['sterilized'],
+    breed: Breed.fromJson(json['breed']),
+    birthDate: new DateTime(json["birthDate"]),
+    sex: json['sex'],
+    inAdoption: json['inAdoption'],
+    users: json["users"],
+    attributes: json["attributes"]
+    
   );
 
   Map<String, dynamic> toJson() => {
@@ -96,11 +97,6 @@ class Pet extends Equatable{
     'name': name,
     'description': description,
     'breed': breed,
-    'colors': colors,
-    'images': images,
-    'size': size,
-    'birthdate': birthdate,
-    'gender': gender,
-    'sterilized': sterilized,
+    
   };
 }

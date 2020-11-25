@@ -17,8 +17,12 @@ class UsuarioRepository {
     return { "token": token, "user": user };
   }
 
-  Future<Usuario> getOne(String username) async {
-    return await _provider.getOne(username);
+  Future<Usuario> getUser(int id) async {
+    var response = await _provider.getInfo(id);
+
+    Usuario user = Usuario.fromJson(response);
+
+    return user;
   }
 
   Future<int> addUsuario(String email, String password, String name) async {

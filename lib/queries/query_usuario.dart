@@ -101,5 +101,32 @@ class QueryUsuario {
   }
   """;
 
+  static String getInfo = """
+  query(\$id:Int!) {
+    user(id:\$id) {
+      id 
+      email
+      name
+      image
+      pets {
+        id
+        name
+        birthDate
+        sex
+        inAdoption
+        breed {
+          name
+          kind {
+            name
+          }
+        }
+        images {
+          order
+          image
+        }
+      }
+    }
+  }
+  """;
 
 }

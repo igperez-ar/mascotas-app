@@ -64,6 +64,18 @@ class UsuarioProvider {
     return result.data['userRegister'];
   }
 
+  Future<dynamic> getInfo(int id) async {
+    final result = await _graphQLClient.query(
+      QueryOptions(
+        documentNode: gql(QueryUsuario.getInfo),
+        variables: {
+          "id": id
+        }
+      )
+    );
+    return result.data['user'];
+  }
+
   /* Future<Usuario> updateUsuario(String email, Usuario newUser) async {
     final result = await _graphQLClient.mutate(
       MutationOptions(

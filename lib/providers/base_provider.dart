@@ -3,8 +3,8 @@ import 'package:graphql/client.dart';
 
 class BaseProvider {
 
-  static final String url = '192.168.1.34:8000/graphql';
-  static final String mediaURL = 'http://192.168.1.34:8000/media/';
+  static final String url = '10.0.2.2:8000/graphql';
+  static final String mediaURL = 'http://10.0.2.2:8000/media/';
 
   static final HttpLink httpLink = HttpLink(
     uri: 'http://$url',
