@@ -145,8 +145,8 @@ class _AdoptScreenState extends State<AdoptScreen> {
       appBar: AppBar(
         title: Text("Adopción",
           style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w600
+            fontSize: 22,
+            fontWeight: FontWeight.bold
           ),
         ),
         actions: [

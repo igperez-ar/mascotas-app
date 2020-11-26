@@ -52,7 +52,7 @@ class Usuario extends Equatable{
     email: json["email"],
     name: json["name"],
     image: json["image"],
-    pets: json["pets"],
+    pets: json["pets"] != null ? json["pets"].map<Pet>((e) => Pet.fromJson(e)).toList() : [],
   );
 
   Map<String, dynamic> toJson() => {

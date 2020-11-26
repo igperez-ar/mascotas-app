@@ -76,6 +76,7 @@ class Pet extends Equatable{
     id: json['id'],
     name: json['name'],
     description: json['description'],
+    images: json["images"].map<Media>((item) => Media.fromJson(item)).toList(),
     breed: Breed.fromJson(json['breed']),
     birthDate: DateTime.parse(json["birthDate"]),
     sex: json['sex'],

@@ -4,25 +4,10 @@ import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/widgets/imagenetwork_widget.dart';
 
 class CardAdoptWidget extends StatelessWidget {
-  
-  /* final String name; 
-  final String age; 
-  final String image; 
-  final String species; 
-  final String gender; 
-  final String breed; 
-  final List colors; */
   final Pet pet;
 
   const CardAdoptWidget({
     Key key,
-    /* this.name,
-    this.image,
-    this.species,
-    this.gender,
-    this.age,
-    this.breed,
-    this.colors, */
     this.pet,
   }) : super(key: key); 
 
@@ -33,12 +18,6 @@ class CardAdoptWidget extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => PetShowScreen(
             pet: pet,
-            /* image: image,
-            name: name,
-            age: age,
-            gender: gender,
-            breed: breed,
-            colors: colors */
           )
         )
       ),
@@ -62,25 +41,12 @@ class CardAdoptWidget extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  ImageNetworkWidget(
-                    source: pet.images[0].url,
+                  (pet.images.isNotEmpty
+                    ? ImageNetworkWidget(
+                        source: pet.images[0].url,
+                      )
+                    : Container()
                   )
-                  /* Image.network(
-                    image != null ? image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
-                    filterQuality: FilterQuality.low,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                      if (loadingProgress == null)
-                        return child;
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                              : null,
-                        ),
-                      );
-                    },
-                    fit: BoxFit.cover
-                  ), */
                 ],
               ),
             ),
@@ -113,7 +79,7 @@ class CardAdoptWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   ( pet.breed.kind != null && pet.birthDate != null
-                    ? Text('${pet.breed.kind.name} de ${pet.birthDate.difference(DateTime.now())}',
+                    ? Text('${pet.breed.kind.name} de ${DateTime.now().difference(pet.birthDate)}',
                         style: TextStyle(
                           color: Colors.grey[600]
                         ),

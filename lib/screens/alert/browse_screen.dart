@@ -30,8 +30,8 @@ class _AlertsScreenState extends State<AlertsScreen> {
       appBar: AppBar(
         title: Text("Alertas",
           style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
         actions: [

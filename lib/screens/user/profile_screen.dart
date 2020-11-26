@@ -29,10 +29,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          _usuario != null ? _usuario.email : "Mi cuenta",
+        title: Text("Mi cuenta",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -45,11 +44,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 builder: (context) => FavoritesScreen()
               )
             ),
-          ), */
+          ), 
           IconButton(
             icon: Icon(Icons.notifications), 
             onPressed: () {}
-          )
+          ) */
         ],
       ),
       body: BlocBuilder<AutenticacionBloc, AutenticacionState>(
@@ -74,17 +73,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 }
 
-                List<Pet> _pets = [];
+                Usuario _usuario = snapshot.data;
 
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  setState(() {
-                    _usuario = snapshot.data;
-                  });
-                  _pets = _usuario.pets.map<Pet>(
-                    (e) => Pet.fromJson(e)
-                  ).toList();
-                });
-                
                 return Column(
                   children: [
                     Stack(
@@ -104,14 +94,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Column(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: 30, bottom: 15),
+                              padding: EdgeInsets.only(top: 5, bottom: 15),
                               child: ProfileImage(
                                 image: "298",
                                 size: ProfileImageSize.big
                               ),
                             ),
                             Text(
-                              _usuario != null ? _usuario.name : "",
+                              _usuario.name,
                               style: TextStyle(
                                 fontSize: 27,
                                 color: Colors.white,
@@ -123,6 +113,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     offset: Offset(1.5, 1.5)
                                   ),
                                 ],
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(_usuario.email,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -140,11 +139,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               {'icon': Icons.more_horiz, 'on_press': null}
                             ],
                             child: Container(
-                              height:  _width * 0.4,
-                              child: (_pets.isNotEmpty
+                              height:  _width * 0.6,
+                              child: (_usuario.pets.isNotEmpty
                                 ? ListView(
                                     scrollDirection: Axis.horizontal,
-                                    children: _pets.map<Widget>((item) {
+                                    children: _usuario.pets.map<Widget>((item) {
                                       return CardAdoptWidget(
                                         pet: item
                                       );

@@ -1,15 +1,9 @@
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:geolocator/geolocator.dart';
-
-import 'package:mascotas_app/bloc/bloc.dart';
-import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
