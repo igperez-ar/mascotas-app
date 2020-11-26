@@ -159,7 +159,7 @@ class _AlertWidgetState extends State<AlertWidget> {
 
   String _getTimeDifference() {
     final Duration time = DateTime.now().difference(widget.alert.createdAt);
-    
+
     if (time.inDays >= 1) {
       return "${time.inDays} día${time.inDays > 1 ? 's' : ''}";
 
@@ -181,7 +181,6 @@ class _AlertWidgetState extends State<AlertWidget> {
         }
       }
     }
-      
   }
 
   @override

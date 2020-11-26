@@ -4,13 +4,19 @@ import 'package:geolocator/geolocator.dart';
 class LocationProvider {
   Position userPosition;
 
-  Future<String> getDistance(double lat, double lng) async {
-    String distance;
-
+  Future<Position> getCurrentPosition() async {
     if (userPosition == null) {
       Position newPosition = await Geolocator().getCurrentPosition();
       userPosition = newPosition;
     }
+
+    return userPosition;
+  }
+
+  Future<String> getDistance(double lat, double lng) async {
+    String distance;
+
+    getCurrentPosition();
 
     if (userPosition != null) 
       distance = await Geolocator().distanceBetween(
