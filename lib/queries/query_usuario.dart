@@ -114,8 +114,10 @@ class QueryUsuario {
         birthDate
         sex
         breed {
+          id
           name
           kind {
+            id
             name
           }
         }

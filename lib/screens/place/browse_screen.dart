@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/providers/location_provider.dart';
 import 'package:mascotas_app/queries/queries.dart';
 import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
@@ -17,6 +18,7 @@ class PlacesScreen extends StatefulWidget {
 class _PlacesScreenState extends State<PlacesScreen> {
   int filtered;
   bool showMap = false;
+  LocationProvider _locationProvider = LocationProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +85,11 @@ class _PlacesScreenState extends State<PlacesScreen> {
           List<Place> places = result.data["places"]
             .map<Place>((e) => Place.fromJson(e))
             .toList();
+            
 
           if (places.isEmpty) {
             return EmptyWidget(
-              title: 'No tenemos información para mostrar aquí.',
+              title: 'No hay información para mostrar aquí.',
               uri: 'assets/images/undraw_empty.svg',
             );
           }
@@ -98,12 +101,12 @@ class _PlacesScreenState extends State<PlacesScreen> {
               children: places.map<Widget>(
                 (place) => CardWidget(
                   place: place,
+                  distance: _locationProvider.getDistance(place.lat, place.lng),
                 )
               ).toList()
             );
           
           } else {
-
             return MapCarousel(
               cards: places.map<Widget>(
                 (place) => SmallCard(

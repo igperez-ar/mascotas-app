@@ -19,7 +19,6 @@ class UsuarioRepository {
 
   Future<Usuario> getUser(int id) async {
     var response = await _provider.getInfo(id);
-
     Usuario user = Usuario.fromJson(response);
 
     return user;
@@ -27,7 +26,7 @@ class UsuarioRepository {
 
   Future<int> addUsuario(String email, String password, String name) async {
     var response = await _provider.register(email, password, name);
-    int userId = int.parse(response['user']['id']);
+    int userId = response['user']['id'];
     return userId;
   }
 

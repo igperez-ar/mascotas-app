@@ -190,6 +190,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             );
           }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       )
     );

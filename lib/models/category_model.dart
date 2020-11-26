@@ -25,7 +25,7 @@ class Category extends Equatable{
   ];
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-    id: int.parse(json['id']),
+    id: json['id'],
     name: json['name'],
     value: json['value'],
   );

@@ -53,32 +53,39 @@ class _AlertsScreenState extends State<AlertsScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<AlertsBloc,AlertsState>(
-        builder: (context, state) {
+      body: RefreshIndicator(
+        onRefresh: () async => _alertsBloc.add(FetchAlerts()),
+        child: BlocBuilder<AlertsBloc,AlertsState>(
+          builder: (context, state) {
 
-          if (state is AlertsInitial) {
-            _alertsBloc.add(FetchAlerts());
-          }
+            if (state is AlertsInitial) {
+              _alertsBloc.add(FetchAlerts());
+            }
 
-          if (state is AlertsFailure) {
-            return EmptyWidget(
-              title: 'Ocurrió un problema inesperado. Intenta nuevamente más tarde.',
-              uri: 'assets/images/undraw_server_down.svg',
-            );
-          }
-
-          if (state is AlertsSuccess) {
-            if (state.filteredAlerts.isEmpty) {
+            if (state is AlertsFailure) {
               return EmptyWidget(
-                title: 'No se encontraron alertas para los filtros seleccionados.',
-                uri: 'assets/images/undraw_taken.svg',
+                title: 'Ocurrió un problema inesperado. Intenta nuevamente más tarde.',
+                uri: 'assets/images/undraw_server_down.svg',
               );
             }
 
-            if (!showMap) {
-              return RefreshIndicator(
-                onRefresh: () async => _alertsBloc.add(FetchAlerts()),
-                child: ListView(
+            if (state is AlertsSuccess) {
+              if (state.alerts.isEmpty) {
+                return EmptyWidget(
+                  title: 'No hay información para mostrar aquí.',
+                  uri: 'assets/images/undraw_empty.svg',
+                );
+              }
+
+              if (state.filteredAlerts.isEmpty) {
+                return EmptyWidget(
+                  title: 'No se encontraron alertas para los filtros seleccionados.',
+                  uri: 'assets/images/undraw_taken.svg',
+                );
+              }
+
+              if (!showMap) {
+                return ListView(
                   cacheExtent: 500,
                   padding: EdgeInsets.only(bottom: 20),
                   children: state.alerts.map<AlertWidget>(
@@ -87,20 +94,20 @@ class _AlertsScreenState extends State<AlertsScreen> {
                       distance: _locationProvider.getDistance(alert.lat, alert.lng),
                     )
                   ).toList(),
-                )
-              );
+                );
 
-            } else {
-              return MapCarousel(
-                cards: []
-              );
+              } else {
+                return MapCarousel(
+                  cards: []
+                );
+              }
             }
-          }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          ); 
-        },
+            return Center(
+              child: CircularProgressIndicator(),
+            ); 
+          },
+        ),
       ),
       backgroundColor: Colors.grey[200],
     );

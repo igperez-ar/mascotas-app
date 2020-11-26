@@ -77,7 +77,7 @@ class Pet extends Equatable{
     name: json['name'],
     description: json['description'],
     breed: Breed.fromJson(json['breed']),
-    birthDate: DateTime(json["birthDate"]),
+    birthDate: DateTime.parse(json["birthDate"]),
     sex: json['sex'],
     inAdoption: json['inAdoption'],
     users: json["users"],
