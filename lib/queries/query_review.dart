@@ -1,9 +1,19 @@
 class QueryReview {
 
   static String addReview = """
-    mutation addReview(\$score: Int!, \$description: String!, \$userId: Int!, \$placeId: Int!) {
-      insert_reviews(objects: {score: \$score, description: \$description, user_id: \$userId, place_id: \$placeId}) {
-        affected_rows
+    mutation addReview(
+      \$score: Int!,
+      \$description: String!,
+      \$placeId: Int!,
+      \$userId: Int!
+    ) {
+      createReview (
+        score: \$score,
+        description: \$description,
+        placeId: \$placeId,
+        userId: \$userId
+      ) {
+        __typename
       }
     }
   """;

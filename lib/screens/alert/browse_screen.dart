@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/providers/location_provider.dart';
 import 'package:mascotas_app/screens/screens.dart';
+import 'package:mascotas_app/widgets/alert_small_widget.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
@@ -47,10 +49,10 @@ class _AlertsScreenState extends State<AlertsScreen> {
             icon: Icon(showMap ? Icons.format_list_bulleted : Icons.map, size: 25,),
             onPressed: () => setState(() { showMap = !showMap; })
           ),
-          IconButton(
+          /* IconButton(
             icon: Icon(Icons.filter_list, size: 30,), 
             onPressed: () => Navigator.pushNamed(context, '/filtros', arguments: {'context': context})
-          ),
+          ), */
         ],
       ),
       body: RefreshIndicator(
@@ -98,7 +100,12 @@ class _AlertsScreenState extends State<AlertsScreen> {
 
               } else {
                 return MapCarousel(
-                  cards: []
+                  cards: state.alerts.map<AlertSmallWidget>(
+                    (alert) => AlertSmallWidget(
+                      alert: alert,
+                      distance: _locationProvider.getDistance(alert.lat, alert.lng),
+                    )
+                  ).toList()
                 );
               }
             }

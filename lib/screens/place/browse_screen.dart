@@ -32,7 +32,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
           ),
         ),
         actions: <Widget>[
-          Builder(
+          /* Builder(
             builder: (context) {
               return IconButton(
                 icon: Icon(Icons.filter_list, color: Colors.white, size: 30.0,), 
@@ -45,7 +45,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 ),
               );
             }
-          ),
+          ), */
           IconButton(
             icon: Icon(showMap ? Icons.format_list_bulleted : Icons.map, size: 30.0,), 
             onPressed: () { 

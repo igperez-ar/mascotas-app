@@ -1,4 +1,4 @@
-part of 'filtros_bloc.dart';
+/* part of 'filtros_bloc.dart';
 
 abstract class FiltrosState extends Equatable {
   const FiltrosState();
@@ -27,4 +27,4 @@ class FiltrosSuccess extends FiltrosState {
   ];
 }
 
-class FiltrosFailure extends FiltrosState {}
+class FiltrosFailure extends FiltrosState {} */

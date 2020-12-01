@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class DropdownWidget extends StatefulWidget {
   final dynamic items;
+  final dynamic selected;
   final Function onChange;
 
   const DropdownWidget({
     Key key, 
     @required this.items,
+    @required this.selected,
     @required this.onChange,
   }): super(key: key);
 
@@ -17,7 +19,7 @@ class DropdownWidget extends StatefulWidget {
 
 class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStateMixin {
   bool _open = false;
-  dynamic _selected;
+  /* dynamic _selected; */
   
 
   Widget _checkBox(item, bool checked) {
@@ -25,11 +27,10 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
     return GestureDetector(
       onTap: () {
         if (!checked) {
+          widget.onChange(item);
           setState(() {
-            _selected = item;
             _open = false;
           });
-          widget.onChange(item);
         }
       },
       child: Container(
@@ -98,7 +99,7 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
     );
   }
 
-  void _change_Open() {
+  void _changeOpen() {
     setState(() {
       _open = !_open;
     });
@@ -124,7 +125,7 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
               margin: EdgeInsets.symmetric(vertical: 5),
               child: Row(children: <Widget>[
                   Expanded(
-                    child: (_selected == null ? 
+                    child: (widget.selected == null ? 
                       Padding(
                         padding: EdgeInsets.only(left: 8),
                         child: Text("Selecciona una opción.", 
@@ -139,7 +140,7 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                         child: Flex(
                           direction: Axis.horizontal,
-                          children: [_chip(_selected.toString())],
+                          children: [_chip(widget.selected.toString())],
                         )
                       )
                     ),
@@ -154,7 +155,7 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
                         size: 40,
                         color: Colors.grey,
                       ),
-                      onPressed: _change_Open
+                      onPressed: _changeOpen
                     ),
                   )
                 ],
@@ -173,7 +174,7 @@ class _DropdownWidgetState extends State<DropdownWidget> with TickerProviderStat
               ),
               child: Column(
                 children: widget.items.map<Widget>(
-                  (item) => _checkBox(item, _selected == item)
+                  (item) => _checkBox(item, widget.selected == item)
                 ).toList()
               )
             )

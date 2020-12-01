@@ -1,147 +1,271 @@
-/* import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mascotas_app/bloc/bloc.dart';
+import 'package:mascotas_app/models/models.dart';
+import 'package:mascotas_app/queries/queries.dart';
+import 'package:mascotas_app/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
-class AlertWidget extends StatefulWidget {
+class AlertShowScreen extends StatefulWidget {
+  final Alert alert;
+
+  const AlertShowScreen({
+    Key key,
+    @required this.alert,
+  }) : super(key: key);
+
   @override
-  _AlertWidgetState createState() => _AlertWidgetState();
+  _AlertShowScreenState createState() => _AlertShowScreenState();
 }
 
-class _AlertWidgetState extends State<AlertWidget> {
+class _AlertShowScreenState extends State<AlertShowScreen> {
+  TextEditingController _textEditingController = TextEditingController();
+  List<Comment> _comments;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+
+    _comments = widget.alert.comments;
+  }
+
+  Widget _getComment(Comment comment) {
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      margin: EdgeInsets.only(bottom: 20),
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle
-                ),
-              ),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Alejandro Alvarez",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Text("12/09/20",
-                    style: TextStyle(
-                      color: Colors.grey[600]
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          ProfileImage(
+            image: comment.user.image,
+            size: ProfileImageSize.small,
           ),
-          SizedBox(height: 10),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.yellow[600],
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 2,
-                  spreadRadius: 1,
-                  offset: Offset(1, 1)
-                )
-              ]
-            ),
-            child: Text('Perdido', 
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ) 
-            ),
-          ),
-          SizedBox(height: 10),
-          Text('that famous sing mind fact equally total thirty far beside mouth deal wild occasionally everybody drop simply worker rocket doing control please impossible road'),
-          SizedBox(height: 10),
-          Stack(
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 200,
-                color: Colors.green[100],
-              ),
-              Positioned(
-                right: 10,
-                bottom: 10,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 2,
-                        spreadRadius: 1,
-                        offset: Offset(1, 1),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.search, color: Colors.white),
-                      SizedBox(width: 5),
-                      Text('Ver en mapa',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Text('Ver los 759 comentarios'),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              Text('fedepalaush_',
+              Text(comment.user.name,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
                 ),
               ),
-              SizedBox(width: 5),
-              Text('Se perdió?')
-            ],
-          ),
-          SizedBox(height: 15),
-          Row(
-            children: [
-              Container(
-                width: 35,
-                height: 35,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle
-                ),
-              ),
-              SizedBox(width: 10),
-              Container(
-                child: Text('Agrega un comentario...'),
-              )
+              SizedBox(height: 5),
+              Text(comment.content)
             ],
           )
+        ]
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Alerta', 
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, size: 30.0), 
+          onPressed: () => Navigator.of(context).pop()
+        ),
+      ),
+      body: Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              children: [
+                Row(
+                  children: [
+                    ProfileImage(
+                      image: widget.alert.user.image,
+                      size: ProfileImageSize.small,
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.alert.user.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(DateFormat("d/M/y  H:m").format(widget.alert.createdAt),
+                          style: TextStyle(
+                            color: Colors.grey[600]
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.yellow[600]),
+                        color: Colors.yellow[600].withOpacity(0.25),
+                      ),
+                      child: Text(widget.alert.type.name, 
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow[800]
+                        ) 
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(widget.alert.description),
+                SizedBox(height: 10),
+                (widget.alert.images.isNotEmpty 
+                  ? (widget.alert.images.length > 1
+                      ? Container(
+                          height: _width * 0.5,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: widget.alert.images.map<Widget>(
+                              (e) => Container(
+                                width: _width * 0.5,
+                                margin: EdgeInsets.only(right: 10),
+                                child: ImageNetworkWidget(
+                                  source: e.url,
+                                )
+                              )
+                            ).toList(),
+                          )
+                        )
+                      : Container(
+                          height: _width * 0.5,
+                          width: _width,
+                          child: ImageNetworkWidget(
+                            source: widget.alert.images[0].url,
+                          )
+                        )
+                    )
+                  : Container()
+                ),
+                SizedBox(height: 25),
+                (widget.alert.comments.isNotEmpty
+                  ? DetailSectionWidget(
+                      title: "Comentarios",
+                      child: Column(
+                        children: _comments.map<Widget>(
+                          (e) => _getComment(e)
+                        ).toList(),
+                      )
+                    )
+                  : Container()
+                )
+              ],
+            )
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BlocBuilder<AutenticacionBloc, AutenticacionState>(
+              builder: (context, state) {
+
+                if (state is AutenticacionAuthenticated) {
+                  return Container(
+                    margin: EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 15),
+                    child: Row(
+                      children: [
+                        ProfileImage(
+                          image: state.usuario.image,
+                          size: ProfileImageSize.small,
+                        ),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: Container(
+                            constraints: BoxConstraints(minHeight: 45, maxHeight: 150),
+                            padding: EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.grey[400],
+                                width: 1
+                              )
+                            ),
+                            child: Flex( 
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextField(
+                                    textCapitalization: TextCapitalization.sentences,
+                                    controller: _textEditingController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Escribe un comentario',
+                                      hintStyle: TextStyle(color: Colors.grey[600]),
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                    ),
+                                    minLines: 1,
+                                    maxLines: 6,
+                                  ),
+                                ),
+                                Mutation(
+                                  options: MutationOptions(
+                                    documentNode: gql(QueryComment.addComment),
+                                  ),
+                                  builder: (RunMutation addComment, QueryResult result) {
+                                    
+                                    return IconButton(
+                                      icon: Icon(Icons.send, color: Colors.grey[800],),
+                                      onPressed: () {
+                                        if (_textEditingController.text.trim().isNotEmpty) {
+                                          addComment({
+                                            "alertId": widget.alert.id,
+                                            "userId": state.usuario.id,
+                                            "content": _textEditingController.text
+                                          });
+                                          setState(() {
+                                            _comments.add(
+                                              Comment(
+                                                content: _textEditingController.text,
+                                                user: state.usuario
+                                              )
+                                            );
+                                          });
+                                          _textEditingController.clear();
+                                          BlocProvider.of<AlertsBloc>(context).add(FetchAlerts());
+                                        }
+                                      }
+                                    );
+                                  },
+                                )
+                              ]
+                            )
+                          )
+                        )
+                      ]
+                    )
+                  );
+                }
+
+                return Container();
+              }
+            ),
+          ),
         ],
       )
     );
   }
-} */
+}

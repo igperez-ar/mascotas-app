@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:mascotas_app/models/models.dart';
 
-import 'attribute_model.dart';
-import 'breed_model.dart';
-
 Pet petFromJson(String str) => Pet.fromJson(json.decode(str));
 
 String petToJson(Pet data) => json.encode(data.toJson());
@@ -19,7 +16,7 @@ class Pet extends Equatable{
   final bool inAdoption;
   final DateTime birthDate;
   final String sex;
-  final List<Usuario> users;
+  final List<Tenure> tenures;
   /* final List<Attribute> attributes; */
 
   Pet({
@@ -31,7 +28,7 @@ class Pet extends Equatable{
     this.inAdoption,
     this.birthDate,
     this.sex,
-    this.users,
+    this.tenures,
     /* final List<Attribute> attributes; */
   });
 
@@ -43,7 +40,7 @@ class Pet extends Equatable{
     bool inAdoption,
     DateTime birthDate,
     String sex,
-    List<Usuario> users,
+    List<Usuario> tenures,
     /* List<Attribute> attributes, */
   }) {
     return Pet(
@@ -54,7 +51,7 @@ class Pet extends Equatable{
       birthDate: birthDate ?? this.birthDate,
       sex: sex ?? this.sex,
       inAdoption: inAdoption ?? this.inAdoption,
-      users: users ?? this.users,
+      tenures: tenures ?? this.tenures,
       /* attributes: attributes ?? this.attributes */
     );
   }
@@ -68,7 +65,7 @@ class Pet extends Equatable{
     birthDate,
     sex,
     inAdoption,
-    users,
+    tenures,
     /* attributes */
   ];
 
@@ -81,7 +78,7 @@ class Pet extends Equatable{
     birthDate: DateTime.parse(json["birthDate"]),
     sex: json['sex'],
     inAdoption: json['inAdoption'],
-    users: json["users"],
+    tenures: json["tenureSet"].map<Tenure>((item) => Tenure.fromJson(item)).toList(),
     /* attributes: json["attributes"] */
     
   );
@@ -95,7 +92,7 @@ class Pet extends Equatable{
     "inAdoption": inAdoption,
     "birthDate": birthDate,
     "sex": sex,
-    "users": users,
+    "tenures": tenures,
     /* "attributes": attributes, */
   };
 }

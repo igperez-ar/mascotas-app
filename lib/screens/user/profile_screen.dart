@@ -8,7 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/repositories/repository.dart';
-import 'package:mascotas_app/widgets/card_adopt_widget.dart';
+import 'package:mascotas_app/screens/pet/create_screen.dart';
+import 'package:mascotas_app/widgets/pet_widget.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
@@ -96,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 5, bottom: 15),
                               child: ProfileImage(
-                                image: "298",
+                                image: _usuario.image,
                                 size: ProfileImageSize.big
                               ),
                             ),
@@ -136,7 +137,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           DetailSectionWidget(
                             title: 'Mascotas',
                             actions: [
-                              {'icon': Icons.more_horiz, 'on_press': null}
+                              {
+                                'icon': Icons.add, 
+                                'onPressed': () => Navigator.push(context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CreatePetScreen()
+                                    )
+                                  )
+                              }
                             ],
                             child: Container(
                               height:  _width * 0.6,
@@ -144,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ? ListView(
                                     scrollDirection: Axis.horizontal,
                                     children: _usuario.pets.map<Widget>((item) {
-                                      return CardAdoptWidget(
+                                      return PetWidget(
                                         pet: item
                                       );
                                     }).toList(),

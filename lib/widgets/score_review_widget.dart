@@ -97,14 +97,13 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: CalificacionWidget(
-              animation: false,
-              onPress: (item) => Navigator.push(context,
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: ScoreWidget(
+              onPress: (value) => Navigator.push(context,
                 MaterialPageRoute(
-                  builder: (context) => CalificacionShowScreen(
+                  builder: (context) => ReviewShowScreen(
                     placeId: widget.placeId,
-                    selected: item,
+                    selected: value,
                   )
                 )
               ).then((_) => _updateState()),
@@ -113,7 +112,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
           FlatButton(
             onPressed: () => Navigator.push(context,
               MaterialPageRoute(
-                builder: (context) => CalificacionShowScreen(
+                builder: (context) => ReviewShowScreen(
                   placeId: widget.placeId,
                 )
               )
@@ -131,7 +130,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
     );
   }
 
-  Widget _buildComentario(Calificacion calificacion) {
+  Widget _buildComentario(Review review) {
     return DetailSectionWidget(
       title: 'Tu reseña',
       child: Column(
@@ -139,16 +138,16 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
         children: [
           ReviewWidget(
             own: true,
-            calificacion: calificacion,
+            review: review,
             onDelete: _updateState,
           ),
           SizedBox(height: 10),
           FlatButton(
             onPressed: () => Navigator.push(context,
               MaterialPageRoute(
-                builder: (context) => CalificacionShowScreen(
+                builder: (context) => ReviewShowScreen(
                   placeId: widget.placeId,
-                  update: calificacion,
+                  update: review,
                 )
               )
             ).then((_) => _updateState()),
@@ -165,14 +164,14 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
     );
   }
 
-  Widget _getAverage(List calificaciones) {
-    final total = calificaciones.length;
+  Widget _getAverage(List<Review> reviews) {
+    final total = reviews.length;
     List<Widget> _children = [];
 
     for (var i = 5; i >= 1; i--) {
-      final int count = calificaciones
+      final int count = reviews
         .where(
-          (element) => element['puntaje'] == i
+          (element) => element.score == i
         )
         .length;
       _children.add(
@@ -208,23 +207,25 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
           );
         }
 
-        final List calificaciones = result.data['reviews'];
+        final List<Review> reviews = result.data['reviewsByPlace']
+          .map<Review>((e) => Review.fromJson(e))
+          .toList();
 
-        if (calificaciones.isEmpty) {
+        if (reviews.isEmpty) {
           return Column(
             children: [
               _buildCalificar(refetch),
               DetailSectionWidget(
-                title: 'Calificaciones y reseñas',
+                title: 'Reviewes y reseñas',
                 child: Text('Aún no se publican reseñas.'),
               )
             ],
           );
         }
         
-        final double promedio = calificaciones
-          .map((e) => e['puntaje'])
-          .reduce((value, element) => value + element) / calificaciones.length;
+        final double promedio = reviews
+          .map((review) => review.score)
+          .reduce((value, element) => value + element) / reviews.length;
 
         return Column(
           children: [
@@ -232,14 +233,13 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
               builder: (context) {
 
                 if (selfUsuario != null) {
-                  final jsonCalificacion = calificaciones.singleWhere(
-                    (element) => element['usuario']['id'] == selfUsuario.id,
+                  final Review selfReview = reviews.singleWhere(
+                    (review) => review.user.id == selfUsuario.id,
                     orElse: () => null,  
                   );
 
-                  if (jsonCalificacion != null) {
-                    Calificacion selfCalificacion = Calificacion.fromJson(jsonCalificacion);
-                    return _buildComentario(selfCalificacion);
+                  if (selfReview != null) {
+                    return _buildComentario(selfReview);
 
                   } else {
                     return _buildCalificar(refetch);
@@ -250,14 +250,14 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
               }
             ),
             DetailSectionWidget(
-              title: "Calificaciones y reseñas",
-              actions: calificaciones.length > 2 
+              title: "Reviews y reseñas",
+              actions: reviews.length > 2 
                 ? [{
                     'icon': Icons.arrow_forward,
                     'onPressed': () => Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) => CalificacionesScreen(
-                          calificaciones: calificaciones,
+                        builder: (context) => ReviewsScreen(
+                          reviews: reviews,
                         )
                       )
                     ),
@@ -288,7 +288,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
                                   ],
                                 ),
                                 SizedBox(height: 5),
-                                Text(calificaciones.length.toString(),
+                                Text(reviews.length.toString(),
                                   style: TextStyle(
                                     color: Colors.grey[600],
                                   ),
@@ -298,17 +298,17 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
                           ),
                           Expanded(
                             flex: 3,
-                            child: _getAverage(calificaciones),
+                            child: _getAverage(reviews),
                           )
                         ],
                       )
                     ),
                     SizedBox(height: 10),
                     Column(
-                      children: calificaciones
-                        .getRange(0, (calificaciones.length > 2 ? 2 : calificaciones.length))
-                        .map<Widget>((e) {
-                          if (selfUsuario == null || e['usuario']['id'] != selfUsuario.id)
+                      children: reviews
+                        .getRange(0, (reviews.length > 2 ? 2 : reviews.length))
+                        .map<Widget>((review) {
+                          if (selfUsuario == null || review.user.id != selfUsuario.id)
                             return Column(
                               children: [
                                 Divider(height: 30, thickness: 1.5, color: Colors.grey[300],),
@@ -316,7 +316,7 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: ReviewWidget(
-                                    calificacion: Calificacion.fromJson(e)
+                                    review: review
                                   )
                                 )
                               ],
@@ -325,14 +325,14 @@ class _ScoreReviewWidgetState extends State<ScoreReviewWidget> {
                           return Container();
                       }).toList(),
                     ),
-                    (calificaciones.length > 2
+                    (reviews.length > 2
                       ? Container(
                         margin: EdgeInsets.only(top: 10),
                         child: FlatButton(
                             onPressed: () => Navigator.push(context,
                               MaterialPageRoute(
-                                builder: (context) => CalificacionesScreen(
-                                  calificaciones: calificaciones,
+                                builder: (context) => ReviewsScreen(
+                                  reviews: reviews,
                                 )
                               )
                             ),

@@ -4,29 +4,30 @@ import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/screens/screens.dart';
 
 
-class SmallCard extends StatefulWidget{
+class AlertSmallWidget extends StatefulWidget{
+  final Alert alert;
+  final Future<String> distance;
 
-  final Place place;
+  get item => alert;
 
-  get item => place;
-
-  const SmallCard({
-    Key key, 
-    @required this.place,
-  }): super(key: key);
+  const AlertSmallWidget({
+    Key key,
+    @required this.alert,
+    this.distance,
+  }) : super(key: key); 
 
   @override
-  _SmallCardState createState() => _SmallCardState();
+  _AlertSmallWidgetState createState() => _AlertSmallWidgetState();
 }
 
-class _SmallCardState extends State<SmallCard> { 
+class _AlertSmallWidgetState extends State<AlertSmallWidget> { 
 
   Widget _getWidget() {
 
     return Container(
       margin: EdgeInsets.only(bottom:5),
       child: Text(
-        widget.place.type, 
+        widget.alert.type.name, 
         style: Theme.of(context).accentTextTheme.headline1,
         maxLines: 1,
       )
@@ -39,8 +40,8 @@ class _SmallCardState extends State<SmallCard> {
     return GestureDetector(
       onTap: () => Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) => PlaceShowScreen(
-            place: widget.place
+          builder: (context) => AlertShowScreen(
+            alert: widget.alert
           )
         )
       ),
@@ -70,28 +71,15 @@ class _SmallCardState extends State<SmallCard> {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
                     child: Container(
                       color: Colors.white,
-                      child: Image.network(
-                        widget.place.image != null ? widget.place.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
-                        filterQuality: FilterQuality.low,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                          if (loadingProgress == null)
-                            return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                  : null,
-                            ),
-                          );
-                        },
-                        fit: widget.place.image != null ? BoxFit.cover : BoxFit.contain
-                      ),
+                      child: ImageNetworkWidget(
+                        source: widget.alert.images[0].url,
+                      )
                     ),
                   ),
                   /* Container(
                     alignment: Alignment(-1, -1),
                     child: FavButtonWidget(
-                      id: widget.place.id,
+                      id: widget.alert.id,
                       type: widget.type,
                     )
                   ), */
@@ -108,14 +96,14 @@ class _SmallCardState extends State<SmallCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       _getWidget(),
-                      Text(widget.place.name, 
+                      Text(widget.alert.user.name, 
                         maxLines: 3, 
                         overflow: TextOverflow.ellipsis, 
                         style: Theme.of(context).textTheme.headline2
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 5),
-                        child: Text(widget.place.address ?? 'Sin dirección', 
+                        child: Text(widget.alert.description ?? "", 
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.headline3
@@ -123,11 +111,11 @@ class _SmallCardState extends State<SmallCard> {
                       ),
                     ],
                   ),
-                  Align(
+                  /* Align(
                     alignment: Alignment.bottomLeft,
-                    child: CategoryWidget(count: widget.place.category.value)
-                  )
-                  /* ( widget.type == place.alojamiento ?
+                    child: CategoryWidget(count: widget.alert.category.value)
+                  ) */
+                  /* ( widget.type == alert.alojamiento ?
                     : Container() 
                   )  */
                 ],

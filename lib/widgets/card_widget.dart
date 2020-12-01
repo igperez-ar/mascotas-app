@@ -22,23 +22,6 @@ class CardWidget extends StatefulWidget{
 
 class _CardWidgetState extends State<CardWidget> {
   bool liked;
-  String distance;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _updateDistance();
-  }
-
-  void _updateDistance() async {
-    String newDistance = await widget.distance;
-
-    if (mounted)
-      setState(() {
-        distance = newDistance;
-      });
-  }
 
   Widget _getChip() {
     
@@ -69,10 +52,6 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
-
-    if (widget.place == null) {
-      return Text('algo anda mal');
-    }
 
     return GestureDetector(
       onTap: () => Navigator.push(context,
@@ -108,22 +87,10 @@ class _CardWidgetState extends State<CardWidget> {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                     child: Container(
                       color: Colors.white,
-                      child: Image.network(
-                        widget.place.image != null ? widget.place.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU',
-                        filterQuality: FilterQuality.low,
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                          if (loadingProgress == null)
-                            return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                  : null,
-                            ),
-                          );
-                        },
-                        fit: widget.place.image != null ? BoxFit.cover : BoxFit.contain
-                      ),
+                      child: ImageNetworkWidget(
+                        baseUrl: "",
+                        source: widget.place.image
+                      )
                     ),
                   ),
                   /* Align(
@@ -166,9 +133,14 @@ class _CardWidgetState extends State<CardWidget> {
                           children: <Widget>[
                             Icon(Icons.location_on, color: Theme.of(context).iconTheme.color),
                             Padding(padding: EdgeInsets.only(left:5)),
-                            Text(
-                              distance ?? 'Cargando...',
-                              style: Theme.of(context).textTheme.headline3
+                            FutureBuilder(
+                              future: widget.distance,
+                              builder: (context, snapshot) {
+
+                                return Text(snapshot.hasData ? snapshot.data : "Cargando...",
+                                  style: Theme.of(context).textTheme.headline3
+                                );
+                              },
                             ),
                           ],
                         )

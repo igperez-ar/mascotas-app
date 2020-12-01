@@ -1,5 +1,3 @@
-import 'dart:async';
-/* import 'dart:html'; */
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,45 +5,64 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 
 import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/providers/location_provider.dart';
 import 'package:mascotas_app/queries/queries.dart';
-import 'package:mascotas_app/screens/forms/create_alert_form.dart';
 import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
-class CreateAlertScreen extends StatefulWidget {
+class CreatePetScreen extends StatefulWidget {
   @override
-  _CreateAlertScreenState createState() => _CreateAlertScreenState();
+  _CreatePetScreenState createState() => _CreatePetScreenState();
 }
 
-class _CreateAlertScreenState extends State<CreateAlertScreen> {
-  /* AutenticacionBloc _autenticacionBloc; */
+class _CreatePetScreenState extends State<CreatePetScreen> {
   TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   List<File> _images = []; 
-  AlertType _alertType;
+  Kind _kind;
+  Breed _breed;
+  String _sex;
+  DateTime _birthDate;
 
-  @override
-  void initState() {
-    super.initState();
 
-    /* _autenticacionBloc = BlocProvider.of<AutenticacionBloc>(context); */
+  bool _validateData() {
+
+    if (_nameController.text.isEmpty) {
+      return false;
+    }
+    if (_descriptionController.text.isEmpty) {
+      return false;
+    }
+    if (_breed == null) {
+      return false;
+    }
+    if (_sex == null) {
+      return false;
+    }
+    if (_birthDate == null) {
+      return false;
+    }
+    if (_images.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
-
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
+    final DateTime dateNow = DateTime.now();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Nueva alerta', 
+          title: Text('Nueva mascota', 
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -58,9 +75,13 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
           actions: [
             Mutation(
               options: MutationOptions(
-                documentNode: gql(QueryAlert.addAlert),
+                documentNode: gql(QueryPet.addPet),
               ),
-              builder: (RunMutation addAlert, QueryResult result) {
+              builder: (RunMutation addPet, QueryResult result) {
+
+                if (result.loading) {
+                  return CircularProgressIndicator();
+                }
                 
                 return BlocBuilder<AutenticacionBloc,AutenticacionState>(
                   builder: (context, state) {
@@ -69,24 +90,24 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
 
                       return IconButton(
                         icon: Icon(Icons.check, size: 30.0,),
-                        onPressed: () async {
-                          Position _position = await LocationProvider().getCurrentPosition();
+                        onPressed: () {
 
-                          if (true) {
-                            addAlert({
+                          if (_validateData()) {
+                            addPet({
+                              "name": _nameController.text,
                               "description": _descriptionController.text,
-                              "lat": _position.latitude,
-                              "lng": _position.longitude,
+                              "birthDate": _birthDate.toString().split(" ")[0],
+                              "sex": _sex,
+                              "breedId": _breed.id,
                               "userId": state.usuario.id,
-                              "typeId": _alertType.id,
-                              "photos": _images.map((image) => MultipartFile.fromBytes(
-                                "photo",
+                              "files": _images.map((image) => MultipartFile.fromBytes(
+                                "file",
                                 image.readAsBytesSync(),
                                 filename: "${DateTime.now()}.jpg",
                                 contentType: MediaType("image", "jpg"),
                               )).toList()
                             });
-                            BlocProvider.of<AlertsBloc>(context).add(FetchAlerts());
+                            
                             Navigator.pop(context);
                           }
                         }
@@ -102,7 +123,7 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
         ),
         body: Query(
           options: QueryOptions(
-            documentNode: gql(QueryAlertType.getAll),
+            documentNode: gql(QueryBreed.getAll),
           ),
           builder: (QueryResult result, {VoidCallback refetch, FetchMore fetchMore}) {
             if (result.hasException) {
@@ -115,17 +136,25 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
               );
             }
 
-            List<AlertType> alertTypes = result.data["urbanAlertTypes"]
-              .map<AlertType>((e) => AlertType.fromJson(e))
+            List<Breed> breeds = result.data["breeds"]
+              .map<Breed>((e) => Breed.fromJson(e))
               .toList();
 
-            if (alertTypes.isEmpty) {
+            if (breeds.isEmpty) {
               return Text("Vacío");
             } 
             
             return ListView(
               padding: EdgeInsets.all(20),
               children: [
+                SizedBox(height: 10),
+                DetailSectionWidget(
+                  title: "Nombre",
+                  child: InputValidatedWidget(
+                    controller: _nameController,
+                    hintText: "¿Cómo se llama?",
+                  ),
+                ),
                 SizedBox(height: 10),
                 DetailSectionWidget(
                   title: "Descripción", 
@@ -156,7 +185,7 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                               }); */
                             },
                             decoration: InputDecoration(
-                              hintText: 'Describe la situación',
+                              hintText: 'Describe la mascota',
                               hintStyle: TextStyle(color: Colors.grey),
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -174,24 +203,79 @@ class _CreateAlertScreenState extends State<CreateAlertScreen> {
                 ),
                 SizedBox(height: 10),
                 DetailSectionWidget(
-                  title: "Estado de la mascota",
+                  title: "Especie",
                   child: DropdownWidget(
-                    items: alertTypes,
-                    selected: _alertType,
+                    items: breeds.map((e) => e.kind).toSet().toList(),
+                    selected: _kind,
                     onChange: (newValue) {
                       setState(() {
-                        _alertType = newValue;
+                        _kind = newValue;
+                        _breed = null;
+                      });
+                    }
+                  )
+                ),
+                Visibility(
+                  visible: _kind != null,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      DetailSectionWidget(
+                        title: "Raza",
+                        child: (_kind != null
+                          ? DropdownWidget(
+                              items: breeds.where((e) => e.kind.id == _kind.id),
+                              selected: _breed,
+                              onChange: (newValue) {
+                                setState(() {
+                                  _breed = newValue;
+                                });
+                              }
+                            )
+                          : Container()
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                DetailSectionWidget(
+                  title: "Sexo",
+                  child: DropdownWidget(
+                    items: ["Macho", "Hembra"],
+                    selected: _sex,
+                    onChange: (newValue) {
+                      final String sexChar = newValue == "Macho" ? "M" : "F";
+
+                      setState(() {
+                        _sex = sexChar;
                       });
                     }
                   )
                 ),
                 SizedBox(height: 10),
                 DetailSectionWidget(
-                  title: "Lugar",
-                  child: Row(
-                    children: [
-                      Text("Por ahora ubicación local")
-                    ],
+                  title: "Fecha de nacimiento",
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Colors.grey[400],
+                        width: 1
+                      )
+                    ),
+                    child: CalendarDatePicker(
+                      onDateChanged: (date) {
+                        setState(() {
+                          _birthDate = date;
+                        });
+                      },
+                      firstDate: dateNow.subtract(Duration(days: 365*100)),
+                      initialDate: _birthDate ?? dateNow,
+                      lastDate: dateNow,
+                      currentDate: _birthDate,
+                    )
                   )
                 ),
                 SizedBox(height: 10),

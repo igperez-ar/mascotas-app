@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mascotas_app/bloc/bloc.dart';
 import 'package:mascotas_app/screens/screens.dart';
 import 'package:mascotas_app/models/models.dart';
 import 'package:mascotas_app/widgets/imagenetwork_widget.dart';
 
-class CardAdoptWidget extends StatelessWidget {
+class PetWidget extends StatelessWidget {
   final Pet pet;
 
-  const CardAdoptWidget({
+  const PetWidget({
     Key key,
     this.pet,
   }) : super(key: key); 
+
+  String _getAge(DateTime date) {
+    DateTime now = DateTime.now();
+    int years = now.year - date.year;
+    int months = now.month - date.month;
+
+    if (years > 0) {
+      return "$years años";
+
+    } else {
+      if (months > 0) {
+        return "$months meses";
+
+      } else {
+        return "semanas";
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +94,23 @@ class CardAdoptWidget extends StatelessWidget {
                           fontSize: 18
                         ),
                       ),
-                      Icon(Icons.favorite_border)  
+                      /* BlocBuilder<AutenticacionBloc,AutenticacionState>(
+                        builder: (context, state) {
+                          
+                          if (state is AutenticacionAuthenticated) {
+                            if (pet.tenures.every((element) => element.user.id != state.usuario.id)) {
+                              return Icon(Icons.favorite_border);
+                            }
+                          }
+
+                          return Container();
+                        },
+                      ) */
                     ],
                   ),
                   SizedBox(height: 5),
                   ( pet.breed.kind != null && pet.birthDate != null
-                    ? Text('${pet.breed.kind.name} de ${DateTime.now().difference(pet.birthDate)}',
+                    ? Text('${pet.breed.kind.name} de ${_getAge(pet.birthDate)}',
                         style: TextStyle(
                           color: Colors.grey[600]
                         ),

@@ -8,13 +8,13 @@ import 'package:mascotas_app/queries/queries.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
-class CalificacionesScreen extends StatelessWidget {
+class ReviewsScreen extends StatelessWidget {
 
-  final List calificaciones;
+  final List reviews;
 
-  const CalificacionesScreen({
+  const ReviewsScreen({
     Key key,
-    this.calificaciones
+    this.reviews
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class CalificacionesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calificaciones y reseñas', 
+        title: Text('Reviews y reseñas', 
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class CalificacionesScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(20),
-        itemCount: calificaciones.length,
+        itemCount: reviews.length,
         itemBuilder: (context, index) => Column(
           children: [
             (index > 0 
@@ -46,7 +46,7 @@ class CalificacionesScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.all(10),
               child: ReviewWidget(
-                calificacion: Calificacion.fromJson(calificaciones[index])
+                review: Review.fromJson(reviews[index])
               )
             )
           ],

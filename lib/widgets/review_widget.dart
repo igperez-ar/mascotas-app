@@ -8,13 +8,13 @@ import 'package:mascotas_app/widgets/widgets.dart';
 
 class ReviewWidget extends StatefulWidget {
 
-  final Calificacion calificacion;
+  final Review review;
   final bool own;
   final Function onDelete;
 
   const ReviewWidget({
     Key key,
-    @required this.calificacion,
+    @required this.review,
     this.own = false,
     this.onDelete
   }) : super(key: key);
@@ -28,7 +28,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
   bool isUseless = false; */
   String createdAt;
 
-  Calificacion get calificacion => widget.calificacion; 
+  Review get review => widget.review; 
 
   final List<Map<String, Object>> iconList = [
     {'name': Icons.sentiment_very_dissatisfied,
@@ -76,8 +76,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
   void initState() {
     super.initState();
 
-    DateTime date = DateTime.parse(calificacion.createdAt);
-    createdAt = DateFormat('dd/mm/yy').format(date);
+    createdAt = DateFormat('dd/mm/yy').format(review.createdAt);
   }
 
   Widget _icon(int number, {bool min = true}) {
@@ -111,26 +110,26 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                     )
                   ), */
                   ProfileImage(
-                    image: calificacion.usuario.image, 
+                    image: widget.review.user.image, 
                     size: ProfileImageSize.small
                   ),
-                  SizedBox(width: 20),
-                  Text(calificacion.usuario.email, style: Theme.of(context).textTheme.headline4
+                  SizedBox(width: 10),
+                  Text(review.user.name, style: Theme.of(context).textTheme.headline4
                   )
                 ]
               ),
               /* (widget.own 
                 ? Mutation(
                     options: MutationOptions(
-                      documentNode: gql(QueryCalificacion.deleteCalificacion)
+                      documentNode: gql(QueryReview.deleteReview)
                     ),
-                    builder: (RunMutation deleteCalificacion, QueryResult result) {
+                    builder: (RunMutation deleteReview, QueryResult result) {
                       return PopupMenuButton(
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.more_vert, color: Colors.grey[400]),
                         onSelected: (value) {
-                          deleteCalificacion({
-                            'calificacionId': widget.calificacion.id
+                          deleteReview({
+                            'reviewId': widget.review.id
                           });
                           if (widget.onDelete != null)
                             widget.onDelete();
@@ -164,13 +163,13 @@ class _ReviewWidgetState extends State<ReviewWidget> {
           SizedBox(height: 10),
           Row(
             children: <Widget>[
-              _icon(calificacion.puntaje),
+              _icon(review.score),
               SizedBox(width: 5),
               Text(createdAt, style: TextStyle(color: Colors.grey[600]),)
             ],
           ),
           SizedBox(height: 10),
-          Text(calificacion.comentario,
+          Text(review.description,
             style: Theme.of(context).textTheme.bodyText2,
             maxLines: 5,
             overflow: TextOverflow.ellipsis,

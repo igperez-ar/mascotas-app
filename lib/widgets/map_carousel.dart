@@ -33,7 +33,7 @@ class MapCarouselState extends State<MapCarousel> {
       Marker marker = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-        position: LatLng(item.place.lat, item.place.lng),
+        position: LatLng(item.item.lat, item.item.lng),
         onTap: () {
           final page = widget.cards.indexOf(item);
           carouselController.jumpToPage(page);
@@ -74,7 +74,7 @@ class MapCarouselState extends State<MapCarousel> {
           viewportFraction: 0.8,
           onPageChanged: (index, reason) {
             if (reason == CarouselPageChangedReason.manual) {
-              final item = widget.cards[index].place;
+              final item = widget.cards[index].item;
               mapController.animateCamera(
                 CameraUpdate.newLatLngZoom(LatLng(item.lat, item.lng), 17.0)
               );

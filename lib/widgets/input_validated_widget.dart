@@ -119,13 +119,13 @@ class _InputValidatedWidgetState extends State<InputValidatedWidget> {
         keyboardType: widget.inputType,
         decoration: InputDecoration( 
           counterText: _focusNode.hasFocus ? null : '',
-          labelText: widget.hintText,
-          labelStyle: TextStyle(
-            color: _focusNode.hasFocus ? null : Colors.grey,
+          hintText: widget.hintText,
+          hintStyle: TextStyle(
+            color: Colors.grey
           ),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 15),
-          fillColor: Colors.grey[50],
+          fillColor: Theme.of(context).cardColor,
           filled: true,
           prefixIcon: ( widget.icon != null 
             ? Icon(widget.icon, color: this.error ? Colors.red[300] : null) 
@@ -136,7 +136,7 @@ class _InputValidatedWidgetState extends State<InputValidatedWidget> {
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey[600]),
+            borderSide: BorderSide(color: Colors.grey[400]),
             borderRadius: BorderRadius.circular(10),
           ),
           enabledBorder: OutlineInputBorder(

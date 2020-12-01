@@ -43,7 +43,7 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: Colors.red[400],
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
@@ -106,13 +106,18 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Image.network(
+          ImageNetworkWidget(
+            baseUrl: "",
+            source: widget.place.image,
+            height: 450,
+          ),
+          /* Image.network(
             widget.place.image != null 
               ? widget.place.image 
               :"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU",
             fit: BoxFit.cover,
             height: 450,
-          ),
+          ), */
           ListView(
             controller: _scrollController,
             children: <Widget>[ 
@@ -202,13 +207,10 @@ class _PlaceShowScreenState extends State<PlaceShowScreen> {
                       )
                     ),
                     SizedBox(height: 40),
-                    /* ScoreReviewWidget(
+                    ScoreReviewWidget(
                       placeId: widget.place.id,
-                    ), */
-                    /* MemoriesWidget(
-                      id: widget.place.id,
-                      type: widget.type,
-                    ) */
+                    ),
+                    SizedBox(height: 40),
                   ],
                 ),
               ),

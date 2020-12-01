@@ -15,6 +15,7 @@ class Alert extends Equatable{
   final List<Media> images;
   final double lat;
   final double lng;
+  final List<Comment> comments;
   final AlertState state;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -27,6 +28,7 @@ class Alert extends Equatable{
     this.images,
     this.lat,
     this.lng,
+    this.comments,
     this.state,
     this.createdAt,
     this.updatedAt,
@@ -39,6 +41,7 @@ class Alert extends Equatable{
     List<Media> images,
     double lat,
     double lng,
+    List<Comment> comments,
     AlertState state,
     DateTime createdAt,
     DateTime updatedAt, 
@@ -51,6 +54,7 @@ class Alert extends Equatable{
       images: images ?? this.images,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      comments: comments ?? this.comments,
       state: state ?? this.state,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -66,6 +70,7 @@ class Alert extends Equatable{
     images,
     lat,
     lng,
+    comments,
     state,
     createdAt,
     updatedAt,
@@ -79,6 +84,7 @@ class Alert extends Equatable{
     images: json["images"].map<Media>((e) => Media.fromJson(e)).toList(),
     lat: json["lat"],
     lng: json["lng"],
+    comments: json['comments'].map<Comment>((e) => Comment.fromJson(e)).toList(),
     state: AlertState.fromJson(json["state"]),
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
@@ -92,6 +98,7 @@ class Alert extends Equatable{
     "images": jsonEncode(images),
     "lat": lat,
     "lng": lng,
+    "comments": jsonEncode(comments),
     "state": state,
     "createdAt": createdAt,
     "updatedAt": updatedAt,

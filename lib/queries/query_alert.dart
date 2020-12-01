@@ -19,6 +19,15 @@ class QueryAlert {
         }
         lat
         lng
+         comments {
+          id
+          user {
+            id
+            name
+            image
+          }
+          content
+        }
         state {
           id
           name

@@ -52,7 +52,7 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
-
+    /* BlocProvider.of<AutenticacionBloc>(context).clear(); */
     /* this._locationConfig(); */
   }
 

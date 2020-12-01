@@ -8,13 +8,13 @@ import 'package:mascotas_app/queries/queries.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 
 
-class CalificacionShowScreen extends StatefulWidget {
+class ReviewShowScreen extends StatefulWidget {
 
-  final Map<String, Object> selected;
+  final int selected;
   final int placeId;
-  final Calificacion update;
+  final Review update;
 
-  const CalificacionShowScreen({
+  const ReviewShowScreen({
     Key key,
     this.selected,
     @required this.placeId,
@@ -22,13 +22,12 @@ class CalificacionShowScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CalificacionShowScreenState createState() => _CalificacionShowScreenState();
+  _ReviewShowScreenState createState() => _ReviewShowScreenState();
 }
 
-class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
-  Map<String, Object> selected;
+class _ReviewShowScreenState extends State<ReviewShowScreen> {
+  int selected;
   bool _isDisabled = false;
-  int destacableSelected;
   TextEditingController _textEditingController = TextEditingController();
 
   @override
@@ -41,15 +40,12 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
       });
 
     if (widget.update != null) {
-      final Calificacion calificacion = widget.update;
-      final puntaje = puntajes.firstWhere(
-        (element) => element['id'] == calificacion.puntaje,
-      );
+      final Review review = widget.update;
+      final score = review.score;
 
       setState(() {
-        selected = puntaje;
-        destacableSelected = calificacion.destacable?.id;
-        _textEditingController.text = calificacion.comentario;
+        selected = score;
+        _textEditingController.text = review.description;
       });
     }
 
@@ -62,7 +58,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
   /* Widget _getDestacables() {
     return Query(
       options: QueryOptions(
-        documentNode: gql(QueryCalificacion.getDestacables)
+        documentNode: gql(QueryReview.getDestacables)
       ), 
       builder: (QueryResult result, {VoidCallback refetch, FetchMore fetchMore}) {
           if (result.hasException) {
@@ -129,7 +125,7 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
         appBar: AppBar(
           title: Text('Calificar', 
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -146,10 +142,10 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                 child: Column(
                   children: [
                     SizedBox(height: 30),
-                    ( this.selected != null 
+                    /* ( this.selected != null 
                       ? Container(
                         margin: EdgeInsets.only(bottom: 10),
-                        child: Text(selected['label'],
+                        child: Text(selected.toString(),
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold,
@@ -158,11 +154,11 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                         ) 
                       )
                       : Container()
-                    ),
+                    ), */
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: CalificacionWidget(
-                        selected: this.selected != null ? this.selected['id'] : null,
+                      padding: EdgeInsets.symmetric(horizontal: 40),
+                      child: ScoreWidget(
+                        selected: this.selected,
                         onPress: (item) => this.setState(() {
                           this.selected = item; 
                         }),
@@ -211,27 +207,12 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                         ]
                       )
                     ),
-                    /* Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.all(20),
-                      child: Text('¿Qué destacarías?', 
-                        style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 150,
-                      child: _getDestacables()
-                    ), */
                     SizedBox(height: 20),
-                    /* Mutation(
+                    Mutation(
                       options: MutationOptions(
                         documentNode: gql(widget.update != null
-                          ? QueryCalificacion.updateCalificacion
-                          : QueryCalificacion.addCalificacion
+                          ? QueryReview.updateReview
+                          : QueryReview.addReview
                         ),
                         onCompleted: (_) => Navigator.of(context).pop(),
                       ),
@@ -252,27 +233,25 @@ class _CalificacionShowScreenState extends State<CalificacionShowScreen> {
                             ? null 
                             : () {
                               if (widget.update != null) {
-                                runMutation({
-                                  "calificacionId": widget.update.id,
-                                  "puntaje": selected['id'],
+                                /* runMutation({
+                                  "reviewId": widget.update.id,
+                                  "score": selected['id'],
                                   "comentario": _textEditingController.text,
                                   "destacableId": destacableSelected
-                                });
+                                }); */
 
                               } else {
                                 runMutation({
-                                  "puntaje": selected['id'],
-                                  "comentario": _textEditingController.text,
-                                  "usuarioId": state.usuario.id,
-                                  "alojamientoId": (widget.type == Establecimiento.alojamiento ? widget.id : null),
-                                  "gastronomicoId": (widget.type == Establecimiento.gastronomico ? widget.id : null),
-                                  "destacableId": destacableSelected
+                                  "score": selected,
+                                  "description": _textEditingController.text,
+                                  "placeId": widget.placeId,
+                                  "userId": state.usuario.id
                                 });
                               }
                           },
                         );
                       },
-                    ) */
+                    )
                   ],
                 )
               );

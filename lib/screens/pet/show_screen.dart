@@ -6,23 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:mascotas_app/widgets/widgets.dart';
 import 'package:mascotas_app/models/models.dart';
 
+
 class PetShowScreen extends StatefulWidget {
-   /* final String image;
-   final String name;
-   final String gender;
-   final String age;
-   final List colors;
-   final String breed; */
    final Pet pet;
 
   const PetShowScreen({
-    Key key, 
-    /* this.image,
-    this.name,
-    this.gender,
-    this.age,
-    this.colors,
-    this.breed, */
+    Key key,
     this.pet,
   }): super(key: key);
 
@@ -53,46 +42,23 @@ class _PetShowScreenState extends State<PetShowScreen> {
     }
   }
 
-  /* List<Widget> _getWidget() {
-    Widget _getChip(String title) => Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 2,
-            spreadRadius: 1, 
-            offset: Offset(2, 2),
-          )
-        ]
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-          fontSize: 15
-        )
-      ),
-    );
+  String _getAge(DateTime date) {
+    DateTime now = DateTime.now();
+    int years = now.year - date.year;
+    int months = now.month - date.month;
 
-    if (widget.type == Establecimiento.alojamiento) {
-      if (widget.establecimiento.clasificacion != null &&
-          widget.establecimiento.clasificacion != '')
-        return [_getChip(widget.establecimiento.clasificacion.nombre)];
+    if (years > 0) {
+      return "$years años";
 
     } else {
-      if (widget.establecimiento.actividades.isNotEmpty) {
-        return widget.establecimiento.actividades.map<Widget>(
-          (actividad) => _getChip(actividad.nombre)
-        ).toList();
+      if (months > 0) {
+        return "$months meses";
+
+      } else {
+        return "semanas";
       }
     }
-
-    return [];
-  } */
+  }
 
   Widget _checkItem(String title) {
     final _width = MediaQuery.of(context).size.width;
@@ -131,35 +97,34 @@ class _PetShowScreenState extends State<PetShowScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double _width = MediaQuery.of(context).size.width;
     
     return Scaffold(
-      bottomNavigationBar: 
-      Container(
-        height: 55,
-        margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 20),
-        child: RaisedButton(
-          onPressed: () {}, 
-          textColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20)
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            child: Text('Adoptar', style: TextStyle(fontSize: 16),)
+      bottomNavigationBar: (widget.pet.inAdoption ?? false 
+        ? Container(
+            height: 55,
+            margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 20),
+            child: RaisedButton(
+              onPressed: () {}, 
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                child: Text('Adoptar', style: TextStyle(fontSize: 16),)
+              )
+            ),
           )
-        ),
+        : null
       ),
       body: Stack(
         children: [
           ImageNetworkWidget(
             source: widget.pet.images[0].url,
+            height: 500,
+            width: _width,
           ),
-          /* Image.network(
-            widget.image,
-            /* 'https://source.unsplash.com/AllEP6K_TAg/1200x1300', */
-            fit: BoxFit.cover,
-            height: 450,
-          ), */
           ListView(
             controller: _scrollController,
             children: <Widget>[ 
@@ -173,12 +138,8 @@ class _PetShowScreenState extends State<PetShowScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /* Container( 
-                      margin: EdgeInsets.only(bottom: 20),
-                      height: 400.0,
-                    ), */
                     Padding(
-                      padding: EdgeInsets.only(top: 25, bottom: 5, right: 20),
+                      padding: EdgeInsets.only(top: 25, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,11 +147,14 @@ class _PetShowScreenState extends State<PetShowScreen> {
                           Text(widget.pet.name, 
                             style: Theme.of(context).textTheme.headline1,
                           ),
-                          Icon(Icons.favorite_border, size: 30,)
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.more_vert, size: 30, color: Colors.grey,)
+                          )
                         ],
                       ),
                     ),
-                    Text(widget.pet.breed.name,
+                    Text(widget.pet.breed.kind.name,
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 18,
@@ -210,28 +174,22 @@ class _PetShowScreenState extends State<PetShowScreen> {
                           children: [
                             Column(
                               children: [
-                                Text('Colores',
+                                Text('Raza',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                /* Row(
-                                  children: widget.colors.map<Widget>((e) => Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: Colors.white, width: 2),
-                                        color: e
-                                      ),
-                                    )
-                                  ).toList()
-                                ) */
+                                Text(widget.pet.breed.name,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ],
                             ),
-                            VerticalDivider( thickness: 1,),
+                            VerticalDivider(thickness: 1),
                             Column(
                               children: [
                                 Text('Edad',
@@ -241,25 +199,25 @@ class _PetShowScreenState extends State<PetShowScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                /* Text(/* '2 años' */widget.pet.age,
+                                Text(_getAge(widget.pet.birthDate),
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
                                   ),
-                                ), */
+                                ),
                               ],
                             ),
                             VerticalDivider( thickness: 1,),
                             Column(
                               children: [
-                                Text('Género',
+                                Text('Sexo',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Text(/* 'Femenino' */widget.pet.sex,
+                                Text(widget.pet.sex == "F" ? "Hembra" : "Macho",
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 16,
@@ -293,18 +251,17 @@ class _PetShowScreenState extends State<PetShowScreen> {
                       ]
                     ),
                     SizedBox(height: 20), */
-                    Text('Sobre mi',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    (widget.pet.description != null && widget.pet.description.isNotEmpty
+                      ? DetailSectionWidget(
+                          title: "Sobre mi",
+                          child: Text(widget.pet.description,
+                            style: TextStyle(
+                              height: 1.4
+                            ),
+                          )
+                        )
+                      : Container()
                     ),
-                    SizedBox(height: 10),
-                    Text('light bit plenty none several electric west box strength frequently shorter breeze twelve daughter stretch drew twenty feet pour snake go trap back union plane club attached land trade spell neighbor protection living dropped forward lovely real hall vast general earlier angle captain sentence battle involved can he',
-                      style: TextStyle(
-                        height: 1.4
-                      ),
-                    )
                     /* Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Column(

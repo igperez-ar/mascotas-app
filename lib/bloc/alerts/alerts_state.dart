@@ -12,8 +12,8 @@ class AlertsInitial extends AlertsState {}
 class AlertsFetching extends AlertsState {}
 
 class AlertsSuccess extends AlertsState {
-  final List alerts;
-  final List filteredAlerts;
+  final List<Alert> alerts;
+  final List<Alert> filteredAlerts;
 
   const AlertsSuccess({
     this.alerts,

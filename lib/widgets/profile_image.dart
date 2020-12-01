@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mascotas_app/widgets/imagenetwork_widget.dart';
 
 enum ProfileImageSize {
   small,
@@ -79,7 +80,7 @@ class ProfileImage extends StatelessWidget {
         color: Colors.grey[400],
         border: Border.all(color: Colors.grey, width: 2)
       ),
-      child: (image != null
+      child: (image != null && image.isNotEmpty
         ? SvgPicture.asset(
             'assets/profile_pics/pic_$image.svg',
             height: _wSize,

@@ -48,7 +48,7 @@ class AppTheme {
         color: Colors.grey[800]
       ),
     ),
-    accentColor: Colors.red,
+    accentColor: Colors.red[300],
     buttonColor: Colors.red[300]
   );
 

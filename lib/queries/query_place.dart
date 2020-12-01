@@ -1,37 +1,38 @@
 class QueryPlace {
   
   static String getAll = """
-    query getAll{
+    query getPlaces {
       places {
         id
         name
-        type
-        image
         address
         lat
         lng
+        type
+        image
         category {
           id
           name
           value
         }
+        avgScore
       }
     }
   """;
 
   static String getReviews = """
     query getReviews(\$placeId: Int!) {
-      review(id: \$placeId}}) {
+      reviewsByPlace(placeId: \$placeId) {
         id
-        description
         score
+        description
         user {
           id
-          first_name
-          last_name
+          name
           image
         }
-        created_at
+        createdAt
+        updatedAt
       }
     }
   """; 

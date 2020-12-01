@@ -46,4 +46,8 @@ class Breed extends Equatable{
     'name': name,
     'kind': kind,
   };
+
+  String toString() {
+    return name;
+  }
 }

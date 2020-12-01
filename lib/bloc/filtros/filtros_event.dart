@@ -1,4 +1,4 @@
-part of 'filtros_bloc.dart';
+/* part of 'filtros_bloc.dart';
 
 abstract class FiltrosEvent extends Equatable {
   const FiltrosEvent();
@@ -25,4 +25,4 @@ class ResetFiltros extends FiltrosEvent {
 
   @override
   List<Object> get props => [];
-} 
+}  */

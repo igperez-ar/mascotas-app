@@ -9,7 +9,7 @@ class MensajeProvider {
   GraphQLClient _graphQLClient = BaseProvider.initailizeClient();
 
   Future<void> addMensaje({String contenido, int grupo, int miembro}) async {
-    final result = await _graphQLClient.mutate(
+    /* final result = await _graphQLClient.mutate(
       MutationOptions(
         documentNode: gql(QueryMensajes.addMensaje),
         variables: {
@@ -23,6 +23,6 @@ class MensajeProvider {
     if (result.hasException) {
       print(result.exception);
       throw SendMensajesRequestFailure();
-    }
+    } */
   }
 }

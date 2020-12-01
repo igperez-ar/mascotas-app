@@ -14,6 +14,7 @@ class Place extends Equatable{
   final String address;
   final String image;
   final Category category;
+  final List<Review> reviews;
   final double lat;
   final double lng;
 
@@ -24,6 +25,7 @@ class Place extends Equatable{
     this.address,
     this.image,
     this.category,
+    this.reviews,
     this.lat,
     this.lng,
   });
@@ -34,6 +36,7 @@ class Place extends Equatable{
     String address, 
     String image, 
     Category category,
+    List<Review> reviews,
     double lat, 
     double lng
   }) {
@@ -44,6 +47,7 @@ class Place extends Equatable{
       address: address ?? this.address, 
       image: image ?? this.image, 
       category: category ?? this.category,
+      reviews: reviews ?? this.reviews,
       lat: lat ?? this.lat, 
       lng: lng ?? this.lng,
     );
@@ -56,7 +60,8 @@ class Place extends Equatable{
     type,
     address,
     image,
-    category,
+    category, 
+    reviews, 
     lat,
     lng,
   ];
@@ -68,6 +73,7 @@ class Place extends Equatable{
     address: json["address"],
     image: json["image"],
     category: Category.fromJson(json["category"]),
+    reviews: json["reviews"],
     lat: json["lat"],
     lng: json["lng"],
   );

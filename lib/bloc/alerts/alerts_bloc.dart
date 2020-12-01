@@ -31,6 +31,8 @@ class AlertsBloc extends Bloc<AlertsEvent, AlertsState> {
 
     try {
       final List<Alert> alerts = await repository.fetchAlerts();
+      
+      alerts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
       yield AlertsSuccess(
         alerts: alerts,

@@ -111,6 +111,7 @@ class QueryUsuario {
       pets {
         id
         name
+        description
         birthDate
         sex
         breed {
@@ -124,6 +125,16 @@ class QueryUsuario {
         images {
           order
           image
+        }
+        tenureSet {
+          user {
+            id
+            name
+          }  
+          role {
+            id
+            name
+          }
         }
       }
     }

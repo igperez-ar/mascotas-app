@@ -6,19 +6,31 @@ class ImageNetworkWidget extends StatelessWidget {
   final BoxFit fit;
   final String source;
   final String baseUrl;
+  final double height;
+  final double width;
 
   const ImageNetworkWidget({
     Key key,
     this.fit = BoxFit.cover,
     @required this.source,
     this.baseUrl,
+    this.height,
+    this.width,
   }) : super(key: key);
+
+  String _getUrl() {
+    if (source.isNotEmpty) {
+      return "${baseUrl ?? BaseProvider.mediaURL}$source";
+    }
+
+    return "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU";
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Image.network(
-      "${baseUrl ?? BaseProvider.mediaURL}$source"/* 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRVX4RgUYvaDyHQaEiejmjMy0ZbuEPqGkOwsxq9oAmPl3MQJIRC&usqp=CAU' */,
+      _getUrl(),
       filterQuality: FilterQuality.low,
       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
         if (loadingProgress == null)
@@ -31,7 +43,9 @@ class ImageNetworkWidget extends StatelessWidget {
           ),
         );
       },
-      fit: /* widget.establecimiento.foto != null ?  */fit/*  : BoxFit.contain */
+      fit: source.isNotEmpty ? fit : BoxFit.contain,
+      height: height ?? null,
+      width: width ?? null,
     );
   }
 }

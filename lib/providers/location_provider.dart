@@ -16,7 +16,7 @@ class LocationProvider {
   Future<String> getDistance(double lat, double lng) async {
     String distance;
 
-    getCurrentPosition();
+    await getCurrentPosition();
 
     if (userPosition != null) 
       distance = await Geolocator().distanceBetween(
